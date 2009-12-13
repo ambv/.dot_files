@@ -60,6 +60,7 @@ alias die='logout'
 alias ll='ls -la'
 alias lt='tree -AphL '
 alias tree='tree -A '
+alias vi='vim '
 
 # shortcuts
 alias ip='ipython2.6'
