@@ -4,6 +4,7 @@
 
 export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
+export LANGUAGE=en_US.UTF-8
 export PS1="\\u@\\H:\\w $ "
 export CLICOLOR=1
 export LSCOLORS=ExFxCxDxBxegedabagacad
@@ -54,6 +55,9 @@ alias neptun="ssh -Y llanga@neptun.softax.local"
 alias bolt="ssh -Y ambv@bolt.stxnext.pl"
 alias nutpen="ssh -Y ambv@nutpen.stxnext.local"
 
+# ELITA-INWEST
+alias wrees="ssh -Yp 232 lukasz@85.25.236.179"
+
 # SAFE COMMANDS
 alias rm='rm -i'
 alias mv='mv -i'
@@ -84,3 +88,7 @@ alias pgstart="sudo su postgres -c '/opt/local/lib/postgresql83/bin/pg_ctl -D /o
 alias pgstop="sudo su postgres -c '/opt/local/lib/postgresql83/bin/pg_ctl -D /opt/local/var/db/postgresql83/defaultdb stop -m fast'"
 alias pgstatus="sudo su postgres -c '/opt/local/lib/postgresql83/bin/pg_ctl status -D /opt/local/var/db/postgresql83/defaultdb'"
 alias ptar='tar --use-compress-program /opt/local/bin/pbzip2 '
+
+if [ -e ~/.profile_local ]; then
+  source ~/.profile_local
+fi
