@@ -159,3 +159,5 @@ command! ToggleWord :call <SID>ToggleWord()
 
 let &cpo= s:keepcpo
 unlet s:keepcpo
+
+nmap ,t :ToggleWord<CR>
