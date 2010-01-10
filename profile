@@ -69,6 +69,7 @@ alias ll='ls -la'
 alias lt='tree -AphL '
 alias tree='tree -A '
 alias vi='vim '
+alias grep='grep --color=auto'
 
 # shortcuts
 alias ip='ipython2.6'
