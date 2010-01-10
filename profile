@@ -24,6 +24,8 @@ export QTDIR=/opt/local/lib/qt3
 shopt -s histappend cdspell
 bind Space:magic-space
 bind -m vi-insert "\C-n":menu-complete
+bind -m vi-insert "\C-p":dynamic-complete-history
+bind -m vi-insert "\C-a":vi-append-eol
 set -o vi
 
 

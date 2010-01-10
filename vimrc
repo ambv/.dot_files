@@ -70,7 +70,7 @@ vmap <S-Tab> <C-D>
 
 noremap Y y$
 
-nnoremap \tp :set invpaste paste?<CR>
+nnoremap \tp :set invpaste paste?<CR>:set invnumber number?<CR>:if &mouse =~ 'a' <Bar> set mouse= <Bar> else <Bar> set mouse=a <Bar> endif<CR>
 nmap <F4> \tp
 imap <F4> <C-O>\tp
 set pastetoggle=<F4>
@@ -111,5 +111,7 @@ set textwidth=999
 
 set so=10
 set hidden
+
+set virtualedit=all
 
 autocmd BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$") | exe "normal g`\"" |  endif 
