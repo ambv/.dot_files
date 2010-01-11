@@ -70,13 +70,26 @@ vmap <S-Tab> <C-D>
 
 noremap Y y$
 
-nnoremap \tp :set invpaste paste?<CR>:set invnumber number?<CR>:if &mouse =~ 'a' <Bar> set mouse= <Bar> else <Bar> set mouse=a <Bar> endif<CR>
-nmap <F4> \tp
-imap <F4> <C-O>\tp
+fun Paste_toggle(insert_mode)
+  if &paste || (a:insert_mode != 0 && !&number)
+    set nopaste
+    set number
+    set mouse=a 
+  else
+    set paste
+    set nonumber
+    set mouse=
+  endif
+  "set paste? number? mouse?
+endfun
+
+command PasteToggle :call Paste_toggle(0)
+nmap <F4> :call Paste_toggle(0)<CR>
+imap <F4> <C-O>:call Paste_toggle(1)<CR>
 set pastetoggle=<F4>
 
 nnoremap \tf :if &fo =~ 't' <Bar> set fo-=t <Bar> else <Bar> set fo+=t <Bar>
-  \ endif <Bar> set fo?<CR>
+      \ endif <Bar> set fo?<CR>
 nmap <F3> \tf
 imap <F3> <C-O>\tf
 
@@ -85,6 +98,7 @@ nmap <F2> \tl
 
 nnoremap \th :set invhls hls?<CR>
 nmap <F1> \th
+imap <F1> <C-O>\th
 
 set backspace=eol,start,indent
 
@@ -98,12 +112,12 @@ set cursorline
 
 map <F11> :call SwitchToISO()<CR>
 func! SwitchToISO()
-    e! ++enc=iso-8859-2
+  e! ++enc=iso-8859-2
 endfunc
 
 map <F12> :call SwitchToUTF8()<CR>
 func! SwitchToUTF8()
-    e! ++enc=utf-8
+  e! ++enc=utf-8
 endfunc
 
 set formatoptions-=tl
