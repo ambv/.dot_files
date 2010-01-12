@@ -126,6 +126,7 @@ set textwidth=999
 set so=10
 set hidden
 
-set virtualedit=all
+"Uncomment to get free cursor movement.
+"set virtualedit=all
 
 autocmd BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$") | exe "normal g`\"" |  endif 
