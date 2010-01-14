@@ -41,10 +41,13 @@ fun! Python_init()
   set tabstop=4 shiftwidth=4 smarttab expandtab
   set softtabstop=4 autoindent smartindent
   set cinwords=if,elif,else,for,while,try,except,finally,def,class
-  set backspace=indent,eol,start isk+=.,( complete+=k~/.vim/pydiction
+  set backspace=indent,eol,start 
+  "set isk+=.,( 
+  set complete+=k~/.vim/pydiction
   set nowrap guioptions+=b
 endfun
 autocmd FileType python call Python_init()
+autocmd BufWritePre *.py :%s/\s\+$//e
 
 set clipboard+=unnamed
 set ruler
@@ -130,3 +133,7 @@ set hidden
 "set virtualedit=all
 
 autocmd BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$") | exe "normal g`\"" |  endif 
+
+"autocmd BufRead * highlight ExtraWhitespace ctermbg=red guibg=red
+"autocmd BufRead * match ExtraWhitespace /\s\+$/
+
