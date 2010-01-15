@@ -68,6 +68,7 @@ alias die='logout'
 alias ll='ls -la'
 alias lt='tree -AphL '
 alias tree='tree -A '
+alias vim='vim -O '
 alias vi='vim '
 alias grep='grep --color=auto'
 
