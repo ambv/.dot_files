@@ -58,7 +58,11 @@ alias bolt="ssh -Y ambv@bolt.stxnext.pl"
 alias nutpen="ssh -Y ambv@nutpen.stxnext.local"
 
 # ELITA-INWEST
-alias wrees="ssh -Yp 232 lukasz@85.25.236.179"
+alias wrees="ssh -Yp232 lukasz@85.25.236.179"
+
+# ALLPLAY
+alias allegra="ssh -Yp58881 root@ster-gaming.pl"
+alias allplay="ssh -Yp58022 ambv@allplay.pl"
 
 # SAFE COMMANDS
 alias rm='rm -i'
