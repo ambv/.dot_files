@@ -47,6 +47,7 @@ fun! Python_init()
   set nowrap guioptions+=b
 endfun
 autocmd FileType python call Python_init()
+autocmd FileType pyrex call Python_init()
 autocmd BufWritePre *.py :%s/\s\+$//e
 
 set clipboard+=unnamed
