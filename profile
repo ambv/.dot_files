@@ -74,11 +74,12 @@ alias rm='rm -i'
 alias mv='mv -i'
 alias cp='cp -i'
 alias die='logout'
+alias ls='ls --color=auto'
 alias ll='ls -la'
-alias lt='tree -AphL '
-alias tree='tree -A '
-alias vim='vim -O ' # if you want the default, just type vim -O1
-alias vi='vim '
+alias lt='tree -AphL'
+alias tree='tree -A'
+alias vim='vim -O' # if you want the default, just type vim -O1
+alias vi='vim'
 alias grep='grep --color=auto'
 
 # shortcuts
