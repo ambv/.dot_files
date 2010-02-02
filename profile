@@ -29,6 +29,11 @@ bind -m vi-insert "\C-a":vi-append-eol
 set -o vi
 
 
+if [[ $TERM_PROGRAM == "iTerm.app" ]]; then
+  export TERM=xterm-256color
+fi
+
+
 #
 # my aliases
 #
