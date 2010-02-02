@@ -112,8 +112,9 @@ inoremap <S-Tab> <C-D>
 
 set winminheight=0      " Allow windows to get fully squashed
 
-"colorscheme delek
+colorscheme ambv
 set cursorline
+"set cursorcolumn
 
 map <F11> :call SwitchToISO()<CR>
 func! SwitchToISO()
