@@ -29,6 +29,7 @@ set autoindent
 set number
 filetype on
 autocmd BufNewFile,BufRead *.txt set filetype=human
+autocmd BufNewFile,BufRead *.json set filetype=javascript
 autocmd FileType mail,human set formatoptions+=t textwidth=72
 autocmd FileType c set formatoptions+=ro
 autocmd FileType perl set smartindent

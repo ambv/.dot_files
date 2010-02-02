@@ -39,6 +39,12 @@ toggle_words_dict = {
         ('true', 'True'),
         ('false', 'False'),
     ),
+    'javascript': (
+        ('true', 'false'),
+        ('True', 'true'),
+        ('False', 'false'),
+        ('None', 'null'),
+    ),
     }
 
 
@@ -52,13 +58,19 @@ def ToggleWord():
     cur_word = vim.eval('expand("<cword>")')
     cur_word_lower = cur_word.lower()
 
-    next_word = cur_word
+    next_word = None
     for toggles in toggle_words_list:
         if cur_word in toggles:
             index = (toggles.index(cur_word) + 1) % len(toggles)
             next_word = toggles[index]
             break
-        elif cur_word_lower in toggles:
+
+    if next_word:
+        vim.command('norm ciw' + next_word)
+        return
+
+    for toggles in toggle_words_list:
+        if cur_word_lower in toggles:
             index = (toggles.index(cur_word_lower) + 1) % len(toggles)
             next_word = toggles[index]
             if next_word == next_word.lower(): # we do smart-casing on lower case values
@@ -71,5 +83,5 @@ def ToggleWord():
                     pass
             break
 
-    vim.command('norm ciw' + next_word)
-
+    if next_word:
+        vim.command('norm ciw' + next_word)
