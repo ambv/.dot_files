@@ -1,10 +1,15 @@
+import sys
 import re
 position_regexp = re.compile(r'line (\d+) column (\d+)')
 
 try:
     import simplejson as json
 except ImportError:
-    import json
+    try:
+        import json
+    except ImportError:
+        print "JSON formatter requires simplejson or Python 2.6+."
+        sys.exit(1)
 
 import vim
 
