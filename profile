@@ -110,7 +110,7 @@ fi
 #
 # Store the current .dot_files version used.
 #
-PWD=`pwd`
+CWD=`pwd`
 cd ~/.dot_files
 export DOT_FILES_VERSION=`git log --pretty=format:"%h: %ar" | head -n 1`
-cd $PWD 
+cd $CWD 
