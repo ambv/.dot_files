@@ -106,3 +106,11 @@ alias ptar='tar --use-compress-program /opt/local/bin/pbzip2 '
 if [ -e ~/.profile_local ]; then
   source ~/.profile_local
 fi
+
+#
+# Store the current .dot_files version used.
+#
+PWD=`pwd`
+cd ~/.dot_files
+export DOT_FILES_VERSION=`git log --pretty=format:"%h: %ar" | head -n 1`
+cd $PWD 
