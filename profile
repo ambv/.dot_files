@@ -12,6 +12,7 @@ export LS_COLORS="no=00:fi=00:di=01;34:ln=01;36:pi=40;33:so=01;35:bd=40;33;01:cd
 export PATH="/opt/automation:/opt/local/sbin:/opt/local/bin:/opt/local/Library/Frameworks/Python.framework/Versions/2.6/bin:$PATH"
 export EDITOR=/opt/local/bin/vim
 export VIMFILES=~/.vim/
+export VIM_APP_DIR=/Applications/MacPorts/
 export HISTCONTROL=erasedups
 export HISTSIZE=10000
 export PYTHONSTARTUP=~/.pythonstartup

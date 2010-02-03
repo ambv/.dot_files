@@ -1,33 +1,84 @@
+" Vim RC
+"
+" Maintainer: Łukasz Langa <lukasz@langa.pl>
+" Changed: Wed Feb  3 01:29:18 2010 
+
+
+
+"
+" Bootstrap settings:
+" - reset previously set environmental settings
+" - don't allow specific files to override settings from this file
+"
 autocmd!
-
-syntax on
-
-if has('folding')
-  set foldlevelstart=999 foldopen=all "foldclose=all
-  nnoremap <silent> <Space> @=(foldlevel('.')?'za':'l')<CR>
-  vnoremap <Space> zf
-endif
-
-set history=250
-set wildmode=list:longest,full
-set shortmess+=r
-set showmode
-set showcmd
-
-set rulerformat=%30(%=%m%r\ %b\ 0x%B\ \ %l,%c%V\ %P%)
-
-set mouse=a
-
 set nomodeline
 
-"set nowrap
-set shiftwidth=2
-set shiftround
-set expandtab
-set autoindent
 
-set number
+
+"
+" UI configuration
+"
+colorscheme ambv
+syntax on "highlight syntax
+set history=250 "number of commands to remember in the command line
+set wildmenu wildmode=full "show a list of possible values on Tab
+set showmode "show what mode you're in (Insert, Replace, Visual, etc.)
+set shortmess=aoO "abbreviate status line but don't truncate messages
+set showcmd "show combo command as you type it in the bottom right corner
+set ruler laststatus=2 "show rulers for buffers and the status line even if there's only 1 file
+set rulerformat=%30(%=\ %b\ 0x%B\ \ %l:%c\ %P%) "as the name says
+set mouse=a "use the mouse wherever possible
+set number "always show line numbers unless otherwise specified
+set clipboard+=unnamed "the same clipboard is used for Visual mode
+set ignorecase smartcase "when searching, match case only when at least one char is upper
+set incsearch "start searching while typing
+set gdefault "automatically add /g to searches; actually specifying /g now toggles the value
+set backspace=eol,start,indent "make backspace work between lines and with indentation
+set whichwrap=<,>,~,[,] "allow crossing line borders with cursors in every mode
+set winminheight=0 "Allow windows to get fully squashed
+set scrolloff=10 "start scrolling 10 lines before the end of the buffer
+set cursorline "highlight current line
+"set cursorcolumn "highlight current column; turned off because it works slow
+"set virtualedit=all "cursor can move anywhere (even beyond text boundaries)
+
+
+
+"
+" Default formatting and editing options
+"
+set shiftwidth=2 tabstop=2 softtabstop=2 "by default, Tab moves by 2 spaces
+set shiftround "tabbing and detabbing also uses shiftwidth
+set expandtab "use Space instead of Tab 
+set autoindent "keep current indent state when starting a new line
+set matchpairs+=(:),{:},[:],<:> "join these pairs of characters; useful for highlighting
+                                "and jumping between with %
+set wrap textwidth=0 formatoptions-=tl "wrap text by default but don't insert additional
+                                       "new lines on text input
+set hidden "don't destroy buffers that are hidden; think twice before using :q! or :qa!
+
+
+
+"
+" Filetype specific formatting and editing options
+"
 filetype on
+filetype plugin indent on
+
+function! Python_init()
+  set shiftwidth=4 tabstop=4 softtabstop=4 "standard PEP8 Tab length
+  set smartindent "use the keywords below to add additional indentation
+  set cinwords=if,elif,else,for,while,try,except,finally,def,class
+  "smartindent is OK but don't move # comments to the first column please:
+  inoremap # X#
+  set formatoptions+=ro "continue comments on Enter and 'o', 'O' normal commands
+  set complete+=k~/.vim/pydiction "use auto-completion from the specified dictionary
+  set nowrap "don't wrap source code, it's evil
+  set noignorecase nosmartcase "avoid corrupting source code on search/replace operations
+  "set formatoptions+=t textwidth=100 "wrap lines longer than a hundred characters
+  "set smarttab "I don't really know what this does when sw == ts == sts
+  "set isk+=.,(
+endfunction
+
 autocmd BufNewFile,BufRead *.txt set filetype=human
 autocmd BufNewFile,BufRead *.json set filetype=javascript
 autocmd FileType mail,human set formatoptions+=t textwidth=72
@@ -35,108 +86,96 @@ autocmd FileType c set formatoptions+=ro
 autocmd FileType perl set smartindent
 autocmd FileType css set smartindent
 autocmd FileType html set formatoptions+=tl
-autocmd FileType html,css set noexpandtab tabstop=2
-autocmd FileType make set noexpandtab shiftwidth=8
-
-fun! Python_init()
-  set tabstop=4 shiftwidth=4 smarttab expandtab
-  set softtabstop=4 autoindent smartindent
-  set cinwords=if,elif,else,for,while,try,except,finally,def,class
-  set backspace=indent,eol,start 
-  "set isk+=.,( 
-  set complete+=k~/.vim/pydiction
-  set nowrap guioptions+=b
-endfun
+autocmd FileType html,css set noexpandtab
+autocmd FileType make set noexpandtab shiftwidth=8 tabstop=8 softtabstop=8
 autocmd FileType python call Python_init()
 autocmd FileType pyrex call Python_init()
-autocmd BufWritePre *.py :%s/\s\+$//e
+autocmd BufWritePre *.py :%s/\s\+$//e "Get rid of trailing whitespace for Python files
+autocmd BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$") | exe "normal g`\"" |  endif "return to the last edited line in opened files:
 
-set clipboard+=unnamed
-set ruler
-set wildmenu
-filetype plugin indent on
 
-set ignorecase
-set smartcase
-set incsearch
-set gdefault
 
-set whichwrap=h,l,~,[,]
+"
+" Folding; closed by default because it caused confusion in the long run.
+"
+if has('folding')
+  set foldlevelstart=999 foldopen=all "foldclose=all
+  nnoremap <silent> <Space> @=(foldlevel('.')?'za':'l')<CR>
+  vnoremap <Space> zf
+endif
 
-nnoremap <F6> <C-W>w
-nnoremap <S-F6> <C-W>W
 
-set matchpairs+=<:>
 
+"
+" Keyboard shortcuts
+" 
+
+"Tab/Shift-Tab controls indentation also in Visual and Insert mode
 vnoremap <C-T> >
 vnoremap <C-D> <LT>
 vmap <Tab> <C-T>
 vmap <S-Tab> <C-D>
+inoremap <Tab> <C-T>
+inoremap <S-Tab> <C-D>
 
+"Y works like D does
 noremap Y y$
 
-fun Paste_toggle(insert_mode)
-  if &paste || (a:insert_mode != 0 && !&number)
-    set nopaste
-    set number
-    set mouse=a 
-  else
-    set paste
-    set nonumber
-    set mouse=
-  endif
-  "set paste? number? mouse?
-endfun
+"F1 toggles highlighting search results
+nnoremap \th :set invhls hls?<CR>
+nmap <F1> \th
+imap <F1> <C-O>\th
 
-command PasteToggle :call Paste_toggle(0)
-nmap <F4> :call Paste_toggle(0)<CR>
-imap <F4> <C-O>:call Paste_toggle(1)<CR>
-set pastetoggle=<F4>
+"F2 toggles showing invisible characters
+nnoremap \tl :set invlist list?<CR>
+nmap <F2> \tl
 
+"F3 toggles autowrapping on Insert
 nnoremap \tf :if &fo =~ 't' <Bar> set fo-=t <Bar> else <Bar> set fo+=t <Bar>
       \ endif <Bar> set fo?<CR>
 nmap <F3> \tf
 imap <F3> <C-O>\tf
 
-nnoremap \tl :set invlist list?<CR>
-nmap <F2> \tl
+"F4 handles paste toggling; works perfectly in Normal mode, Insert mode requires
+"two keystrokes to leave paste mode entirely
+nmap <F4> :call Paste_toggle(0)<CR>
+imap <F4> <C-O>:call Paste_toggle(1)<CR>
+set pastetoggle=<F4>
+function Paste_toggle(insert_mode)
+  """ toggling between paste mode and normal mode; includes removing
+  """ mouse support and numbering (for terminal cut&paste purposes)
+  if &paste || (a:insert_mode != 0 && !&number)
+    set nopaste number mouse=a 
+  else
+    set paste nonumber mouse=
+  endif
+endfunction
+command PasteToggle :call Paste_toggle(0)
 
-nnoremap \th :set invhls hls?<CR>
-nmap <F1> \th
-imap <F1> <C-O>\th
+"F6 toggles between windows
+nnoremap <F6> <C-W>w
+nnoremap <S-F6> <C-W>W
 
-set backspace=eol,start,indent
-
-inoremap <Tab> <C-T>
-inoremap <S-Tab> <C-D>
-
-set winminheight=0      " Allow windows to get fully squashed
-
-colorscheme ambv
-set cursorline
-"set cursorcolumn
-
+"F11 forces file reload in ISO-8859-2 charset
 map <F11> :call SwitchToISO()<CR>
 func! SwitchToISO()
   e! ++enc=iso-8859-2
 endfunc
 
+"F12 forces file reload in UTF-8 charset
 map <F12> :call SwitchToUTF8()<CR>
 func! SwitchToUTF8()
   e! ++enc=utf-8
 endfunc
 
-set formatoptions-=tl
-set textwidth=999
 
-set so=10
-set hidden
 
-"Uncomment to get free cursor movement.
-"set virtualedit=all
-
-autocmd BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$") | exe "normal g`\"" |  endif 
-
-"autocmd BufRead * highlight ExtraWhitespace ctermbg=red guibg=red
-"autocmd BufRead * match ExtraWhitespace /\s\+$/
-
+"
+" Specific plug-in configuration
+"
+let python_highlight_indent_errors=1
+let python_highlight_string_formatting=1
+let python_highlight_string_format=1
+let python_highlight_string_templates=1
+let python_highlight_doctests=1
+let python_slow_sync=1
