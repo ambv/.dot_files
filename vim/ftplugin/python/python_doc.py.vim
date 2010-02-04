@@ -3,16 +3,18 @@
 " Version:  1.0
 " Author: Łukasz Langa <lukasz@langa.pl>
 
-if v:version < 700 || !has('python')
-    echo "This script requires vim7.0+ with Python support." 
-    finish 
-endif
-
 " don't load twice
 if exists('g:loaded_python_doc')
   finish
 endif
-let b:loaded_python_doc = "py1.0"
+
+if !exists('g:embedded_python_version') || g:embedded_python_version < 240 || g:embedded_python_version > 299
+  echo "This plugin requires Python 2.4+ (not 3.x though)."
+  let g:loaded_python_doc = "ERROR"
+  finish
+else
+  let g:loaded_python_doc = "py1.0"
+endif
 
 pyfile ~/.vim/ftplugin/python/python_doc.py
 

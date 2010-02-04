@@ -30,16 +30,18 @@
 "  1.0:
 "    - initial version based on Vincent Wang's VimScript plugin 
 
-if v:version < 700 || !has('python')
-    echo "This script requires vim7.0+ with Python support." 
-    finish 
-endif
-
 if exists("g:load_toggle_words")
    finish
 endif
 
-let g:load_toggle_words = "py1.0"
+if !exists('g:embedded_python_version') || g:embedded_python_version < 240 || g:embedded_python_version > 299
+  echo "This plugin requires Python 2.4+ (not 3.x though)."
+  let g:load_toggle_words = "ERROR"
+  finish
+else
+  let g:load_toggle_words = "py1.0"
+endif
+
 
 pyfile ~/.vim/plugin/toggle_words.py
 
