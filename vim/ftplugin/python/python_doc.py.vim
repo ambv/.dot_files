@@ -9,7 +9,7 @@ if exists('g:loaded_python_doc')
 endif
 
 if !exists('g:embedded_python_version') || g:embedded_python_version < 240 || g:embedded_python_version > 299
-  echo "This plugin requires Python 2.4+ (not 3.x though)."
+  "echo "This plugin requires Python 2.4+ (not 3.x though)."
   let g:loaded_python_doc = "ERROR"
   finish
 else

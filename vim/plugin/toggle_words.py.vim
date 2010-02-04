@@ -34,8 +34,8 @@ if exists("g:load_toggle_words")
    finish
 endif
 
-if !exists('g:embedded_python_version') || g:embedded_python_version < 240 || g:embedded_python_version > 299
-  echo "This plugin requires Python 2.4+ (not 3.x though)."
+if !exists('g:embedded_python_version') || g:embedded_python_version < 230 || g:embedded_python_version > 299
+  "echo "This plugin requires Python 2.3+ (not 3.x though)."
   let g:load_toggle_words = "ERROR"
   finish
 else
