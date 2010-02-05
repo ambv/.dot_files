@@ -9,7 +9,6 @@ export PS1="\\u@\\H:\\w $ "
 export CLICOLOR=1
 export LSCOLORS=ExFxCxDxBxegedabagacad
 export LS_COLORS="no=00:fi=00:di=01;34:ln=01;36:pi=40;33:so=01;35:bd=40;33;01:cd=40;33;01:or=01;05;37;41:mi=01;05;37;41:ex=01;32:*.cmd=01;32:*.exe=01;32:*.com=01;32:*.btm=01;32:*.bat=01;32:*.sh=01;32:*.csh=01;32:*.tar=01;31:*.tgz=01;31:*.arj=01;31:*.taz=01;31:*.lzh=01;31:*.zip=01;31:*.z=01;31:*.Z=01;31:*.gz=01;31:*.bz2=01;31:*.bz=01;31:*.tz=01;31:*.rpm=01;31:*.cpio=01;31:*.jpg=01;35:*.gif=01;35:*.bmp=01;35:*.xbm=01;35:*.xpm=01;35:*.png=01;35:*.tif=01;35:"
-export PATH="/opt/automation:/opt/local/sbin:/opt/local/bin:/opt/local/Library/Frameworks/Python.framework/Versions/2.6/bin:$PATH"
 export EDITOR=/opt/local/bin/vim
 export VIMFILES=~/.vim/
 export VIM_APP_DIR=/Applications/MacPorts/
@@ -17,6 +16,8 @@ export HISTCONTROL=erasedups
 export HISTSIZE=10000
 export PYTHONSTARTUP=~/.pythonstartup
 export QTDIR=/opt/local/lib/qt3
+LOCAL_BIN=~/.dot_files/bin
+export PATH="$LOCAL_BIN:/opt/automation:/opt/local/sbin:/opt/local/bin:/opt/local/Library/Frameworks/Python.framework/Versions/2.6/bin:$PATH"
 
 
 # 
