@@ -122,6 +122,8 @@ inoremap <S-Tab> <C-D>
 "Y works like D does
 noremap Y y$
 
+nnoremap tt :NERDTreeToggle<CR>
+
 "F1 toggles highlighting search results
 nnoremap \th :set invhls hls?<CR>
 nmap <F1> \th
