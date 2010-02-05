@@ -180,3 +180,9 @@ let python_highlight_string_format=1
 let python_highlight_string_templates=1
 let python_highlight_doctests=1
 let python_slow_sync=1
+
+let NERDTreeIgnore=['\~$', '^\~', '\.swp$', '\$$', 
+      \ '\.pyc$', '\.pyo$', '\.pyd$', 
+      \ '\.class$', '\.bak$', '\.bin$', 
+      \ '\.jpg$', '\.gif$', '\.png$', '\.bmp$',
+      \ '\.mo$']
