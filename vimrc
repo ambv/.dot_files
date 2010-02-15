@@ -19,7 +19,8 @@ set nomodeline
 " UI configuration
 "
 colorscheme ambv
-syntax on "highlight syntax
+syntax on "highlight syntax with specific group for bad whitespace:
+highlight BadWhitespace ctermbg=red guibg=red
 set history=250 "number of commands to remember in the command line
 set wildmenu wildmode=full "show a list of possible values on Tab
 set showmode "show what mode you're in (Insert, Replace, Visual, etc.)
@@ -80,6 +81,17 @@ function! Python_init()
   "set isk+=.,(
 endfunction
 
+function! Python_format()
+  exe ":normal mI"
+  silent! :%s:\([^ ]\+\) *( *:\1(:e "Format parentheses typographically 
+  silent! :%s:\([^ ]\+\) *):\1):e "closing parentheses too
+  silent! :%s: *, *\([^ \\r]\):, \1:e "Format commas typographically
+  silent! :%s:\s*\([-!@%^&*+=|/<>]\?\)=\s*: \1= :e "Format equals typographically 
+  silent! :%s/\s\+$//e "Get rid of trailing whitespace for Python files
+  exe ":normal 'I"
+endfunction
+
+autocmd BufRead,BufNewFile *.py,*.pyw match BadWhitespace /^\t\+/
 autocmd BufNewFile,BufRead *.txt set filetype=human
 autocmd BufNewFile,BufRead *.json set filetype=javascript
 autocmd FileType mail,human set formatoptions+=t textwidth=72
@@ -87,11 +99,10 @@ autocmd FileType c set formatoptions+=ro
 autocmd FileType perl set smartindent
 autocmd FileType css set smartindent
 autocmd FileType html set formatoptions+=tl
-autocmd FileType html,css set noexpandtab
 autocmd FileType make set noexpandtab shiftwidth=8 tabstop=8 softtabstop=8
 autocmd FileType python call Python_init()
 autocmd FileType pyrex call Python_init()
-autocmd BufWritePre *.py :%s/\s\+$//e "Get rid of trailing whitespace for Python files
+autocmd BufWritePre *.py call Python_format()
 autocmd BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$") | exe "normal g`\"" |  endif "return to the last edited line in opened files:
 
 
