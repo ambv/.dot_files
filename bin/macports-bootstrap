@@ -1,0 +1,49 @@
+#!/bin/sh
+
+#port clean installed
+#port -f uninstall installed
+
+#port selfupdate
+
+P="port install"
+
+$P bash-completion
+$P colordiff
+$P curl
+$P fwknop
+$P gawk
+$P gimp2
+$P gtk2-aurora
+$P gtk2-clearlooks
+$P gtk-theme-switch
+$P htop
+$P ImageMagick +jpeg2
+$P lftp
+$P mc
+$P mercurial +bash_completion
+$P minicom
+$P nmap
+$P postgresql84
+$P postgresql84-server
+$P python24
+$P py-setuptools
+$P python25
+$P py25-setuptools
+$P python26
+$P py26-setuptools
+$P python31
+$P pwgen
+$P source-highlight
+$P spidermonkey
+$P sqlite3
+$P subversion +bash_completion +tools
+$P TeXShop
+$P tree
+$P watch
+$P wget
+$P wine-devel
+
+# with dependencies
+$P git-core +bash_completion #+svn
+$P MacVim +huge +python26
+$P vim +huge +python26 +shell 

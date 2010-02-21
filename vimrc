@@ -81,16 +81,6 @@ function! Python_init()
   "set isk+=.,(
 endfunction
 
-function! Python_format()
-  exe ":normal mI"
-  silent! :%s:\([^ ]\+\) *( *:\1(:e "Format parentheses typographically 
-  silent! :%s:\([^ ]\+\) *):\1):e "closing parentheses too
-  silent! :%s: *, *\([^ \\r]\):, \1:e "Format commas typographically
-  silent! :%s:\s*\([-!@%^&*+=|/<>]\?\)=\s*: \1= :e "Format equals typographically 
-  silent! :%s/\s\+$//e "Get rid of trailing whitespace for Python files
-  exe ":normal 'I"
-endfunction
-
 autocmd BufRead,BufNewFile *.py,*.pyw match BadWhitespace /^\t\+/
 autocmd BufNewFile,BufRead *.txt set filetype=human
 autocmd BufNewFile,BufRead *.json set filetype=javascript
@@ -102,7 +92,6 @@ autocmd FileType html set formatoptions+=tl
 autocmd FileType make set noexpandtab shiftwidth=8 tabstop=8 softtabstop=8
 autocmd FileType python call Python_init()
 autocmd FileType pyrex call Python_init()
-autocmd BufWritePre *.py call Python_format()
 autocmd BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$") | exe "normal g`\"" |  endif "return to the last edited line in opened files:
 
 
