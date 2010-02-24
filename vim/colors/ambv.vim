@@ -22,14 +22,15 @@ endif
 " hi lCursor
 
 " Note: we never set 'term' because the defaults for B&W terminals are OK
-hi DiffAdd    ctermbg=LightBlue
-hi DiffChange ctermbg=LightMagenta
-hi DiffDelete ctermfg=Blue	   ctermbg=LightCyan
-hi DiffText   ctermbg=Red	   cterm=bold
+hi DiffAdd    ctermbg=234
+hi DiffChange ctermbg=235
+"hi DiffDelete ctermbg=52
+hi DiffDelete ctermfg=52 ctermbg=0
+hi DiffText   ctermbg=238 ctermfg=White cterm=NONE
 hi Directory  ctermfg=DarkBlue
 hi ErrorMsg   ctermfg=White	   ctermbg=DarkRed
-hi FoldColumn ctermfg=DarkBlue	   ctermbg=Grey
-hi Folded     ctermbg=Grey	   ctermfg=DarkBlue
+hi FoldColumn ctermfg=White    ctermbg=238
+hi Folded     ctermbg=Grey	   ctermfg=Black
 hi IncSearch  cterm=reverse
 hi LineNr     ctermfg=242	
 hi ModeMsg    cterm=bold
@@ -54,7 +55,7 @@ hi Comment    cterm=NONE ctermfg=DarkRed
 hi Constant   cterm=NONE ctermfg=DarkGreen
 hi Identifier cterm=NONE ctermfg=DarkCyan
 hi PreProc    cterm=NONE ctermfg=DarkMagenta
-hi Special    cterm=NONE ctermfg=LightRed
+hi Special    cterm=NONE ctermfg=60
 hi Statement  cterm=bold ctermfg=Blue
 hi Type	      cterm=NONE ctermfg=Blue
 
