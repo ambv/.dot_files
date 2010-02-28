@@ -1,0 +1,13 @@
+[user]
+	email = lukasz@langa.pl
+[push]
+	default = current
+[color]
+	branch = auto
+	diff = auto
+	interactive = auto
+	status = auto
+[diff]
+  external = git_vimdiff
+[pager]
+  diff =

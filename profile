@@ -1,17 +1,4 @@
 #
-# Load Bash completion if found.
-#
-
-# This is loaded first because it runs slow so we background it. At the end of the script
-# "wait" is called to remedy the lost prompt problem in some versions of Bash.
-if [ -f /opt/local/etc/bash_completion ]; then
-  . /opt/local/etc/bash_completion &
-elif [ -f /etc/bash_completion ]; then
-  . /etc/bash_completion &
-fi
-
-
-#
 # my exports
 #
 
@@ -117,28 +104,40 @@ alias pgstop="sudo su postgres -c '/opt/local/lib/postgresql83/bin/pg_ctl -D /op
 alias pgstatus="sudo su postgres -c '/opt/local/lib/postgresql83/bin/pg_ctl status -D /opt/local/var/db/postgresql83/defaultdb'"
 alias ptar='tar --use-compress-program /opt/local/bin/pbzip2 '
 
+
 #
-# Functions
+# my functions
 #
 function wintitle {
   echo -ne "\033]0;$1\007"
 }
 
+function git_diff {
+  git diff --no-ext-diff -w "$@" | vim -R -
+}
+
+function dot_files_version { 
+  # Store the current .dot_files version used as environmental variable DOT_FILES_VERSION.
+  CWD=`pwd`
+  cd ~/.dot_files
+  echo `git log --pretty=format:"%h: %ar" | head -n 1`
+  cd $CWD 
+}
+
 
 #
-# Store the current .dot_files version used as environmental variable DOT_FILES_VERSION.
+# load Bash completion if found
 #
-CWD=`pwd`
-cd ~/.dot_files
-export DOT_FILES_VERSION=`git log --pretty=format:"%h: %ar" | head -n 1`
-cd $CWD 
+if [ -f /opt/local/etc/bash_completion ]; then
+  . /opt/local/etc/bash_completion 
+elif [ -f /etc/bash_completion ]; then
+  . /etc/bash_completion
+fi
 
 
 #
-# Execute local-specific settings.
+# execute local-specific settings
 #
 if [ -e ~/.profile_local ]; then
   source ~/.profile_local
 fi
-
-wait
