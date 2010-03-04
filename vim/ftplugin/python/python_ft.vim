@@ -35,7 +35,7 @@
 "   ]>      -- Shift block to right
 "   ]#      -- Comment selection
 "   ]u      -- Uncomment selection
-"   ]c      -- Select current/previous class
+"   ]C      -- Select current/previous class
 "   ]d      -- Select current/previous function
 "   ]<up>   -- Jump to previous line with the same/lower indentation
 "   ]<down> -- Jump to next line with the same/lower indentation
@@ -62,7 +62,7 @@ vmap ]#   :call PythonCommentSelection()<CR>
 map  ]u   :call PythonUncommentSelection()<CR>
 vmap ]u   :call PythonUncommentSelection()<CR>
 
-map  ]c   :call PythonSelectObject("class")<CR>
+map  ]C   :call PythonSelectObject("class")<CR>
 map  ]d   :call PythonSelectObject("function")<CR>
 
 map  ]<up>    :call PythonNextLine(-1)<CR>
