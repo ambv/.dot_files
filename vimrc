@@ -85,6 +85,7 @@ autocmd BufRead,BufNewFile *.py,*.pyw match BadWhitespace /^\t\+/
 autocmd BufNewFile,BufRead *.txt set filetype=human
 autocmd BufNewFile,BufRead *.json set filetype=javascript
 autocmd FileType mail,human set formatoptions+=t textwidth=72
+autocmd FileType rst set formatoptions+=t textwidth=100
 autocmd FileType c set formatoptions+=ro
 autocmd FileType perl set smartindent
 autocmd FileType css set smartindent
