@@ -3,3 +3,6 @@ askusername = True
 
 [trusted]
 groups = django
+
+[extensions]
+mq =
