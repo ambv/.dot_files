@@ -125,6 +125,12 @@ function dot_files_version {
   cd $CWD 
 }
 
+function dot_files_update {
+  CWD=`pwd`
+  cd ~/.dot_files
+  git pull && ./install.py
+  cd $CWD
+}
 
 #
 # load Bash completion if found
