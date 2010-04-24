@@ -58,7 +58,7 @@ class Install(Command):
     def target_link_different(self, source, target, real_source, real_target):
         self.warnings.append("link at %s exists but points to %s" % (target, real_target))
 
-    def target_differen(self, source, target):
+    def target_different(self, source, target):
         self.warnings.append("target %s exists but is not a link" % (target, ))
 
 
@@ -75,7 +75,7 @@ class Uninstall(Command):
     def target_link_different(self, source, target, real_source, real_target):
         self.warnings.append("skipped target at %s: link points to %s" % (target, real_target))
 
-    def target_differen(self, source, target):
+    def target_different(self, source, target):
         self.warnings.append("skipped target at %s: not a link" % (target, ))
 
 
