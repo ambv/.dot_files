@@ -1,0 +1,3 @@
+# Debian specific settings
+eval "`dircolors`"
+alias ls='ls $LS_OPTIONS'

@@ -63,6 +63,7 @@ alias mars="ssh -Y llanga@mars.softax.local"
 alias neptun="ssh -Y llanga@neptun.softax.local"
 alias bolt="ssh -Y ambv@bolt.stxnext.pl"
 alias nutpen="ssh -Y ambv@nutpen.stxnext.local"
+alias splash="ssh -Y ambv@splash.stxnext.local"
 
 # ELITA-INWEST
 alias wrees="ssh -Yp232 lukasz@85.25.236.179"
@@ -141,6 +142,12 @@ elif [ -f /etc/bash_completion ]; then
   . /etc/bash_completion
 fi
 
+#
+# execute machine-specific settings
+#
+if [ -e ~/.profile_machine ]; then
+  source ~/.profile_machine
+fi
 
 #
 # execute local-specific settings

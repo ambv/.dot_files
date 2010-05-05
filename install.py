@@ -79,20 +79,70 @@ class Uninstall(Command):
         self.warnings.append("skipped target at %s: not a link" % (target, ))
 
 
+def obtain_machine_type():
+    """Checks common locations for files holding the current version of the OS."""
+
+    if os.path.exists('/etc/redhat-release'):
+        f = open('/etc/redhat-release')
+        os_version = f.read().strip()
+        os_type = 'redhat'
+    elif os.path.exists('/etc/debian_version'):
+        f = open('/etc/debian_version')
+        os_version = f.read().strip()
+        os_type = 'debian'
+    elif os.path.exists('/System/Library/CoreServices/SystemVersion.plist'):
+        from xml.dom.minidom import parse
+        f = parse('/System/Library/CoreServices/SystemVersion.plist')
+        keys = f.getElementsByTagName('dict')[0].getElementsByTagName('key') 
+        prod_name = ""
+        prod_version = ""
+        for k in keys:
+            if k.childNodes[0].data.strip() == u"ProductName":
+                sibling = k.nextSibling
+                while sibling.__class__.__name__ != 'Element':
+                    sibling = sibling.nextSibling
+                if sibling.tagName == u"string":
+                    prod_name = sibling.childNodes[0].data.strip()
+            if k.childNodes[0].data.strip() == u"ProductVersion":
+                sibling = k.nextSibling
+                while sibling.__class__.__name__ != 'Element':
+                    sibling = sibling.nextSibling
+                if sibling.tagName == u"string":
+                    prod_version = sibling.childNodes[0].data.strip()
+        os_version = "%s %s" % (prod_name, prod_version)
+        os_type = 'darwin'
+    else:
+        os_version = 'unknown'
+        os_type = None
+
+    return os_type, os_version
+
+
 if not options.uninstall:
     handler = Install()
 else:
     handler = Uninstall()
 
-print handler.cmd_message, "%s..." % options.dir,
+machine_type, machine_version = obtain_machine_type()
+
+if machine_type:
+    additional_info = "%s with extras for %s" % (options.dir, machine_version)
+else:
+    additional_info = options.dir
+
+print handler.cmd_message, "%s..." % additional_info,
 
 for entry in os.listdir(dot_files_dir):
+    source = os.path.join(dot_files_dir, entry)
+    target = os.path.join(options.dir, ".%s" % entry)
+
     if entry.startswith('.') or entry.endswith('~') or \
        entry in ('install.py', ):
         continue
-    
-    source = os.path.join(dot_files_dir, entry)
-    target = os.path.join(options.dir, ".%s" % entry)
+    elif entry == 'profile_machine':
+        if not machine_type:
+            continue
+        source = os.path.join(dot_files_dir, entry, machine_type)
 
     if not os.path.exists(target):
         handler.no_target(source, target)
