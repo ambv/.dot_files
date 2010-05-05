@@ -7,7 +7,7 @@ import optparse
 try:
     from hashlib import md5
 except ImportError:
-    import md5 as md5lib
+    import md5
     md5 = md5.new
 
 if sys.version_info[:2] < (2, 4):
