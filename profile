@@ -81,7 +81,7 @@ alias die='logout'
 alias ll='ls -lah'
 alias lt='tree -AphL'
 alias tree='tree -A'
-alias vim='vim -O' # if you want the default, just type vim -O1
+alias vim='vim -XO' # if you want the default, just type vim -O1
 alias vi='vim'
 alias ci='echo "You probably meant vi. Or are you still using RCS?" #'
 alias grep='grep --color=auto'
