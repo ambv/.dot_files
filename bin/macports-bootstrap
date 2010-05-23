@@ -46,4 +46,4 @@ $P wine-devel
 # with dependencies
 $P git-core +bash_completion #+svn
 $P MacVim +huge +python26
-$P vim +huge +python26 +shell 
+$P vim +huge +python26 +shell +x11
