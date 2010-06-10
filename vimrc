@@ -149,9 +149,9 @@ function Paste_toggle(insert_mode)
   """ toggling between paste mode and normal mode; includes removing
   """ mouse support and numbering (for terminal cut&paste purposes)
   if &paste || (a:insert_mode != 0 && !&number)
-    set nopaste number mouse=a 
+    set nopaste number cursorline mouse=a 
   else
-    set paste nonumber mouse=
+    set paste nonumber nocursorline mouse=
   endif
 endfunction
 command PasteToggle :call Paste_toggle(0)

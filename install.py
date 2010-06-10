@@ -137,7 +137,7 @@ for entry in os.listdir(dot_files_dir):
     target = os.path.join(options.dir, ".%s" % entry)
 
     if entry.startswith('.') or entry.endswith('~') or \
-       entry in ('install.py', ):
+       entry in ('install.py', 'bin', 'README.rst'):
         continue
     elif entry == 'profile_machine':
         if not machine_type:
