@@ -12,7 +12,7 @@ It consists of following parts:
 * a *Mercurial* config that should be the default (mq extension on, ask for username if I didn't input
   any)
 * a *Python* installer for the whole package that enables me to setup my environment by simply cloning
-  the repo and running ``./python.sh``
+  the repo and running ``./install.py``
 
 How can you benefit from this
 =============================
