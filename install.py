@@ -17,6 +17,8 @@ if sys.version_info[:2] < (2, 4):
 
 user_home_dir = os.path.expanduser("~")
 dot_files_dir = os.path.dirname(__file__)
+if not dot_files_dir:
+    dot_files_dir = '.'
 parser = optparse.OptionParser()
 parser.add_option("-U", "--uninstall", 
                   action="store_true",

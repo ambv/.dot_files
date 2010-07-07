@@ -10,15 +10,13 @@ export CLICOLOR=1
 export LSCOLORS=ExFxCxDxBxegedabagacad
 export LS_COLORS="no=00:fi=00:di=01;34:ln=01;36:pi=40;33:so=01;35:bd=40;33;01:cd=40;33;01:or=01;05;37;41:mi=01;05;37;41:ex=01;32:*.cmd=01;32:*.exe=01;32:*.com=01;32:*.btm=01;32:*.bat=01;32:*.sh=01;32:*.csh=01;32:*.tar=01;31:*.tgz=01;31:*.arj=01;31:*.taz=01;31:*.lzh=01;31:*.zip=01;31:*.z=01;31:*.Z=01;31:*.gz=01;31:*.bz2=01;31:*.bz=01;31:*.tz=01;31:*.rpm=01;31:*.cpio=01;31:*.jpg=01;35:*.gif=01;35:*.bmp=01;35:*.xbm=01;35:*.xpm=01;35:*.png=01;35:*.tif=01;35:"
 export LS_OPTIONS='--color=auto'
-export EDITOR=/opt/local/bin/vim
+export EDITOR=vim
 export VIMFILES=~/.vim/
-export VIM_APP_DIR=/Applications/MacPorts/
 export HISTCONTROL=erasedups
 export HISTSIZE=10000
 export PYTHONSTARTUP=~/.pythonstartup
-export QTDIR=/opt/local/lib/qt3
 LOCAL_BIN=~/.dot_files/bin
-export PATH="$LOCAL_BIN:/opt/automation:/opt/local/sbin:/opt/local/bin:/opt/local/Library/Frameworks/Python.framework/Versions/2.6/bin:$PATH"
+export PATH="$LOCAL_BIN:/opt/automation:$PATH"
 
 
 # 
@@ -60,8 +58,12 @@ alias anest="ssh -Yp26 ambv@91.102.115.194"
 alias poltv="ssh -p26 tuvok@81.210.76.98"
 
 # SOFTAX
+alias merkury="ssh -Y llanga@merkury.softax.local"
+alias wenus="ssh -Y llanga@wenus.softax.local"
 alias mars="ssh -Y llanga@mars.softax.local"
+alias saturn="ssh -Y llanga@saturn.softax.local"
 alias neptun="ssh -Y llanga@neptun.softax.local"
+alias euler="ssh -Y llanga@euler.softax.local"
 alias bolt="ssh -Y ambv@bolt.stxnext.pl"
 alias nutpen="ssh -Y ambv@nutpen.stxnext.local"
 alias splash="ssh -Y ambv@splash.stxnext.local"
@@ -88,11 +90,6 @@ alias grep='grep --color=auto'
 
 # shortcuts
 alias ip='ipython2.6'
-alias pro='cd ~/Documents/Projekty;lt 1'
-alias propy='cd ~/Documents/Projekty/Python;lt 1'
-alias prostx='cd ~/Documents/Projekty/STX-Next;lt 1'
-alias proeuro='cd ~/Documents/Projekty/STX-Next/EuroPython;lt 1'
-
 alias sync-director='rsync -zcIre"ssh -p26" --progress /Users/ambv/Documents/Eclipse-3.4-workspace/impulse-director2/webstart/release/ hive@hive.student-tv.pl:/var/www/html/impulse-director/'
 
 alias sync-kontrol='rsync -zcIre"ssh -p26" --progress /Users/ambv/Documents/Eclipse-3.4-workspace/impulse-kontrol/release/ hive@hive.student-tv.pl:/var/www/html/impulse-kontrol/'
@@ -102,12 +99,6 @@ alias sync-hive='scp -P26 /Users/ambv/Documents/Eclipse-3.4-workspace/impulse-hi
 alias jloc='let "a = 0"; for num in `find . -iname "*.java" | xargs -I {} wc -l {} | cut -d. -f1 | tr -d " "`; do let "a = a + num"; done; echo $a;'
 alias loc='let "a = 0"; for num in `find . -iname "*.py" | xargs -I {} wc -l {} | cut -d. -f1 | tr -d " "`; do let "a = a + num"; done; echo $a;'
 alias todo-list="ack --column -w \"\\W(TODO|FIXME|REMEMBER|WEDNESDAY|XXX|BUG|WTF|OMF?G|pdb\\.set_trace)\\W\""
-
-alias pgstart="sudo su postgres -c '/opt/local/lib/postgresql83/bin/pg_ctl -D /opt/local/var/db/postgresql83/defaultdb -l /opt/local/var/log/postgresql83/postgres.log start'"
-alias pgstop="sudo su postgres -c '/opt/local/lib/postgresql83/bin/pg_ctl -D /opt/local/var/db/postgresql83/defaultdb stop -m fast'"
-alias pgstatus="sudo su postgres -c '/opt/local/lib/postgresql83/bin/pg_ctl status -D /opt/local/var/db/postgresql83/defaultdb'"
-alias ptar='tar --use-compress-program /opt/local/bin/pbzip2 '
-
 
 #
 # my functions
