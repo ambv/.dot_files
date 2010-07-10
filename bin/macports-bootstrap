@@ -31,14 +31,18 @@ $P python25
 $P py25-setuptools
 $P python26
 $P py26-setuptools
+$P python27
+$P py27-setuptools
 $P python31
 $P pwgen
 $P source-highlight
 $P spidermonkey
+$P splint
 $P sqlite3
 $P subversion +bash_completion +tools
 $P TeXShop
 $P tree
+$P valgrind
 $P watch
 $P wget
 $P wine-devel
