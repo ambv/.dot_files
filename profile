@@ -18,7 +18,6 @@ export PYTHONSTARTUP=~/.pythonstartup
 LOCAL_BIN=~/.dot_files/bin
 export PATH="$LOCAL_BIN:/opt/automation:$PATH"
 
-
 # 
 # my Bash modifications
 #
@@ -28,12 +27,6 @@ bind -m vi-insert "\C-n":menu-complete
 bind -m vi-insert "\C-p":dynamic-complete-history
 bind -m vi-insert "\C-a":vi-append-eol
 set -o vi
-
-
-if [[ $TERM_PROGRAM == "iTerm.app" ]]; then
-  export TERM=xterm-256color
-fi
-
 
 #
 # my aliases
@@ -127,15 +120,6 @@ function dot_files_update {
 }
 
 #
-# load Bash completion if found
-#
-if [ -f /opt/local/etc/bash_completion ]; then
-  . /opt/local/etc/bash_completion 
-elif [ -f /etc/bash_completion ]; then
-  . /etc/bash_completion
-fi
-
-#
 # execute machine-specific settings
 #
 if [ -e ~/.profile_machine ]; then
@@ -147,4 +131,13 @@ fi
 #
 if [ -e ~/.profile_local ]; then
   source ~/.profile_local
+fi
+
+#
+# load Bash completion if found
+#
+if [ -f /opt/local/etc/bash_completion ]; then
+  . /opt/local/etc/bash_completion 
+elif [ -f /etc/bash_completion ]; then
+  . /etc/bash_completion
 fi

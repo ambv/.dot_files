@@ -1,16 +1,24 @@
 # Mac OS X specific settings
-export PATH=/opt/local/sbin:/opt/local/bin:/opt/local/Library/Frameworks/Python.framework/Versions/2.7/bin:/opt/local/Library/Frameworks/Python.framework/Versions/2.6/bin:/opt/local/Library/Frameworks/Python.framework/Versions/2.5/bin:/opt/local/Library/Frameworks/Python.framework/Versions/3.1/bin:$PATH
 
+#
+# my exports
+#
+export PATH=/opt/local/sbin:/opt/local/bin:/opt/local/Library/Frameworks/Python.framework/Versions/2.7/bin:/opt/local/Library/Frameworks/Python.framework/Versions/2.6/bin:/opt/local/Library/Frameworks/Python.framework/Versions/2.5/bin:/opt/local/Library/Frameworks/Python.framework/Versions/3.1/bin:$PATH
 export EDITOR=/opt/local/bin/vim
 export VIM_APP_DIR=/Applications/MacPorts/
 export QTDIR=/opt/local/lib/qt3
+if [[ $TERM_PROGRAM == "iTerm.app" ]]; then
+  export TERM=xterm-256color
+fi
 
+#
+# my aliases
+#
 alias pro='cd ~/Documents/Projekty;lt 1'
 alias propy='cd ~/Documents/Projekty/Python;lt 1'
 alias prostx='cd ~/Documents/Projekty/STX-Next;lt 1'
 alias proeuro='cd ~/Documents/Projekty/STX-Next/EuroPython;lt 1'
 alias ptar='tar --use-compress-program /opt/local/bin/pbzip2 '
-
 alias pgstart="sudo su postgres -c '/opt/local/lib/postgresql83/bin/pg_ctl -D /opt/local/var/db/postgresql83/defaultdb -l /opt/local/var/log/postgresql83/postgres.log start'"
 alias pgstop="sudo su postgres -c '/opt/local/lib/postgresql83/bin/pg_ctl -D /opt/local/var/db/postgresql83/defaultdb stop -m fast'"
 alias pgstatus="sudo su postgres -c '/opt/local/lib/postgresql83/bin/pg_ctl status -D /opt/local/var/db/postgresql83/defaultdb'"
