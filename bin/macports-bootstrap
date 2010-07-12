@@ -25,12 +25,16 @@ $P minicom
 $P nmap
 $P postgresql84
 $P postgresql84-server
+$P ctags
 $P python24
 $P py-setuptools
+$P py-ctags
 $P python25
 $P py25-setuptools
+$P py25-ctags
 $P python26
 $P py26-setuptools
+$P py26-ctags
 $P python27
 $P py27-setuptools
 $P python31
@@ -49,5 +53,5 @@ $P wine-devel
 
 # with dependencies
 $P git-core +bash_completion #+svn
-$P MacVim +huge +python26
-$P vim +huge +python26 +shell +x11
+$P MacVim +huge +python26 +cscope
+$P vim +huge +python26 +shell +x11 +cscope
