@@ -156,6 +156,10 @@ function Paste_toggle(insert_mode)
 endfunction
 command PasteToggle :call Paste_toggle(0)
 
+"F5 toggles taglist
+nnoremap <F5> :TlistToggle<CR>
+inoremap <F5> <C-O>:TlistToggle<CR>
+
 "F6 toggles between windows
 nnoremap <F6> <C-W>w
 nnoremap <S-F6> <C-W>W
@@ -189,3 +193,7 @@ let NERDTreeIgnore=['\~$', '^\~', '\.swp$', '\$$',
       \ '\.class$', '\.bak$', '\.bin$', 
       \ '\.jpg$', '\.gif$', '\.png$', '\.bmp$',
       \ '\.mo$']
+
+let Tlist_Use_Right_Window=1
+let Tlist_Use_Horiz_Window=1
+let Tlist_Compact_Format=1
