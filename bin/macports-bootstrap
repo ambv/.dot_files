@@ -33,11 +33,12 @@ $P python25
 $P py25-setuptools
 $P py25-ctags
 $P python26
-$P py26-setuptools
+$P py26-distribute
 $P py26-ctags
 $P python27
-$P py27-setuptools
+$P py27-distribute
 $P python31
+$P py31-distribute
 $P pwgen
 $P source-highlight
 $P spidermonkey
