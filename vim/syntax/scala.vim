@@ -2,6 +2,7 @@
 " Language   : Scala (http://scala-lang.org/)
 " Maintainers: Stefan Matthias Aust, Julien Wetterwald
 " Last Change: 2007 June 13
+" svn co http://lampsvn.epfl.ch/svn-repos/scala/scala-tool-support/trunk/src/vim
 
 if version < 600
   syntax clear
