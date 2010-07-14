@@ -11,3 +11,5 @@
   external = git_vimdiff
 [pager]
   diff =
+[core]
+	excludesfile = ~/.gitignore

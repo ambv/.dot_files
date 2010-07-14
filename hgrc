@@ -1,8 +1,25 @@
 [ui]
 askusername = True
+ignore = ~/.hgignore
+
+[merge-tools]
+filemerge.executable = vim
+filemerge.args = -d $local $other
+filemerge.checkchanged = true
+filemerge.gui = true
 
 [trusted]
 groups = django
 
 [extensions]
+convert =
+extdiff =
+fetch =
 mq =
+
+[extdiff]
+cmd.vimdiff =
+
+[alias]
+vi = vimdiff
+vim = vimdiff

@@ -1,0 +1,28 @@
+syntax: glob
+
+# Compiled Python scripts
+*.pyc
+*.pyo
+
+# SQLite databases
+*.db
+*.sqlite
+
+# Temporary or runtime files
+*.old
+*.bak
+*.swp
+*.local
+*.log
+*.pid
+*.cache
+*~
+
+# Python Sphinx and setuptools files
+doc/_build
+build
+dist
+src/*.egg-info
+
+# Mac OS X specific
+.DS_Store
