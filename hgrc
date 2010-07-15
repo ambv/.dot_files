@@ -6,7 +6,6 @@ ignore = ~/.hgignore
 filemerge.executable = vim
 filemerge.args = -d $local $other
 filemerge.checkchanged = true
-filemerge.gui = true
 
 [trusted]
 groups = django
