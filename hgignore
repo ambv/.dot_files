@@ -1,14 +1,18 @@
+# Compiled Python scripts
 syntax: glob
 
-# Compiled Python scripts
 *.pyc
 *.pyo
 
 # SQLite databases
+syntax: glob
+
 *.db
 *.sqlite
 
 # Temporary or runtime files
+syntax: glob
+
 *.old
 *.bak
 *.swp
@@ -16,13 +20,21 @@ syntax: glob
 *.log
 *.pid
 *.cache
+*.orig
 *~
 
 # Python Sphinx and setuptools files
-doc/_build
-build
-dist
-src/*.egg-info
+syntax: regexp
+
+^doc/_build
+^build
+^dist
+
+syntax: glob
+
+*.egg-info
 
 # Mac OS X specific
+syntax: glob
+
 .DS_Store

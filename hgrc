@@ -1,10 +1,11 @@
 [ui]
 askusername = True
+fallbackencoding = utf-8
 ignore = ~/.hgignore
 
 [merge-tools]
 filemerge.executable = vim
-filemerge.args = -d $local $other
+filemerge.args = -d $base $local $other
 filemerge.checkchanged = true
 
 [trusted]
