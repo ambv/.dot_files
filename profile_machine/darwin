@@ -17,7 +17,8 @@ fi
 alias pro='cd ~/Documents/Projekty;lt 1'
 alias propy='cd ~/Documents/Projekty/Python;lt 1'
 alias prostx='cd ~/Documents/Projekty/STX-Next;lt 1'
-alias proeuro='cd ~/Documents/Projekty/STX-Next/EuroPython;lt 1'
+alias proeuro='cd ~/Documents/Projekty/STX-Next/EuroPython10;lt 1'
+alias proeuro9='cd ~/Documents/Projekty/STX-Next/EuroPython09;lt 1'
 alias ptar='tar --use-compress-program /opt/local/bin/pbzip2 '
 alias pgstart="sudo su postgres -c '/opt/local/lib/postgresql83/bin/pg_ctl -D /opt/local/var/db/postgresql83/defaultdb -l /opt/local/var/log/postgresql83/postgres.log start'"
 alias pgstop="sudo su postgres -c '/opt/local/lib/postgresql83/bin/pg_ctl -D /opt/local/var/db/postgresql83/defaultdb stop -m fast'"

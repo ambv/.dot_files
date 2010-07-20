@@ -85,7 +85,7 @@ autocmd BufRead,BufNewFile *.py,*.pyw match BadWhitespace /^\t\+/
 autocmd BufNewFile,BufRead *.txt set filetype=human
 autocmd BufNewFile,BufRead *.json set filetype=javascript
 autocmd FileType mail,human set formatoptions+=t textwidth=72
-autocmd FileType rst set formatoptions+=t textwidth=100
+autocmd FileType rst set formatoptions+=t textwidth=80
 autocmd FileType c set formatoptions+=ro
 autocmd FileType perl set smartindent
 autocmd FileType css set smartindent
@@ -94,7 +94,7 @@ autocmd FileType make set noexpandtab shiftwidth=8 tabstop=8 softtabstop=8
 autocmd FileType python call Python_init()
 autocmd FileType pyrex call Python_init()
 autocmd BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$") | exe "normal g`\"" |  endif "return to the last edited line in opened files:
-
+autocmd BufReadCmd *.egg,*.odp,*.ods,*.odt,*.jar,*.xmap,*.xmind,*.xpi call zip#Browse(expand("<amatch>"))
 
 
 "
