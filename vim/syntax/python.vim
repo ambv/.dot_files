@@ -318,7 +318,7 @@ if version >= 508 || !exists("did_python_syn_inits")
 
   HiLink pythonError		Error
   HiLink pythonIndentError	Error
-  HiLink pythonSpaceError	Error
+  HiLink pythonSpaceError	ExtraWhitespace
 
   HiLink pythonString		String
   HiLink pythonUniString	String

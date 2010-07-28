@@ -89,7 +89,7 @@ autocmd FileType python call Python_init()
 autocmd FileType pyrex call Python_init()
 autocmd BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$") | exe "normal g`\"" |  endif "return to the last edited line in opened files:
 autocmd BufReadCmd *.egg,*.odp,*.ods,*.odt,*.jar,*.xmap,*.xmind,*.xpi call zip#Browse(expand("<amatch>"))
-
+autocmd InsertLeave * redraw!
 
 "
 " Folding; closed by default because it caused confusion in the long run.
@@ -176,6 +176,7 @@ endfunc
 " Specific plug-in configuration
 "
 let python_highlight_indent_errors=1
+let python_highlight_space_errors=1
 let python_highlight_string_formatting=1
 let python_highlight_string_format=1
 let python_highlight_string_templates=1

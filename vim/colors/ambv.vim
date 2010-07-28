@@ -25,7 +25,7 @@ endif
 hi DiffAdd    ctermbg=234 guibg=#1c1c1c
 hi DiffChange ctermbg=235 guibg=#262626
 "hi DiffDelete ctermbg=52
-hi DiffDelete ctermfg=52 ctermbg=0 guifg=#5f0000
+hi DiffDelete ctermfg=52 ctermbg=0 guifg=#5f0000 guibg=#000000
 hi DiffText   ctermbg=238 ctermfg=White cterm=NONE guibg=#444444 guifg=#ffffff gui=NONE
 hi Directory  ctermfg=DarkBlue guifg=#2222ee
 hi ErrorMsg   ctermfg=White	   ctermbg=DarkRed gui=BOLD guifg=#ffffff guibg=#cd2222
@@ -49,7 +49,6 @@ hi Visual     ctermbg=235 guibg=#262626
 hi VisualNOS  cterm=underline,bold gui=underline,bold
 hi WarningMsg ctermfg=DarkRed guifg=#cd2222
 hi WildMenu   ctermfg=Black	   ctermbg=250 guifg=#000000 guibg=#bcbcbc
-hi ExtraWhitespace ctermbg=17 guibg=#00005f
 
 " syntax highlighting
 hi Comment    cterm=NONE ctermfg=DarkRed gui=NONE guifg=#cd2222
@@ -60,6 +59,5 @@ hi Special    cterm=NONE ctermfg=60 gui=NONE guifg=#5f5f87
 hi Statement  cterm=bold ctermfg=Blue gui=BOLD guifg=#7c7cff
 hi Type	      cterm=NONE ctermfg=Blue gui=BOLD guifg=#7c7cff
 
-match ExtraWhitespace /\s\+$/
-
-" vim: sw=2
+highlight ExtraWhitespace ctermbg=17 guibg=#00005f
+match ExtraWhitespace /\s\+\%#\@<!$/
