@@ -5,5 +5,6 @@ if &background == "dark"
     set transp=8
 endif
 
+set guifont=Terminus:h14
 set go=cegt
 set cursorcolumn
