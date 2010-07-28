@@ -15,6 +15,7 @@ fi
 # my aliases
 #
 alias vim='mvim -O'
+alias cvim='/opt/local/bin/vim -XO'
 alias pro='cd ~/Documents/Projekty;lt 1'
 alias propy='cd ~/Documents/Projekty/Python;lt 1'
 alias prostx='cd ~/Documents/Projekty/STX-Next;lt 1'
