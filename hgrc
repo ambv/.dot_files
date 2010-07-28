@@ -12,6 +12,7 @@ filemerge.checkchanged = true
 groups = django
 
 [extensions]
+color =
 convert =
 extdiff =
 fetch =
