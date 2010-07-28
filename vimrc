@@ -1,11 +1,7 @@
 " Vim RC
 "
 " Maintainer: Łukasz Langa <lukasz@langa.pl>
-" Changed: Wed Feb  3 01:29:18 2010 
 
-
-
-"
 " Bootstrap settings:
 " - reset previously set environmental settings
 " - don't allow specific files to override settings from this file
@@ -54,9 +50,9 @@ set expandtab "use Space instead of Tab
 set autoindent "keep current indent state when starting a new line
 set matchpairs+=(:),{:},[:],<:> "join these pairs of characters; useful for highlighting
                                 "and jumping between with %
-set wrap textwidth=0 formatoptions-=tl "wrap text by default but don't insert additional
-                                       "new lines on text input
-set hidden "don't destroy buffers that are hidden; think twice before using :q! or :qa!
+set wrap textwidth=0 formatoptions=l "wrap text by default but don't insert additional
+                                     "new lines on text input
+"set hidden "don't destroy buffers that are hidden; think twice before using :q! or :qa!
 
 
 
@@ -72,11 +68,10 @@ function! Python_init()
   set cinwords=if,elif,else,for,while,try,except,finally,def,class
   "smartindent is OK but don't move # comments to the first column please:
   inoremap # X#
-  set formatoptions+=ro "continue comments on Enter and 'o', 'O' normal commands
+  set formatoptions=cq12 textwidth=80 "wrap lines longer than 80 characters
   set complete+=k~/.vim/pydiction "use auto-completion from the specified dictionary
   set nowrap "don't wrap source code, it's evil
   set noignorecase nosmartcase "avoid corrupting source code on search/replace operations
-  "set formatoptions+=t textwidth=100 "wrap lines longer than a hundred characters
   "set smarttab "I don't really know what this does when sw == ts == sts
   "set isk+=.,(
 endfunction
@@ -84,12 +79,11 @@ endfunction
 autocmd BufRead,BufNewFile *.py,*.pyw match BadWhitespace /^\t\+/
 autocmd BufNewFile,BufRead *.txt set filetype=human
 autocmd BufNewFile,BufRead *.json set filetype=javascript
-autocmd FileType mail,human set formatoptions+=t textwidth=72
-autocmd FileType rst set formatoptions+=t textwidth=80
+autocmd FileType gitcommit,human,mail,rst set formatoptions=1aconrtq textwidth=80 "fo+=w textwidth=72
 autocmd FileType c set formatoptions+=ro
 autocmd FileType perl set smartindent
 autocmd FileType css set smartindent
-autocmd FileType html set formatoptions+=tl
+autocmd FileType html set formatoptions+=tl1 textwidth=80
 autocmd FileType make set noexpandtab shiftwidth=8 tabstop=8 softtabstop=8
 autocmd FileType python call Python_init()
 autocmd FileType pyrex call Python_init()
@@ -195,5 +189,7 @@ let NERDTreeIgnore=['\~$', '^\~', '\.swp$', '\$$',
       \ '\.mo$']
 
 let Tlist_Use_Right_Window=1
-let Tlist_Use_Horiz_Window=1
+"let Tlist_Use_Horiz_Window=1
 let Tlist_Compact_Format=1
+
+let snips_author='Łukasz Langa'
