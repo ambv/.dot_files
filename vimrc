@@ -52,7 +52,7 @@ set matchpairs+=(:),{:},[:],<:> "join these pairs of characters; useful for high
                                 "and jumping between with %
 set wrap textwidth=0 formatoptions=l "wrap text by default but don't insert additional
                                      "new lines on text input
-"set hidden "don't destroy buffers that are hidden; think twice before using :q! or :qa!
+set hidden "don't destroy buffers that are hidden; think twice before using :q! or :qa!
 
 
 
@@ -68,15 +68,16 @@ function! Python_init()
   set cinwords=if,elif,else,for,while,try,except,finally,def,class
   "smartindent is OK but don't move # comments to the first column please:
   inoremap # X#
-  set formatoptions=cq12 textwidth=80 "wrap lines longer than 80 characters
+  set formatoptions=cq12 textwidth=79 "wrap lines longer than 79 characters
   set complete+=k~/.vim/pydiction "use auto-completion from the specified dictionary
   set nowrap "don't wrap source code, it's evil
   set noignorecase nosmartcase "avoid corrupting source code on search/replace operations
   "set smarttab "I don't really know what this does when sw == ts == sts
   "set isk+=.,(
+  match ExtraWhitespace /\s\+\%#\@<!$/
+  match OverLength /\%80v.\+/
 endfunction
 
-autocmd BufRead,BufNewFile *.py,*.pyw match BadWhitespace /^\t\+/
 autocmd BufNewFile,BufRead *.txt set filetype=human
 autocmd BufNewFile,BufRead *.json set filetype=javascript
 autocmd FileType gitcommit,human,mail,rst set formatoptions=1aconrtq textwidth=80 "fo+=w textwidth=72
