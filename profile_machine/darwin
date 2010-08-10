@@ -14,7 +14,6 @@ fi
 #
 # my aliases
 #
-alias vim='mvim -O'
 alias cvim='/opt/local/bin/vim -XO'
 alias pro='cd ~/Documents/Projekty;lt 1'
 alias propy='cd ~/Documents/Projekty/Python;lt 1'
@@ -26,3 +25,25 @@ alias pgstart="sudo su postgres -c '/opt/local/lib/postgresql83/bin/pg_ctl -D /o
 alias pgstop="sudo su postgres -c '/opt/local/lib/postgresql83/bin/pg_ctl -D /opt/local/var/db/postgresql83/defaultdb stop -m fast'"
 alias pgstatus="sudo su postgres -c '/opt/local/lib/postgresql83/bin/pg_ctl status -D /opt/local/var/db/postgresql83/defaultdb'"
 
+#
+# my functions
+#
+
+unalias vim
+function vim {
+# this handles cases where no file is expected or 
+# unnecessary E247 errors at first MacVim startup
+# or when there is no MacVim window open
+  FILE_SPECIFIED=0
+  for arg in "$@"; do
+      if [[ `expr "$arg" : '-'` -eq 0 ]]; then
+          FILE_SPECIFIED=1
+      fi
+  done
+  if [[ $FILE_SPECIFIED -eq 1 ]] && 
+     [[ `ps axu | grep [M]acVim | grep XO` ]]; then
+    mvim -XO1 --remote $@
+  else
+    mvim -XO1 $@
+  fi
+}
