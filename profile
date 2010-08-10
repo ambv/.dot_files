@@ -79,6 +79,7 @@ alias tree='tree -A'
 alias vim='vim -XO' # if you want the default, just type vim -O1
 alias vi='vim'
 alias ci='echo "You probably meant vi. Or are you still using RCS?" #'
+alias dc="echo \"You don't really use 'dc', do you?\" #"
 alias grep='grep --color=auto'
 
 # shortcuts
