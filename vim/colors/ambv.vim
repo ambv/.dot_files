@@ -59,5 +59,5 @@ hi Special    cterm=NONE ctermfg=60 gui=NONE guifg=#5f5f87
 hi Statement  cterm=bold ctermfg=Blue gui=BOLD guifg=#7c7cff
 hi Type	      cterm=NONE ctermfg=Blue gui=BOLD guifg=#7c7cff
 
+highlight OverLength ctermbg=darkred ctermfg=white guibg=#592929
 highlight ExtraWhitespace ctermbg=17 guibg=#00005f
-match ExtraWhitespace /\s\+\%#\@<!$/
