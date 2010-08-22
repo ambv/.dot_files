@@ -23,6 +23,7 @@ $P mc
 $P mercurial +bash_completion
 $P minicom
 $P nmap
+$P pbzip2
 $P postgresql84
 $P postgresql84-server
 $P ctags
