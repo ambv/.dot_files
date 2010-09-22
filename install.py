@@ -113,6 +113,9 @@ def obtain_machine_type():
                     prod_version = sibling.childNodes[0].data.strip()
         os_version = "%s %s" % (prod_name, prod_version)
         os_type = 'darwin'
+    elif os.path.exists('/cygdrive'):
+        os_version = 'Cygwin'
+        os_type = 'cygwin'
     else:
         os_version = 'unknown'
         os_type = None
