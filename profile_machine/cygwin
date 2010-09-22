@@ -1,2 +1,3 @@
 # Cygwin specific settings
-
+export LS_OPTIONS="$LS_OPTIONS -G"
+alias ls='ls $LS_OPTIONS'
