@@ -15,6 +15,9 @@ export VIMFILES=~/.vim/
 export HISTCONTROL=erasedups
 export HISTSIZE=10000
 export PYTHONSTARTUP=~/.pythonstartup
+export PIP_REQUIRE_VIRTUALENV=true
+export PIP_RESPECT_VIRTUALENV=true
+export PIP_DOWNLOAD_CACHE=~/.pip-cache
 LOCAL_BIN=~/.dot_files/bin
 export PATH="$LOCAL_BIN:/opt/automation:$PATH"
 
