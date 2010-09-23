@@ -1,3 +1,4 @@
 # Cygwin specific settings
+export DISPLAY=":0"
 export LS_OPTIONS="$LS_OPTIONS -G"
-alias ls='ls $LS_OPTIONS'
+alias ls="ls $LS_OPTIONS"
