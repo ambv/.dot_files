@@ -41,7 +41,7 @@ function vim {
       fi
   done
   if [[ $FILE_SPECIFIED -eq 1 ]] && 
-     [[ `ps axu | grep [M]acVim | grep XO` ]]; then
+     [[ ! -z `ps axu | grep "[M]acVim" | grep XO` ]]; then
     mvim -XO1 --remote $@
   else
     mvim -XO1 $@
