@@ -2,9 +2,15 @@ if &background == "dark"
     hi normal guifg=#eeeeee guibg=black
     hi cursor guifg=#d7ff00
     hi lcursor guifg=#00cd00
-    set transp=8
+    if has("gui_macvim")
+      set transp=8
+    endif
 endif
 
-set guifont=Terminus:h14
+if has("gui_macvim")
+  set guifont=Terminus:h14
+else
+  set guifont=Lucida\ Console
+endif
 set go=cegt
 set cursorcolumn
