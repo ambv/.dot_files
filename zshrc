@@ -1,10 +1,12 @@
 # Zsh-specific profile. For Bash specific look at profile,
 # for common variables look at profile_common.
 #
-
 setopt allexport
 
-PS1='%n@%m:%~ $ '
+if [ -e ~/.pscolors ]; then
+  source ~/.pscolors
+fi
+PS1="%{$PS_USERCOLOR%}%n%{$PS_ATCOLOR%}@%{$PS_HOSTCOLOR%}%m%{$PS_COLONCOLOR%}:%{$PS_PATHCOLOR%}%~%{$PS_PROMPTCOLOR%} $ %{$PS_NOCOLOR%}"
 HISTFILE=~/.zhistory
 HISTSIZE=10000
 SAVEHIST=10000

@@ -3,6 +3,14 @@
 # for common variables look at profile_common.
 #
 
+#
+# the prompt
+#
+if [ -e ~/.pscolors ]; then
+  source ~/.pscolors
+fi
+export PS1="$PS_USERCOLOR\\u$PS_ATCOLOR@$PS_HOSTCOLOR\\H$PS_COLONCOLOR:$PS_PATHCOLOR\\w$PS_PROMPTCOLOR $ $PS_NOCOLOR"
+
 # 
 # my Bash modifications
 #
@@ -13,7 +21,6 @@ bind -m vi-insert "\C-p":dynamic-complete-history
 bind -m vi-insert "\C-a":vi-append-eol
 export HISTCONTROL=erasedups
 export HISTSIZE=10000
-export PS1="\\u@\\H:\\w $ "
 set -o vi
 
 source ~/.profile_common
