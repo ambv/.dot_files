@@ -80,6 +80,7 @@ endfunction
 
 autocmd BufNewFile,BufRead *.txt set filetype=human
 autocmd BufNewFile,BufRead *.json set filetype=javascript
+autocmd BufNewFile,BufRead *.sieve set filetype=sieve
 autocmd FileType gitcommit,human,mail,rst set formatoptions=1aconrtq textwidth=80 "fo+=w textwidth=72
 autocmd FileType c set formatoptions+=ro
 autocmd FileType perl set smartindent
@@ -171,7 +172,8 @@ func! SwitchToUTF8()
   e! ++enc=utf-8
 endfunc
 
-
+"Ctrl+q as Insert/Normal mode toggle
+inoremap ii <ESC>
 
 "
 " Specific plug-in configuration
