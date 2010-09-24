@@ -70,7 +70,7 @@ alias allplay="ssh -Yp58022 ambv@allplay.pl"
 # SAFE COMMANDS
 alias rm="rm -i"
 alias mv="mv -i"
-alias cp="cp -i"
+alias cp="cp -ir"
 alias ll="ls -lah"
 alias lt="tree -AphL"
 alias tree="tree -A"
