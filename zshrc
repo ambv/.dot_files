@@ -15,10 +15,10 @@ setopt INC_APPEND_HISTORY HIST_IGNORE_ALL_DUPS HIST_IGNORE_SPACE \
   HIST_REDUCE_BLANKS HIST_SAVE_NO_DUPS HIST_VERIFY EXTENDED_HISTORY 
 unsetopt share_history
 
-setopt autocd autocontinue autolist autopushd autoresume clobber \
+setopt autocontinue autolist autopushd autoresume clobber \
   correct longlistjobs mailwarning menucomplete nomatch \
   notify pushdtohome recexact
-unsetopt bgnice beep
+unsetopt autocd bgnice beep 
 # unsetopt autoparamslash
 
 bindkey -v
@@ -51,7 +51,7 @@ zstyle ':completion:*:warnings' format 'No matches for: %d'
 zstyle ':completion:*:corrections' format '%B%d (errors: %e)%b'
 zstyle ':completion:*' group-name ''
 # match uppercase from lowercase
-zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
+# zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
 # ignore completion functions (until the _ignored completer)
 zstyle ':completion:*:functions' ignored-patterns '_*'
 zstyle ':completion:*:scp:*' tag-order \
