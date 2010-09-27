@@ -4,6 +4,11 @@ syntax: glob
 *.pyc
 *.pyo
 
+# Compiled Java classes
+syntax: glob
+
+*.class
+
 # SQLite databases
 syntax: glob
 
