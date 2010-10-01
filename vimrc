@@ -166,6 +166,12 @@ func! SwitchToISO()
   e! ++enc=iso-8859-2
 endfunc
 
+"Shift-F11 forces file reload in CP-850 charset
+map <S-F11> :call SwitchToCP850()<CR>
+func! SwitchToCP850()
+  e! ++enc=cp850
+endfunc
+
 "F12 forces file reload in UTF-8 charset
 map <F12> :call SwitchToUTF8()<CR>
 func! SwitchToUTF8()
