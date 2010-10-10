@@ -3,6 +3,7 @@
 #
 # my exports
 #
+
 export PATH=/opt/local/sbin:/opt/local/bin:/opt/local/Library/Frameworks/Python.framework/Versions/2.7/bin:/opt/local/Library/Frameworks/Python.framework/Versions/2.6/bin:/opt/local/Library/Frameworks/Python.framework/Versions/2.5/bin:/opt/local/Library/Frameworks/Python.framework/Versions/3.1/bin:$PATH
 export EDITOR="/opt/local/bin/mvim -f"
 export VIM_APP_DIR=/Applications/MacPorts/
@@ -14,10 +15,10 @@ fi
 #
 # my aliases
 #
+
 alias cvim='/opt/local/bin/vim -XO'
 alias pro='cd ~/Documents/Projekty;lt 1'
 alias propy='cd ~/Documents/Projekty/Python;lt 1'
-alias prostx='cd ~/Documents/Projekty/STX-Next;lt 1'
 alias proeuro='cd ~/Documents/Projekty/STX-Next/EuroPython10;lt 1'
 alias proeuro9='cd ~/Documents/Projekty/STX-Next/EuroPython09;lt 1'
 alias ptar='tar --use-compress-program /opt/local/bin/pbzip2 '
@@ -46,4 +47,28 @@ function vim {
   else
     mvim -XO1 $@
   fi
+}
+
+unalias propy
+function propy {
+    LAST=`pwd`
+    cd ~/Documents/Projekty/Python
+    if [[ -d "$@" ]]; then
+        cd "$@"
+        if [[ -f bin/activate ]]; then
+            which deactivate >/dev/null && deactivate
+            source bin/activate
+        fi
+        if [[ -d project ]]; then
+            cd project
+            lt 4
+            wintitle "$@"
+        fi
+    elif [[ "$@" == "" ]]; then
+        lt 1
+    else
+        echo "No such project: $@"
+        lt 1
+        cd $LAST 
+    fi
 }

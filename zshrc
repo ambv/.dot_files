@@ -15,9 +15,9 @@ setopt INC_APPEND_HISTORY HIST_IGNORE_ALL_DUPS HIST_IGNORE_SPACE \
   HIST_REDUCE_BLANKS HIST_SAVE_NO_DUPS HIST_VERIFY EXTENDED_HISTORY 
 unsetopt share_history
 
-setopt autocd autocontinue autolist autopushd autoresume clobber \
-  combiningchars correct longlistjobs mailwarning menucomplete \
-  nomatch notify pushdtohome recexact
+setopt alwaystoend autocd autocontinue autolist automenu autopushd \
+  autoresume clobber combiningchars correct listrowsfirst longlistjobs \
+  mailwarning nomatch notify pushdtohome
 unsetopt bgnice beep
 # unsetopt autoparamslash
 
