@@ -63,7 +63,13 @@ function propy {
         if [[ -d project ]]; then
             cd project
             lt 4
+        else
+            lt 3
         fi
+        echo
+        git config --get remote.origin.url
+        git status -s 2>/dev/null
+        hg status 2>/dev/null
     elif [[ "$@" == "" ]]; then
         lt 1
     else
@@ -72,3 +78,4 @@ function propy {
         cd $LAST 
     fi
 }
+alias pp='propy'

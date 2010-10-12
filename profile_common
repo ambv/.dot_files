@@ -90,6 +90,10 @@ function dot_files_update {
   cd $CWD
 }
 
+function pipcached {
+  pip install `find ~/.pip-cache/ -iname "*$@*" | grep -v content-type`
+}
+
 #
 # execute machine-specific settings
 #
