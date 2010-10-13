@@ -39,30 +39,6 @@ alias giediprime="ssh -Yp26 ambv@92.43.117.103"
 alias landsraad-tunnel-5900="ssh -Yp26 ambv@92.43.117.100 -L 5900:localhost:5900 -N"
 alias landsraad-tunnel-5901="ssh -Yp26 ambv@92.43.117.100 -L 5901:localhost:5901 -N"
 
-# STUDENT-TV
-KNEST="fwknop -D nest.student-tv.pl:61841 -A tcp/26 -s -u nest"
-KHIVE="fwknop -D hive.student-tv.pl:61841 -A tcp/26 -s -u hive"
-alias knest=$KNEST
-alias khive=$KHIVE
-alias hive="ssh -Yp26 hive@hive.student-tv.pl"
-alias nest="ssh -Yp26 nest@91.102.115.194"
-alias anest="ssh -Yp26 ambv@91.102.115.194"
-alias poltv="ssh -p26 tuvok@81.210.76.98"
-
-# SOFTAX
-alias merkury="ssh -Y llanga@merkury.softax.local"
-alias wenus="ssh -Y llanga@wenus.softax.local"
-alias mars="ssh -Y llanga@mars.softax.local"
-alias saturn="ssh -Y llanga@saturn.softax.local"
-alias neptun="ssh -Y llanga@neptun.softax.local"
-alias euler="ssh -Y llanga@euler.softax.local"
-alias bolt="ssh -Y ambv@bolt.stxnext.pl"
-alias nutpen="ssh -Y ambv@nutpen.stxnext.local"
-alias splash="ssh -Y ambv@splash.stxnext.local"
-
-# ELITA-INWEST
-alias wrees="ssh -Yp232 lukasz@85.25.236.179"
-
 # ALLPLAY
 alias allegra="ssh -Yp58881 root@ster-gaming.pl"
 alias allplay="ssh -Yp58022 ambv@allplay.pl"
@@ -112,6 +88,10 @@ function dot_files_update {
   cd ~/.dot_files
   git pull && ./install.py
   cd $CWD
+}
+
+function pipcached {
+  pip install `find ~/.pip-cache/ -iname "*$@*" | grep -v content-type`
 }
 
 #
