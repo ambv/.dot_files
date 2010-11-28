@@ -103,7 +103,7 @@ endif
 syn keyword pythonStatement	break continue del
 syn keyword pythonStatement	exec return
 syn keyword pythonStatement	pass raise
-syn keyword pythonStatement	global assert
+syn keyword pythonStatement	global nonlocal assert
 syn keyword pythonStatement	lambda yield
 syn keyword pythonStatement	with
 syn keyword pythonStatement	def class nextgroup=pythonFunction skipwhite
