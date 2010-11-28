@@ -55,6 +55,7 @@ $P wget
 $P wine-devel
 
 # with dependencies
+$P bzr
 $P git-core +bash_completion #+svn
 $P MacVim +huge +python26 +cscope
 $P vim +huge +python26 +shell +x11 +cscope
