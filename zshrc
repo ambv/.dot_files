@@ -22,7 +22,7 @@ unsetopt autocd bgnice beep
 
 # unsetopt autoparamslash
 
-bindkey -v
+bindkey -e
 
 autoload -Uz compinit
 compinit
