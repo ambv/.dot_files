@@ -24,6 +24,7 @@ export PYTHONSTARTUP=~/.pythonstartup
 export PIP_REQUIRE_VIRTUALENV=true
 export PIP_RESPECT_VIRTUALENV=true
 export PIP_DOWNLOAD_CACHE=~/.pip-cache
+export VIRTUALENV_USE_DISTRIBUTE=true
 LOCAL_BIN=~/.dot_files/bin
 export PATH="$LOCAL_BIN:/opt/automation:$PATH"
 
