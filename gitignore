@@ -1,6 +1,7 @@
 # Compiled Python scripts
 *.pyc
 *.pyo
+__pycache__
 
 # SQLite databases
 *.db
