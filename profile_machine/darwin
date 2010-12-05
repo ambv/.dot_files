@@ -60,18 +60,24 @@ function propy {
             which deactivate >/dev/null && deactivate
             source bin/activate
         fi
-        if [[ -d project ]]; then
-            cd project
-            lt 4
+        if [[ -f .propy ]]; then
+            source .propy
         else
-            lt 3
+            if [[ -d project ]]; then
+                cd project
+                lt 4
+            else
+                lt 3
+            fi
+            echo
+            git config --get remote.origin.url
+            git status -s 2>/dev/null
+            hg status 2>/dev/null
+            todo-list --python
         fi
-        echo
-        git config --get remote.origin.url
-        git status -s 2>/dev/null
-        hg status 2>/dev/null
     elif [[ "$@" == "" ]]; then
         lt 1
+        todo-list --python
     else
         echo "No such project: $@"
         lt 1
