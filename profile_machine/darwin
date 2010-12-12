@@ -77,7 +77,6 @@ function propy {
         fi
     elif [[ "$@" == "" ]]; then
         lt 1
-        todo-list --python
     else
         echo "No such project: $@"
         lt 1
