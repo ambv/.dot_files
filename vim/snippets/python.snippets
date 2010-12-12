@@ -1,5 +1,5 @@
 snippet #!
-	#!/usr/bin/python
+	#!/usr/bin/env python
 	# -*- coding: utf-8 -*-
 snippet fut
 	from __future__ import absolute_import
@@ -24,8 +24,8 @@ snippet docs
 	   ----
 
 	   ${2:description}"""
-snippet !!
-	#!/usr/bin/python
+snippet !!!
+	#!/usr/bin/env python
 	# -*- coding: utf-8 -*-
 	
 	# Copyright (C) 2010 ${1:`g:snips_author`}
@@ -42,10 +42,21 @@ snippet !!
 	# You should have received a copy of the GNU General Public License
 	# along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-	"""${1:Module name}
+	"""${2:Module name}
 	   ----
 
-	   ${2:description}"""
+	   ${3:description}"""
+
+	from __future__ import absolute_import
+	from __future__ import print_function
+	from __future__ import unicode_literals
+snippet !!
+	#!/usr/bin/env python
+	# -*- coding: utf-8 -*-
+	
+	# Copyright (C) 2010 ${1:`g:snips_author`}
+
+	"""${2:short description}"""
 
 	from __future__ import absolute_import
 	from __future__ import print_function
