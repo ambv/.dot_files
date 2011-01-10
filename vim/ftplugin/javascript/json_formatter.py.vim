@@ -22,7 +22,15 @@ endif
 
 let g:load_json_formatter = "py1.0"
 
-pyfile ~/.vim/ftplugin/javascript/json_formatter.py
+python << endpython
+import os, sys, vim
+path = "/ftplugin/javascript/json_formatter.py"
+prefix = "~/.vim"
+if sys.platform in ('win32',):
+  path = path.replace('/', '\\')
+  prefix = r"C:\Tools\Vim\vimfiles"
+vim.command("pyfile %s%s" % (prefix, path))
+endpython
 
 command! ReformatJSON :py ReformatJSON()
 

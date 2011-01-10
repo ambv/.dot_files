@@ -44,10 +44,12 @@ endif
 
 python << endpython
 import os, sys, vim
+path = "/plugin/toggle_words.py"
+prefix = "~/.vim"
 if sys.platform in ('win32',):
-  vim.command(r"pyfile C:\Tools\Vim\vimfiles\plugin\toggle_words.py")
-else:
-  vim.command("pyfile ~/plugin/toggle_words.py")
+  path = path.replace('/', '\\')
+  prefix = r"C:\Tools\Vim\vimfiles"
+vim.command("pyfile %s%s" % (prefix, path))
 endpython
 
 command! ToggleWord :py ToggleWord()

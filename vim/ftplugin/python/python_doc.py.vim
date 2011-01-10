@@ -16,7 +16,15 @@ else
   let g:loaded_python_doc = "py1.0"
 endif
 
-pyfile ~/.vim/ftplugin/python/python_doc.py
+python << endpython
+import os, sys, vim
+path = "/ftplugin/python/python_doc.py"
+prefix = "~/.vim"
+if sys.platform in ('win32',):
+  path = path.replace('/', '\\')
+  prefix = r"C:\Tools\Vim\vimfiles"
+vim.command("pyfile %s%s" % (prefix, path))
+endpython
 
 command! -nargs=* Pydoc :py PyDocSearch(<q-args>)
 
