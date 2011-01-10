@@ -160,16 +160,22 @@ inoremap <F5> <C-O>:TlistToggle<CR>
 nnoremap <F6> <C-W>w
 nnoremap <S-F6> <C-W>W
 
+"F9 forces file reload in CP-850 charset
+map <F9> :call SwitchToCP850()<CR>
+func! SwitchToCP850()
+  e! ++enc=cp850
+endfunc
+
+"F10 forces file reload in CP-1250 charset
+map <F10> :call SwitchToCP1250()<CR>
+func! SwitchToCP1250()
+  e! ++enc=cp1250
+endfunc
+
 "F11 forces file reload in ISO-8859-2 charset
 map <F11> :call SwitchToISO()<CR>
 func! SwitchToISO()
   e! ++enc=iso-8859-2
-endfunc
-
-"Shift-F11 forces file reload in CP-850 charset
-map <S-F11> :call SwitchToCP850()<CR>
-func! SwitchToCP850()
-  e! ++enc=cp850
 endfunc
 
 "F12 forces file reload in UTF-8 charset

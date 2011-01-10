@@ -10,7 +10,9 @@ endif
 if has("gui_macvim")
   set guifont=Terminus:h14
 else
-  set guifont=Lucida\ Console
+  set guifont=Lucida\ Console:h10
+  set encoding=utf-8
+  setglobal fileencoding=utf-8
 endif
 set go=cegt
 set cursorcolumn

@@ -42,8 +42,13 @@ else
   let g:load_toggle_words = "py1.0"
 endif
 
-
-pyfile ~/.vim/plugin/toggle_words.py
+python << endpython
+import os, sys, vim
+if sys.platform in ('win32',):
+  vim.command(r"pyfile C:\Tools\Vim\vimfiles\plugin\toggle_words.py")
+else:
+  vim.command("pyfile ~/plugin/toggle_words.py")
+endpython
 
 command! ToggleWord :py ToggleWord()
 

@@ -13,6 +13,6 @@ if v:version < 700 || !has('python')
 endif
 
 python << endpython
-import sys, vim
+import os, sys, vim
 vim.command("let g:embedded_python_version=%d" % (sys.version_info[0] * 100 + sys.version_info[1] * 10 + sys.version_info[2]))
 endpython
