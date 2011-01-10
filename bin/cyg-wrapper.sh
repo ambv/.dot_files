@@ -13,7 +13,7 @@
 #		                    for new behaviour of realpath
 # 
 # LAST UPDATE:	12th Jun 2006
-version="2.18"
+version="2.18.1"
 #
 # NOTES:   {{{1
 #   IMPORTANT: this shell script is for cygwin *ONLY*!
@@ -187,6 +187,9 @@ fi
 # v 2.18
 # (*) The behaviour of realpath has changed. The script has been updated in
 #     consequence.
+#
+# v 2.18.1
+# (*) Corrected execution of command with arguments for ZSh.
 #
 # }}}1
 # TODO:    {{{1
@@ -469,8 +472,8 @@ fi
 if [ $fork_option = 1 ] ; then
     # `echo "$param" | xargs -t $xargs_param` &
     # WAS (2.13): eval $param &
-    # eval "${param[@]}" &
-    "${param[@]}" &
+    # WAS (2.18): "${param[@]}" &
+    eval "${param[@]//\\/\\\\}"
 elif [ $fork_option = 2 ] ; then
     # That's very odd. This does not work anymore...
     # I do know if it comes from XP's last update or cygwin last update
