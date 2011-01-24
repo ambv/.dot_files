@@ -7,6 +7,7 @@ if [ -e ~/.pscolors ]; then
   source ~/.pscolors
 fi
 PS1="%{$PS_USERCOLOR%}%n%{$PS_ATCOLOR%}@%{$PS_HOSTCOLOR%}%m%{$PS_COLONCOLOR%}:%{$PS_PATHCOLOR%}%~%{$PS_PROMPTCOLOR%} $ %{$PS_NOCOLOR%}"
+RPROMPT="%D{%T}"
 HISTFILE=~/.zhistory
 HISTSIZE=10000
 SAVEHIST=10000
@@ -23,6 +24,16 @@ unsetopt autocd bgnice beep menucomplete
 # unsetopt autoparamslash
 
 bindkey -e
+
+preexec() {
+    print -rn -- $terminfo[cuu1]
+    let cols=$terminfo[cols]-9
+    while [[ $cols -gt 0 ]]; do
+        print -n $terminfo[cuf1]
+        let cols=cols-1
+    done
+    print `date +%H:%M:%S`
+}
 
 autoload -Uz compinit
 compinit
