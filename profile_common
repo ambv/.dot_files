@@ -66,6 +66,15 @@ alias loc='let "a = 0"; for num in `find . -iname "*.py" | xargs -I {} wc -l {} 
 alias todo-list="ack --column -w \"\\W(TODO|FIXME|REMEMBER|WEDNESDAY|XXX|BUG|WTF|OMF?G|pdb\\.set_trace)\\W{1}\""
 alias depyc='find . -iname "*.pyc" -print -exec rm {} \;'
 
+# Django
+alias djrun='python manage.py runserver'
+alias djrs='python manage.py runserver'
+alias djsync='python manage.py syncdb'
+alias djevo='python manage.py evolve --hint'
+alias djmm='python manage.py makemessages -ae html,txt'
+alias djcm='python manage.py compilemessages'
+alias djsh='python manage.py shell'
+
 #
 # my functions
 #
