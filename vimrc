@@ -187,6 +187,9 @@ endfunc
 "Ctrl+q as Insert/Normal mode toggle
 inoremap ii <ESC>
 
+":w!! command to "sudo & write" if you forget to sudo first
+cmap w!! w !sudo tee % >/dev/null
+
 "
 " Specific plug-in configuration
 "
