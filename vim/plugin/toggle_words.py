@@ -29,6 +29,7 @@ toggle_words_dict = {
         ['1', '0'],
         ['top', 'bottom'],
         ['even', 'odd'],
+        ['pick', 'squash'], # git rebase -i
     ],
     'python': [
         ['if', 'elif', 'else'],
