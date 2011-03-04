@@ -78,6 +78,13 @@ function! Python_init()
   match OverLength /\%80v.\+/
 endfunction
 
+function! JS_init()
+  set shiftwidth=2 tabstop=2 softtabstop=2 "standard PEP8 Tab length
+  set smartindent "use the keywords below to add additional indentation
+  set formatoptions=cqtro textwidth=79 "wrap lines longer than 79 characters
+  set noignorecase nosmartcase "avoid corrupting source code on search/replace operations
+endfunction
+
 autocmd BufNewFile,BufRead *.txt set filetype=human
 autocmd BufNewFile,BufRead *.json set filetype=javascript
 autocmd BufNewFile,BufRead *.sieve set filetype=sieve
@@ -212,3 +219,6 @@ let Tlist_Use_Right_Window=1
 let Tlist_Compact_Format=1
 
 let snips_author='Łukasz Langa'
+
+let bufExplorerShowRelativePath=1
+let bufExplorerSortBy="fullpath"
