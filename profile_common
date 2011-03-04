@@ -67,13 +67,13 @@ alias todo-list="ack --column -w \"\\W(TODO|FIXME|REMEMBER|WEDNESDAY|XXX|BUG|WTF
 alias depyc='find . -iname "*.pyc" -print -exec rm {} \;'
 
 # Django
-alias djrun='python manage.py runserver'
-alias djrs='python manage.py runserver'
-alias djsync='python manage.py syncdb'
-alias djevo='python manage.py evolve --hint'
-alias djmm='python manage.py makemessages -ae html,txt'
-alias djcm='python manage.py compilemessages'
-alias djsh='python manage.py shell'
+alias djrun='python -Wd manage.py runserver'
+alias djrs='python -Wd manage.py runserver'
+alias djsync='python -Wd manage.py syncdb'
+alias djevo='python -Wd manage.py evolve --hint'
+alias djmm='python -Wd manage.py makemessages -ae html,txt'
+alias djcm='python -Wd manage.py compilemessages'
+alias djsh='python -Wd manage.py shell'
 
 #
 # my functions
