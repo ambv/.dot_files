@@ -3,6 +3,13 @@
 *.pyo
 __pycache__
 
+# Compiled Java classes
+*.class
+
+# Compiled C files
+*.a
+*.o
+
 # SQLite databases
 *.db
 *.sqlite
@@ -11,17 +18,20 @@ __pycache__
 *.old
 *.bak
 *.swp
+*.swo
+*.swn
 *.local
 *.log
 *.pid
 *.cache
+*.orig
 *~
 
 # Python Sphinx and setuptools files
 /doc/_build
 /build
 /dist
-/src/*.egg-info
+*.egg-info
 
 # Mac OS X specific
 .DS_Store

@@ -10,6 +10,12 @@ syntax: glob
 
 *.class
 
+# Compiled C files
+syntax: glob
+
+*.a
+*.o
+
 # SQLite databases
 syntax: glob
 
@@ -22,6 +28,8 @@ syntax: glob
 *.old
 *.bak
 *.swp
+*.swo
+*.swn
 *.local
 *.log
 *.pid
