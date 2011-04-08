@@ -14,7 +14,6 @@ $P fwknop
 $P gawk
 $P gimp2
 $P gtk2-aurora
-$P gtk2-clearlooks
 $P gtk-theme-switch
 $P htop
 $P ImageMagick +jpeg2
@@ -52,6 +51,7 @@ $P valgrind
 $P watch
 $P wget
 $P wine-devel
+$P zsh-devel
 
 # with dependencies
 $P bzr
@@ -63,3 +63,4 @@ $P vim +huge +python26 +shell +x11 +cscope
 # do some default setup
 defaults write org.vim.MacVim MMZoomBoth 1
 defaults write org.vim.MacVim MMCellWidthMultiplier 1.0
+# if the second one does not work, remember to use the "experimental renderer"
