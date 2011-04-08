@@ -36,7 +36,7 @@ set whichwrap=<,>,~,[,] "allow crossing line borders with cursors in every mode
 set winminheight=0 "Allow windows to get fully squashed
 set scrolloff=10 "start scrolling 10 lines before the end of the buffer
 set cursorline "highlight current line
-"set cursorcolumn "highlight current column; turned off because it works slow
+set cursorcolumn "highlight current column
 "set virtualedit=all "cursor can move anywhere (even beyond text boundaries)
 
 
@@ -85,6 +85,13 @@ function! JS_init()
   set noignorecase nosmartcase "avoid corrupting source code on search/replace operations
 endfunction
 
+function! HTML_init()
+  set shiftwidth=2 tabstop=2 softtabstop=2 "by default, Tab moves by 2 spaces
+  set wrap
+  set formatoptions-=t
+  "set formatoptions+=tl1 textwidth=80
+endfunction
+
 autocmd BufNewFile,BufRead *.txt set filetype=human
 autocmd BufNewFile,BufRead *.json set filetype=javascript
 autocmd BufNewFile,BufRead *.sieve set filetype=sieve
@@ -92,7 +99,8 @@ autocmd FileType gitcommit,human,mail,rst set formatoptions=1aconrtq textwidth=8
 autocmd FileType c set formatoptions+=ro
 autocmd FileType perl set smartindent
 autocmd FileType css set smartindent
-autocmd FileType html set formatoptions+=tl1 textwidth=80
+autocmd FileType html call HTML_init()
+autocmd FileType htmldjango call HTML_init()
 autocmd FileType make set noexpandtab shiftwidth=8 tabstop=8 softtabstop=8
 autocmd FileType python call Python_init()
 autocmd FileType pyrex call Python_init()
@@ -194,8 +202,9 @@ endfunc
 "Ctrl+q as Insert/Normal mode toggle
 inoremap ii <ESC>
 
-":w!! command to "sudo & write" if you forget to sudo first
-cmap w!! w !sudo tee % >/dev/null
+":W command to "sudo & write" if you forget to sudo first
+"cmap W w !sudo tee % >/dev/null
+"Turned off because mapped each "W" typed. Gotta come up with something better.
 
 "
 " Specific plug-in configuration
@@ -221,4 +230,4 @@ let Tlist_Compact_Format=1
 let snips_author='Łukasz Langa'
 
 let bufExplorerShowRelativePath=1
-let bufExplorerSortBy="fullpath"
+"let bufExplorerSortBy="fullpath"
