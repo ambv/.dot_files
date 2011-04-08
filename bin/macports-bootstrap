@@ -19,6 +19,7 @@ $P htop
 $P ImageMagick +jpeg2
 $P lftp
 $P mc
+$P memcached
 $P minicom
 $P nmap
 $P pbzip2
@@ -64,3 +65,4 @@ $P vim +huge +python26 +shell +x11 +cscope
 defaults write org.vim.MacVim MMZoomBoth 1
 defaults write org.vim.MacVim MMCellWidthMultiplier 1.0
 # if the second one does not work, remember to use the "experimental renderer"
+sudo port load memcached
