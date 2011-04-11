@@ -66,3 +66,5 @@ defaults write org.vim.MacVim MMZoomBoth 1
 defaults write org.vim.MacVim MMCellWidthMultiplier 1.0
 # if the second one does not work, remember to use the "experimental renderer"
 sudo port load memcached
+# you might want to set your hostname permanently
+# sudo scutil --set HostName Macallan.local
