@@ -229,5 +229,6 @@ let Tlist_Compact_Format=1
 
 let snips_author='Łukasz Langa'
 
+let bufExplorerFindActive=0
 let bufExplorerShowRelativePath=1
 "let bufExplorerSortBy="fullpath"

@@ -43,7 +43,7 @@ function vim {
   done
   if [[ $FILE_SPECIFIED -eq 1 ]] && 
      [[ ! -z `ps axu | grep "[M]acVim" | grep XO` ]]; then
-    mvim -XO1 --remote $@
+    mvim -XO1 --remote-tab-silent $@
   else
     mvim -XO1 $@
   fi
