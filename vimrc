@@ -199,6 +199,10 @@ func! SwitchToUTF8()
   e! ++enc=utf-8
 endfunc
 
+nmap ,-1 yyp<c-v>$r=yykP
+nmap ,-2 yyp<c-v>$r-
+nmap ,-3 yyp<c-v>$r~
+
 "Ctrl+q as Insert/Normal mode toggle
 inoremap ii <ESC>
 
