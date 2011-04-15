@@ -21,6 +21,7 @@ $P lftp
 $P mc
 $P memcached
 $P minicom
+$P mysql5-server
 $P nmap
 $P pbzip2
 $P postgresql84
@@ -65,6 +66,11 @@ $P vim +huge +python26 +shell +x11 +cscope
 defaults write org.vim.MacVim MMZoomBoth 1
 defaults write org.vim.MacVim MMCellWidthMultiplier 1.0
 # if the second one does not work, remember to use the "experimental renderer"
-sudo port load memcached
-# you might want to set your hostname permanently
-# sudo scutil --set HostName Macallan.local
+
+port load memcached
+echo "You might want to set your hostname permanently:"
+echo "$ sudo scutil --set HostName Macallan.local"
+echo.
+echo "You might want to load and configure MySQL Server:"
+echo "$ sudo port load mysql5-server"
+echo "$ sudo -u _mysql mysql_install_db5"
