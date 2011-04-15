@@ -4,7 +4,7 @@
 # my exports
 #
 
-export PATH=/opt/local/sbin:/opt/local/bin:/opt/local/Library/Frameworks/Python.framework/Versions/2.7/bin:/opt/local/Library/Frameworks/Python.framework/Versions/2.6/bin:/opt/local/Library/Frameworks/Python.framework/Versions/2.5/bin:/opt/local/Library/Frameworks/Python.framework/Versions/3.1/bin:$PATH
+export PATH=/opt/local/sbin:/opt/local/bin:/opt/local/Library/Frameworks/Python.framework/Versions/2.7/bin:/opt/local/Library/Frameworks/Python.framework/Versions/2.6/bin:/opt/local/Library/Frameworks/Python.framework/Versions/2.5/bin:/opt/local/Library/Frameworks/Python.framework/Versions/3.1/bin:/opt/local/lib/mysql5/bin:$PATH
 export EDITOR="/opt/local/bin/mvim -f"
 export VIM_APP_DIR=/Applications/MacPorts/
 export QTDIR=/opt/local/lib/qt3
@@ -41,8 +41,7 @@ function vim {
           FILE_SPECIFIED=1
       fi
   done
-  if [[ $FILE_SPECIFIED -eq 1 ]] && 
-     [[ ! -z `ps axu | grep "[M]acVim" | grep XO` ]]; then
+  if [[ $FILE_SPECIFIED -eq 1 ]]; then
     mvim -XO1 --remote-tab-silent $@
   else
     mvim -XO1 $@
