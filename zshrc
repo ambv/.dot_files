@@ -50,6 +50,7 @@ bindkey '\eOH' beginning-of-line
 bindkey '\eOF' end-of-line
 bindkey '\e[H' beginning-of-line
 bindkey '\e[F' end-of-line
+bindkey '\e[3~' delete-char
 
 zstyle ':completion::complete:*' use-cache on
 zstyle ':completion::complete:*' cache-path ~/.zcache
