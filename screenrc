@@ -1,0 +1,7 @@
+defscrollback 10000
+startup_message off
+msgwait 1
+hardstatus on
+autodetach on
+#hardstatus alwayslastline "%{rw}%H%{wk}|%{wr}%c%{wk}|%d%M|%?%-Lw%?%{wb}%n*%f%t%?(%u)%?%{wk}%?%+Lw%?"
+hardstatus alwayslastline "%{.bW}%-w%{.rW}%f%n %t%{-}%+w %=%{..G}[%H %l] %{..Y} %m/%d %c "
