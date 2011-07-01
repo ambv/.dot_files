@@ -66,6 +66,7 @@ $P vim +huge +python26 +shell +x11 +cscope
 defaults write org.vim.MacVim MMZoomBoth 1
 defaults write org.vim.MacVim MMCellWidthMultiplier 1.0
 # if the second one does not work, remember to use the "experimental renderer"
+defaults write com.apple.finder _FXSecureEmptyTrashLevel 9
 
 port load memcached
 echo "You might want to set your hostname permanently:"
