@@ -42,7 +42,8 @@ alias landsraad-tunnel-5901="ssh -Yp26 ambv@193.33.35.200 -L 5901:localhost:5901
 
 # ALLPLAY
 alias allegra="ssh -Yp58881 root@ster-gaming.pl"
-alias allplay="ssh -Yp58022 ambv@allplay.pl"
+#alias allplay="ssh -Yp58022 ambv@allplay.pl"
+alias allplay="ssh -Yp26 allplay@193.33.35.202"
 
 # SAFE COMMANDS
 alias rm="rm -i"
