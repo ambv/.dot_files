@@ -13,3 +13,5 @@
   diff =
 [core]
 	excludesfile = ~/.gitignore
+[alias]
+	l = log --abbrev-commit --decorate
