@@ -84,7 +84,7 @@ function wintitle {
 }
 
 function git_diff {
-  git diff --no-ext-diff -w "$@" | vim -R -
+  git diff --no-ext-diff "$@" | vim -R -
 }
 
 function dot_files_version { 
