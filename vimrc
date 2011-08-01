@@ -63,45 +63,46 @@ filetype on
 filetype plugin indent on
 
 function! Python_init()
-  set shiftwidth=4 tabstop=4 softtabstop=4 "standard PEP8 Tab length
-  set smartindent "use the keywords below to add additional indentation
-  set cinwords=if,elif,else,for,while,try,except,finally,def,class
+  setlocal shiftwidth=4 tabstop=4 softtabstop=4 "standard PEP8 Tab length
+  setlocal smartindent "use the keywords below to add additional indentation
+  setlocal cinwords=if,elif,else,for,while,try,except,finally,def,class
   "smartindent is OK but don't move # comments to the first column please:
   inoremap # X#
-  set formatoptions=cq12 textwidth=79 "wrap lines longer than 79 characters
-  set complete+=k~/.vim/pydiction "use auto-completion from the specified dictionary
-  set nowrap "don't wrap source code, it's evil
-  set noignorecase nosmartcase "avoid corrupting source code on search/replace operations
-  "set smarttab "I don't really know what this does when sw == ts == sts
-  "set isk+=.,(
+  setlocal formatoptions=cq12 textwidth=79 "wrap lines longer than 79 characters
+  setlocal complete+=k~/.vim/pydiction "use auto-completion from the specified dictionary
+  setlocal nowrap "don't wrap source code, it's evil
+  setlocal noignorecase nosmartcase "avoid corrupting source code on search/replace operations
+  "setlocal smarttab "I don't really know what this does when sw == ts == sts
+  "setlocal isk+=.,(
   match ExtraWhitespace /\s\+\%#\@<!$/
   match OverLength /\%80v.\+/
 endfunction
 
 function! JS_init()
-  set shiftwidth=2 tabstop=2 softtabstop=2 "standard PEP8 Tab length
-  set smartindent "use the keywords below to add additional indentation
-  set formatoptions=cqtro textwidth=79 "wrap lines longer than 79 characters
-  set noignorecase nosmartcase "avoid corrupting source code on search/replace operations
+  setlocal shiftwidth=2 tabstop=2 softtabstop=2 "standard PEP8 Tab length
+  setlocal smartindent "use the keywords below to add additional indentation
+  setlocal formatoptions=cqtro textwidth=79 "wrap lines longer than 79 characters
+  setlocal noignorecase nosmartcase "avoid corrupting source code on search/replace operations
 endfunction
 
 function! HTML_init()
-  set shiftwidth=2 tabstop=2 softtabstop=2 "by default, Tab moves by 2 spaces
-  set wrap
-  set formatoptions-=t
-  "set formatoptions+=tl1 textwidth=80
+  setlocal shiftwidth=2 tabstop=2 softtabstop=2 "by default, Tab moves by 2 spaces
+  setlocal wrap
+  setlocal formatoptions-=t
+  "setlocal formatoptions+=tl1 textwidth=80
 endfunction
 
-autocmd BufNewFile,BufRead *.txt set filetype=human
-autocmd BufNewFile,BufRead *.json set filetype=javascript
-autocmd BufNewFile,BufRead *.sieve set filetype=sieve
-autocmd FileType gitcommit,human,mail,rst set formatoptions=1aconrtq textwidth=80 "fo+=w textwidth=72
-autocmd FileType c set formatoptions+=ro
-autocmd FileType perl set smartindent
-autocmd FileType css set smartindent
+autocmd BufNewFile,BufRead *.html setlocal filetype=htmldjango
+autocmd BufNewFile,BufRead *.txt setlocal filetype=human
+autocmd BufNewFile,BufRead *.json setlocal filetype=javascript
+autocmd BufNewFile,BufRead *.sieve setlocal filetype=sieve
+autocmd FileType gitcommit,human,mail,rst setlocal formatoptions=1aconrtq textwidth=80 "fo+=w textwidth=72
+autocmd FileType c setlocal formatoptions+=ro
+autocmd FileType perl setlocal smartindent
+autocmd FileType css setlocal smartindent
 autocmd FileType html call HTML_init()
 autocmd FileType htmldjango call HTML_init()
-autocmd FileType make set noexpandtab shiftwidth=8 tabstop=8 softtabstop=8
+autocmd FileType make setlocal noexpandtab shiftwidth=8 tabstop=8 softtabstop=8
 autocmd FileType python call Python_init()
 autocmd FileType pyrex call Python_init()
 autocmd BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$") | exe "normal g`\"" |  endif "return to the last edited line in opened files:
