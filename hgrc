@@ -17,6 +17,7 @@ convert =
 extdiff =
 fetch =
 mq =
+churn =
 
 [extdiff]
 cmd.vimdiff =
