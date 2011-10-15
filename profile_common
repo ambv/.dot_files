@@ -41,9 +41,7 @@ alias landsraad-tunnel-5900="ssh -Yp26 ambv@193.33.35.200 -L 5900:localhost:5900
 alias landsraad-tunnel-5901="ssh -Yp26 ambv@193.33.35.200 -L 5901:localhost:5901 -N"
 
 # ALLPLAY
-alias allegra="ssh -Yp58881 root@ster-gaming.pl"
-#alias allplay="ssh -Yp58022 ambv@allplay.pl"
-alias allplay="ssh -Yp26 allplay@193.33.35.202"
+alias allplay="ssh -Y allplay@176.31.225.113"
 
 # SAFE COMMANDS
 alias rm="rm -i"
@@ -111,6 +109,8 @@ function pipcached {
 if [ -e ~/.profile_machine ]; then
   source ~/.profile_machine
 fi
+
+which fortune >/dev/null && fortune -sa
 
 #
 # execute local-specific settings

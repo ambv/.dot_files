@@ -10,6 +10,7 @@ P="port install"
 $P bash-completion
 $P colordiff
 $P curl
+$P fortune
 $P fwknop
 $P gawk
 $P gimp2
