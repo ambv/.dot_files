@@ -15,10 +15,13 @@ export PS1="$PS_USERCOLOR\\u$PS_ATCOLOR@$PS_HOSTCOLOR\\H$PS_COLONCOLOR:$PS_PATHC
 # my Bash modifications
 #
 shopt -s histappend cdspell
-bind Space:magic-space
-bind -m vi-insert "\C-n":menu-complete
-bind -m vi-insert "\C-p":dynamic-complete-history
-bind -m vi-insert "\C-a":vi-append-eol
+case "$TERM" in
+xterm*|rxvt*)
+  bind Space:magic-space
+  bind -m vi-insert "\C-n":menu-complete
+  bind -m vi-insert "\C-p":dynamic-complete-history
+  bind -m vi-insert "\C-a":vi-append-eol
+esac
 export HISTCONTROL=erasedups
 export HISTSIZE=10000
 set -o vi
