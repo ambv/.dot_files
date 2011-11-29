@@ -42,6 +42,7 @@ alias landsraad-tunnel-5901="ssh -Yp26 ambv@193.33.35.200 -L 5901:localhost:5901
 
 # ALLPLAY
 alias allplay="ssh -Y allplay@176.31.225.113"
+alias alldev="ssh -Yp26 allplay@devel.allplay.pl"
 
 # SAFE COMMANDS
 alias rm="rm -i"

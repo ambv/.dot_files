@@ -27,7 +27,7 @@ bindkey -e
 
 preexec() {
     print -rn -- $terminfo[cuu1]
-    let cols=$terminfo[cols]-9
+    let cols=$COLUMNS-9
     while [[ $cols -gt 0 ]]; do
         print -n $terminfo[cuf1]
         let cols=cols-1

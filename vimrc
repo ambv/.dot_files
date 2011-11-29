@@ -62,7 +62,7 @@ set hidden "don't destroy buffers that are hidden; think twice before using :q! 
 filetype on
 filetype plugin indent on
 
-function! Python_init()
+func! Python_init()
   setlocal shiftwidth=4 tabstop=4 softtabstop=4 "standard PEP8 Tab length
   setlocal smartindent "use the keywords below to add additional indentation
   setlocal cinwords=if,elif,else,for,while,try,except,finally,def,class
@@ -76,21 +76,21 @@ function! Python_init()
   "setlocal isk+=.,(
   match ExtraWhitespace /\s\+\%#\@<!$/
   match OverLength /\%80v.\+/
-endfunction
+endfunc
 
-function! JS_init()
+func! JS_init()
   setlocal shiftwidth=2 tabstop=2 softtabstop=2 "standard PEP8 Tab length
   setlocal smartindent "use the keywords below to add additional indentation
   setlocal formatoptions=cqtro textwidth=79 "wrap lines longer than 79 characters
   setlocal noignorecase nosmartcase "avoid corrupting source code on search/replace operations
-endfunction
+endfunc
 
-function! HTML_init()
+func! HTML_init()
   setlocal shiftwidth=2 tabstop=2 softtabstop=2 "by default, Tab moves by 2 spaces
   setlocal wrap
   setlocal formatoptions-=t
   "setlocal formatoptions+=tl1 textwidth=80
-endfunction
+endfunc
 
 autocmd BufNewFile,BufRead *.html setlocal filetype=htmldjango
 autocmd BufNewFile,BufRead *.txt setlocal filetype=human
@@ -157,7 +157,7 @@ imap <F3> <C-O>\tf
 nmap <F4> :call Paste_toggle(0)<CR>
 imap <F4> <C-O>:call Paste_toggle(1)<CR>
 set pastetoggle=<F4>
-function Paste_toggle(insert_mode)
+func Paste_toggle(insert_mode)
   """ toggling between paste mode and normal mode; includes removing
   """ mouse support and numbering (for terminal cut&paste purposes)
   if &paste || (a:insert_mode != 0 && !&number)
@@ -165,7 +165,7 @@ function Paste_toggle(insert_mode)
   else
     set paste nonumber nocursorline mouse=
   endif
-endfunction
+endfunc
 command PasteToggle :call Paste_toggle(0)
 
 "F5 toggles taglist
@@ -200,9 +200,34 @@ func! SwitchToUTF8()
   e! ++enc=utf-8
 endfunc
 
-nmap ,-1 yyp<c-v>$r=yykP
-nmap ,-2 yyp<c-v>$r-
-nmap ,-3 yyp<c-v>$r~
+func Underline(type)
+  """ toggling between paste mode and normal mode; includes removing
+  """ mouse support and numbering (for terminal cut&paste purposes)
+  if &paste
+    normal yypv$
+    if a:type == 1
+      normal r=yykP
+    elseif a:type == 2
+      normal r-
+    elseif a:type == 3
+      normal r~
+    endif
+  else
+    set paste nonumber nocursorline mouse=
+    normal yypv$
+    if a:type == 1
+      normal r=yykP
+    elseif a:type == 2
+      normal r-
+    elseif a:type == 3
+      normal r~
+    endif
+    set nopaste number cursorline mouse=a 
+  endif
+endfunc
+nmap ,-1 :call Underline(1)<CR>
+nmap ,-2 :call Underline(2)<CR>
+nmap ,-3 :call Underline(3)<CR>
 
 "Ctrl+q as Insert/Normal mode toggle
 inoremap ii <ESC>
