@@ -9,6 +9,7 @@ P="port install"
 
 $P bash-completion
 $P colordiff
+$P ctags
 $P curl
 $P fortune
 $P fwknop
@@ -27,7 +28,7 @@ $P nmap
 $P pbzip2
 $P postgresql84
 $P postgresql84-server
-$P ctags
+$P pstree
 $P python24
 $P py-setuptools
 $P py-ctags
