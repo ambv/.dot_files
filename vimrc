@@ -262,3 +262,22 @@ let snips_author='Łukasz Langa'
 let bufExplorerFindActive=0
 let bufExplorerShowRelativePath=1
 "let bufExplorerSortBy="fullpath"
+"
+
+let g:fuf_coveragefile_globPatterns = [
+      \ '**/*.py',
+      \ '**/*.js',
+      \ '**/*.html',
+      \ '**/*.css',
+      \ '**/*.c',
+      \ '**/*.cpp',
+      \ '**/*.h',
+      \ '**/*.hpp',
+      \ '**/*.rb',
+      \ '**/*.php',
+      \ '**/*.pl',
+      \ '**/*.sql'] 
+
+nmap § :FufCoverageFile<CR>
+nmap <TAB> :FufBuffer<CR>
+nmap ,-3 :call Underline(3)<CR>
