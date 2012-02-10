@@ -230,7 +230,7 @@ nmap ,-2 :call Underline(2)<CR>
 nmap ,-3 :call Underline(3)<CR>
 
 "Ctrl+q as Insert/Normal mode toggle
-inoremap ii <ESC>
+inoremap jj <ESC>
 
 ":W command to "sudo & write" if you forget to sudo first
 "cmap W w !sudo tee % >/dev/null
