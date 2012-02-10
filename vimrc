@@ -278,6 +278,8 @@ let g:fuf_coveragefile_globPatterns = [
       \ '**/*.pl',
       \ '**/*.sql'] 
 
+let g:fuf_splitPathMatching = 0
+
 nmap § :FufCoverageFile<CR>
 nmap <TAB> :FufBuffer<CR>
 nmap ,-3 :call Underline(3)<CR>
