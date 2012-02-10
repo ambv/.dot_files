@@ -111,8 +111,6 @@ if [ -e ~/.profile_machine ]; then
   source ~/.profile_machine
 fi
 
-which fortune >/dev/null && fortune -sa
-
 #
 # execute local-specific settings
 #
