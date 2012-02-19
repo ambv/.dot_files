@@ -136,7 +136,7 @@ syn match pythonError		"[&|]\{2,}" display
 syn match pythonError		"[=]\{3,}" display
 
 " Control flow :{[(,+-*/=
-syn match  pythonControlFlow "[:\(\)\{\}\[\],\.=]" display
+syn match  pythonControlFlow "[-+*/^:\(\)\{\}\[\],\.=<>]" display
 
 " TODO: Mixing spaces and tabs also may be used for pretty formatting multiline
 " statements. For now I don't know how to work around this.
