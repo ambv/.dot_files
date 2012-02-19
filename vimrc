@@ -239,6 +239,8 @@ inoremap jj <ESC>
 "
 " Specific plug-in configuration
 "
+let python_highlight_builtins=1
+let python_highlight_exceptions=1
 let python_highlight_indent_errors=1
 let python_highlight_space_errors=1
 let python_highlight_string_formatting=1

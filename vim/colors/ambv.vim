@@ -28,6 +28,7 @@ hi DiffChange ctermbg=235 guibg=#262626
 hi DiffDelete ctermfg=52 ctermbg=0 guifg=#5f0000 guibg=#000000
 hi DiffText   ctermbg=238 ctermfg=White cterm=NONE guibg=#444444 guifg=#ffffff gui=NONE
 hi Directory  ctermfg=DarkBlue guifg=#2222ee
+hi Error      ctermfg=White	   ctermbg=DarkRed gui=BOLD guifg=#efaaaa guibg=#cd2222
 hi ErrorMsg   ctermfg=White	   ctermbg=DarkRed gui=BOLD guifg=#ffffff guibg=#cd2222
 hi FoldColumn ctermfg=White    ctermbg=238 guifg=#ffffff guibg=#444444
 hi Folded     ctermbg=Grey	   ctermfg=Black guibg=#7f7f7f guifg=#000000
@@ -58,6 +59,8 @@ hi PreProc    cterm=NONE ctermfg=DarkMagenta gui=NONE guifg=#cd22cd
 hi Special    cterm=NONE ctermfg=60 gui=NONE guifg=#5f5f87
 hi Statement  cterm=bold ctermfg=Blue gui=BOLD guifg=#7c7cff
 hi Type	      cterm=NONE ctermfg=Blue gui=BOLD guifg=#7c7cff
+hi Structure  cterm=NONE ctermfg=Blue gui=italic guifg=#7c7cff
+hi Exception  cterm=NONE ctermfg=DarkCyan gui=italic guifg=#22cdcd
 
 highlight OverLength ctermbg=17 ctermfg=white guibg=#000040
 highlight ExtraWhitespace ctermbg=17 guibg=#000040

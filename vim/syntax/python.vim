@@ -135,6 +135,9 @@ syn match pythonError		"[$?]" display
 syn match pythonError		"[&|]\{2,}" display
 syn match pythonError		"[=]\{3,}" display
 
+" Control flow :{[(,+-*/=
+syn match  pythonControlFlow "[:\(\)\{\}\[\],\.=]" display
+
 " TODO: Mixing spaces and tabs also may be used for pretty formatting multiline
 " statements. For now I don't know how to work around this.
 if exists("python_highlight_indent_errors") && python_highlight_indent_errors != 0
@@ -233,23 +236,88 @@ syn match   pythonBinError	"\<0[bB][01]*[2-9]\d*[lL]\=\>" display
 
 if exists("python_highlight_builtins") && python_highlight_builtins != 0
   " Builtin functions, types and objects
-  syn keyword pythonBuiltinObj	True False Ellipsis None NotImplemented
-  syn keyword pythonBuiltinObj	__debug__ __doc__ __file__ __name__ __package__
+  syn keyword pythonBuiltinObj	self True False Ellipsis None NotImplemented Null
+  syn keyword pythonBuiltinObj	__future__ __debug__ __doc__ __file__ __name__ __package__
 
-  syn keyword pythonBuiltinFunc	__import__ abs all any apply
-  syn keyword pythonBuiltinFunc	basestring bin bool buffer bytearray bytes callable
-  syn keyword pythonBuiltinFunc	chr classmethod cmp coerce compile complex
-  syn keyword pythonBuiltinFunc	delattr dict dir divmod enumerate eval
-  syn keyword pythonBuiltinFunc	execfile file filter float format frozenset getattr
-  syn keyword pythonBuiltinFunc	globals hasattr hash help hex id 
-  syn keyword pythonBuiltinFunc	input int intern isinstance
-  syn keyword pythonBuiltinFunc	issubclass iter len list locals long map max
-  syn keyword pythonBuiltinFunc	min next object oct open ord
-  syn keyword pythonBuiltinFunc	pow property range
-  syn keyword pythonBuiltinFunc	raw_input reduce reload repr
-  syn keyword pythonBuiltinFunc	reversed round set setattr
-  syn keyword pythonBuiltinFunc	slice sorted staticmethod str sum super tuple
-  syn keyword pythonBuiltinFunc	type unichr unicode vars xrange zip
+  syn match pythonBuiltinFunc /[^\.]\<__import__\>/ms=s+1 display
+  syn match pythonBuiltinFunc /[^\.]\<abs\>/ms=s+1 display
+  syn match pythonBuiltinFunc /[^\.]\<all\>/ms=s+1 display
+  syn match pythonBuiltinFunc /[^\.]\<any\>/ms=s+1 display
+  syn match pythonBuiltinFunc /[^\.]\<apply\>/ms=s+1 display
+  syn match pythonBuiltinFunc /[^\.]\<basestring\>/ms=s+1 display
+  syn match pythonBuiltinFunc /[^\.]\<bin\>/ms=s+1 display
+  syn match pythonBuiltinFunc /[^\.]\<bool\>/ms=s+1 display
+  syn match pythonBuiltinFunc /[^\.]\<buffer\>/ms=s+1 display
+  syn match pythonBuiltinFunc /[^\.]\<bytearray\>/ms=s+1 display
+  syn match pythonBuiltinFunc /[^\.]\<bytes\>/ms=s+1 display
+  syn match pythonBuiltinFunc /[^\.]\<callable\>/ms=s+1 display
+  syn match pythonBuiltinFunc /[^\.]\<chr\>/ms=s+1 display
+  syn match pythonBuiltinFunc /[^\.]\<classmethod\>/ms=s+1 display
+  syn match pythonBuiltinFunc /[^\.]\<cmp\>/ms=s+1 display
+  syn match pythonBuiltinFunc /[^\.]\<coerce\>/ms=s+1 display
+  syn match pythonBuiltinFunc /[^\.]\<compile\>/ms=s+1 display
+  syn match pythonBuiltinFunc /[^\.]\<complex\>/ms=s+1 display
+  syn match pythonBuiltinFunc /[^\.]\<delattr\>/ms=s+1 display
+  syn match pythonBuiltinFunc /[^\.]\<dict\>/ms=s+1 display
+  syn match pythonBuiltinFunc /[^\.]\<dir\>/ms=s+1 display
+  syn match pythonBuiltinFunc /[^\.]\<divmod\>/ms=s+1 display
+  syn match pythonBuiltinFunc /[^\.]\<enumerate\>/ms=s+1 display
+  syn match pythonBuiltinFunc /[^\.]\<eval\>/ms=s+1 display
+  syn match pythonBuiltinFunc /[^\.]\<execfile\>/ms=s+1 display
+  syn match pythonBuiltinFunc /[^\.]\<file\>/ms=s+1 display
+  syn match pythonBuiltinFunc /[^\.]\<filter\>/ms=s+1 display
+  syn match pythonBuiltinFunc /[^\.]\<float\>/ms=s+1 display
+  syn match pythonBuiltinFunc /[^\.]\<format\>/ms=s+1 display
+  syn match pythonBuiltinFunc /[^\.]\<frozenset\>/ms=s+1 display
+  syn match pythonBuiltinFunc /[^\.]\<getattr\>/ms=s+1 display
+  syn match pythonBuiltinFunc /[^\.]\<globals\>/ms=s+1 display
+  syn match pythonBuiltinFunc /[^\.]\<hasattr\>/ms=s+1 display
+  syn match pythonBuiltinFunc /[^\.]\<hash\>/ms=s+1 display
+  syn match pythonBuiltinFunc /[^\.]\<help\>/ms=s+1 display
+  syn match pythonBuiltinFunc /[^\.]\<hex\>/ms=s+1 display
+  syn match pythonBuiltinFunc /[^\.]\<id\>/ms=s+1 display
+  syn match pythonBuiltinFunc /[^\.]\<input\>/ms=s+1 display
+  syn match pythonBuiltinFunc /[^\.]\<int\>/ms=s+1 display
+  syn match pythonBuiltinFunc /[^\.]\<intern\>/ms=s+1 display
+  syn match pythonBuiltinFunc /[^\.]\<isinstance\>/ms=s+1 display
+  syn match pythonBuiltinFunc /[^\.]\<issubclass\>/ms=s+1 display
+  syn match pythonBuiltinFunc /[^\.]\<iter\>/ms=s+1 display
+  syn match pythonBuiltinFunc /[^\.]\<len\>/ms=s+1 display
+  syn match pythonBuiltinFunc /[^\.]\<list\>/ms=s+1 display
+  syn match pythonBuiltinFunc /[^\.]\<locals\>/ms=s+1 display
+  syn match pythonBuiltinFunc /[^\.]\<long\>/ms=s+1 display
+  syn match pythonBuiltinFunc /[^\.]\<map\>/ms=s+1 display
+  syn match pythonBuiltinFunc /[^\.]\<max\>/ms=s+1 display
+  syn match pythonBuiltinFunc /[^\.]\<min\>/ms=s+1 display
+  syn match pythonBuiltinFunc /[^\.]\<next\>/ms=s+1 display
+  syn match pythonBuiltinFunc /[^\.]\<object\>/ms=s+1 display
+  syn match pythonBuiltinFunc /[^\.]\<oct\>/ms=s+1 display
+  syn match pythonBuiltinFunc /[^\.]\<open\>/ms=s+1 display
+  syn match pythonBuiltinFunc /[^\.]\<ord\>/ms=s+1 display
+  syn match pythonBuiltinFunc /[^\.]\<pow\>/ms=s+1 display
+  syn match pythonBuiltinFunc /[^\.]\<property\>/ms=s+1 display
+  syn match pythonBuiltinFunc /[^\.]\<range\>/ms=s+1 display
+  syn match pythonBuiltinFunc /[^\.]\<raw_input\>/ms=s+1 display
+  syn match pythonBuiltinFunc /[^\.]\<reduce\>/ms=s+1 display
+  syn match pythonBuiltinFunc /[^\.]\<reload\>/ms=s+1 display
+  syn match pythonBuiltinFunc /[^\.]\<repr\>/ms=s+1 display
+  syn match pythonBuiltinFunc /[^\.]\<reversed\>/ms=s+1 display
+  syn match pythonBuiltinFunc /[^\.]\<round\>/ms=s+1 display
+  syn match pythonBuiltinFunc /[^\.]\<set\>/ms=s+1 display
+  syn match pythonBuiltinFunc /[^\.]\<setattr\>/ms=s+1 display
+  syn match pythonBuiltinFunc /[^\.]\<slice\>/ms=s+1 display
+  syn match pythonBuiltinFunc /[^\.]\<sorted\>/ms=s+1 display
+  syn match pythonBuiltinFunc /[^\.]\<staticmethod\>/ms=s+1 display
+  syn match pythonBuiltinFunc /[^\.]\<str\>/ms=s+1 display
+  syn match pythonBuiltinFunc /[^\.]\<sum\>/ms=s+1 display
+  syn match pythonBuiltinFunc /[^\.]\<super\>/ms=s+1 display
+  syn match pythonBuiltinFunc /[^\.]\<tuple\>/ms=s+1 display
+  syn match pythonBuiltinFunc /[^\.]\<type\>/ms=s+1 display
+  syn match pythonBuiltinFunc /[^\.]\<unichr\>/ms=s+1 display
+  syn match pythonBuiltinFunc /[^\.]\<unicode\>/ms=s+1 display
+  syn match pythonBuiltinFunc /[^\.]\<vars\>/ms=s+1 display
+  syn match pythonBuiltinFunc /[^\.]\<xrange\>/ms=s+1 display
+  syn match pythonBuiltinFunc /[^\.]\<zip\>/ms=s+1 display
 
   if exists("python_print_as_function") && python_print_as_function != 0
       syn keyword pythonBuiltinFunc	print
@@ -304,7 +372,7 @@ if version >= 508 || !exists("did_python_syn_inits")
   HiLink pythonFunction		Function
   HiLink pythonConditional	Conditional
   HiLink pythonRepeat		Repeat
-  HiLink pythonException	Exception
+  HiLink pythonException  Conditional 
   HiLink pythonOperator		Operator
 
   HiLink pythonDecorator	Define
@@ -312,6 +380,7 @@ if version >= 508 || !exists("did_python_syn_inits")
   HiLink pythonDot          Normal
 
   HiLink pythonComment		Comment
+  HiLink pythonControlFlow		Special
   HiLink pythonCoding		Special
   HiLink pythonRun		Special
   HiLink pythonTodo		Todo
@@ -351,7 +420,7 @@ if version >= 508 || !exists("did_python_syn_inits")
   HiLink pythonBuiltinObj	Structure
   HiLink pythonBuiltinFunc	Function
 
-  HiLink pythonExClass	Structure
+  HiLink pythonExClass  Exception
 
   delcommand HiLink
 endif
