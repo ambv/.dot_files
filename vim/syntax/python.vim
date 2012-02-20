@@ -136,7 +136,7 @@ syn match pythonError		"[&|]\{2,}" display
 syn match pythonError		"[=]\{3,}" display
 
 " Control flow :{[(,+-*/=
-syn match  pythonControlFlow "[-+*/^:\(\)\{\}\[\],\.=<>]" display
+syn match  pythonControlFlow "[-+*/^:\(\)\{\}\[\],\.=<>!]" display
 
 " TODO: Mixing spaces and tabs also may be used for pretty formatting multiline
 " statements. For now I don't know how to work around this.
@@ -239,85 +239,85 @@ if exists("python_highlight_builtins") && python_highlight_builtins != 0
   syn keyword pythonBuiltinObj	self True False Ellipsis None NotImplemented Null
   syn keyword pythonBuiltinObj	__future__ __debug__ __doc__ __file__ __name__ __package__
 
-  syn match pythonBuiltinFunc /[^\.]\<__import__\>/ms=s+1 display
-  syn match pythonBuiltinFunc /[^\.]\<abs\>/ms=s+1 display
-  syn match pythonBuiltinFunc /[^\.]\<all\>/ms=s+1 display
-  syn match pythonBuiltinFunc /[^\.]\<any\>/ms=s+1 display
-  syn match pythonBuiltinFunc /[^\.]\<apply\>/ms=s+1 display
-  syn match pythonBuiltinFunc /[^\.]\<basestring\>/ms=s+1 display
-  syn match pythonBuiltinFunc /[^\.]\<bin\>/ms=s+1 display
-  syn match pythonBuiltinFunc /[^\.]\<bool\>/ms=s+1 display
-  syn match pythonBuiltinFunc /[^\.]\<buffer\>/ms=s+1 display
-  syn match pythonBuiltinFunc /[^\.]\<bytearray\>/ms=s+1 display
-  syn match pythonBuiltinFunc /[^\.]\<bytes\>/ms=s+1 display
-  syn match pythonBuiltinFunc /[^\.]\<callable\>/ms=s+1 display
-  syn match pythonBuiltinFunc /[^\.]\<chr\>/ms=s+1 display
-  syn match pythonBuiltinFunc /[^\.]\<classmethod\>/ms=s+1 display
-  syn match pythonBuiltinFunc /[^\.]\<cmp\>/ms=s+1 display
-  syn match pythonBuiltinFunc /[^\.]\<coerce\>/ms=s+1 display
-  syn match pythonBuiltinFunc /[^\.]\<compile\>/ms=s+1 display
-  syn match pythonBuiltinFunc /[^\.]\<complex\>/ms=s+1 display
-  syn match pythonBuiltinFunc /[^\.]\<delattr\>/ms=s+1 display
-  syn match pythonBuiltinFunc /[^\.]\<dict\>/ms=s+1 display
-  syn match pythonBuiltinFunc /[^\.]\<dir\>/ms=s+1 display
-  syn match pythonBuiltinFunc /[^\.]\<divmod\>/ms=s+1 display
-  syn match pythonBuiltinFunc /[^\.]\<enumerate\>/ms=s+1 display
-  syn match pythonBuiltinFunc /[^\.]\<eval\>/ms=s+1 display
-  syn match pythonBuiltinFunc /[^\.]\<execfile\>/ms=s+1 display
-  syn match pythonBuiltinFunc /[^\.]\<file\>/ms=s+1 display
-  syn match pythonBuiltinFunc /[^\.]\<filter\>/ms=s+1 display
-  syn match pythonBuiltinFunc /[^\.]\<float\>/ms=s+1 display
-  syn match pythonBuiltinFunc /[^\.]\<format\>/ms=s+1 display
-  syn match pythonBuiltinFunc /[^\.]\<frozenset\>/ms=s+1 display
-  syn match pythonBuiltinFunc /[^\.]\<getattr\>/ms=s+1 display
-  syn match pythonBuiltinFunc /[^\.]\<globals\>/ms=s+1 display
-  syn match pythonBuiltinFunc /[^\.]\<hasattr\>/ms=s+1 display
-  syn match pythonBuiltinFunc /[^\.]\<hash\>/ms=s+1 display
-  syn match pythonBuiltinFunc /[^\.]\<help\>/ms=s+1 display
-  syn match pythonBuiltinFunc /[^\.]\<hex\>/ms=s+1 display
-  syn match pythonBuiltinFunc /[^\.]\<id\>/ms=s+1 display
-  syn match pythonBuiltinFunc /[^\.]\<input\>/ms=s+1 display
-  syn match pythonBuiltinFunc /[^\.]\<int\>/ms=s+1 display
-  syn match pythonBuiltinFunc /[^\.]\<intern\>/ms=s+1 display
-  syn match pythonBuiltinFunc /[^\.]\<isinstance\>/ms=s+1 display
-  syn match pythonBuiltinFunc /[^\.]\<issubclass\>/ms=s+1 display
-  syn match pythonBuiltinFunc /[^\.]\<iter\>/ms=s+1 display
-  syn match pythonBuiltinFunc /[^\.]\<len\>/ms=s+1 display
-  syn match pythonBuiltinFunc /[^\.]\<list\>/ms=s+1 display
-  syn match pythonBuiltinFunc /[^\.]\<locals\>/ms=s+1 display
-  syn match pythonBuiltinFunc /[^\.]\<long\>/ms=s+1 display
-  syn match pythonBuiltinFunc /[^\.]\<map\>/ms=s+1 display
-  syn match pythonBuiltinFunc /[^\.]\<max\>/ms=s+1 display
-  syn match pythonBuiltinFunc /[^\.]\<min\>/ms=s+1 display
-  syn match pythonBuiltinFunc /[^\.]\<next\>/ms=s+1 display
-  syn match pythonBuiltinFunc /[^\.]\<object\>/ms=s+1 display
-  syn match pythonBuiltinFunc /[^\.]\<oct\>/ms=s+1 display
-  syn match pythonBuiltinFunc /[^\.]\<open\>/ms=s+1 display
-  syn match pythonBuiltinFunc /[^\.]\<ord\>/ms=s+1 display
-  syn match pythonBuiltinFunc /[^\.]\<pow\>/ms=s+1 display
-  syn match pythonBuiltinFunc /[^\.]\<property\>/ms=s+1 display
-  syn match pythonBuiltinFunc /[^\.]\<range\>/ms=s+1 display
-  syn match pythonBuiltinFunc /[^\.]\<raw_input\>/ms=s+1 display
-  syn match pythonBuiltinFunc /[^\.]\<reduce\>/ms=s+1 display
-  syn match pythonBuiltinFunc /[^\.]\<reload\>/ms=s+1 display
-  syn match pythonBuiltinFunc /[^\.]\<repr\>/ms=s+1 display
-  syn match pythonBuiltinFunc /[^\.]\<reversed\>/ms=s+1 display
-  syn match pythonBuiltinFunc /[^\.]\<round\>/ms=s+1 display
-  syn match pythonBuiltinFunc /[^\.]\<set\>/ms=s+1 display
-  syn match pythonBuiltinFunc /[^\.]\<setattr\>/ms=s+1 display
-  syn match pythonBuiltinFunc /[^\.]\<slice\>/ms=s+1 display
-  syn match pythonBuiltinFunc /[^\.]\<sorted\>/ms=s+1 display
-  syn match pythonBuiltinFunc /[^\.]\<staticmethod\>/ms=s+1 display
-  syn match pythonBuiltinFunc /[^\.]\<str\>/ms=s+1 display
-  syn match pythonBuiltinFunc /[^\.]\<sum\>/ms=s+1 display
-  syn match pythonBuiltinFunc /[^\.]\<super\>/ms=s+1 display
-  syn match pythonBuiltinFunc /[^\.]\<tuple\>/ms=s+1 display
-  syn match pythonBuiltinFunc /[^\.]\<type\>/ms=s+1 display
-  syn match pythonBuiltinFunc /[^\.]\<unichr\>/ms=s+1 display
-  syn match pythonBuiltinFunc /[^\.]\<unicode\>/ms=s+1 display
-  syn match pythonBuiltinFunc /[^\.]\<vars\>/ms=s+1 display
-  syn match pythonBuiltinFunc /[^\.]\<xrange\>/ms=s+1 display
-  syn match pythonBuiltinFunc /[^\.]\<zip\>/ms=s+1 display
+  syn match pythonBuiltinFunc /[^\.]\<__import__\>\s*[^= \t]/ms=s+1,me=e-1 display
+  syn match pythonBuiltinFunc /[^\.]\<abs\>\s*[^= \t]/ms=s+1,me=e-1 display
+  syn match pythonBuiltinFunc /[^\.]\<all\>\s*[^= \t]/ms=s+1,me=e-1 display
+  syn match pythonBuiltinFunc /[^\.]\<any\>\s*[^= \t]/ms=s+1,me=e-1 display
+  syn match pythonBuiltinFunc /[^\.]\<apply\>\s*[^= \t]/ms=s+1,me=e-1 display
+  syn match pythonBuiltinFunc /[^\.]\<basestring\>\s*[^= \t]/ms=s+1,me=e-1 display
+  syn match pythonBuiltinFunc /[^\.]\<bin\>\s*[^= \t]/ms=s+1,me=e-1 display
+  syn match pythonBuiltinFunc /[^\.]\<bool\>\s*[^= \t]/ms=s+1,me=e-1 display
+  syn match pythonBuiltinFunc /[^\.]\<buffer\>\s*[^= \t]/ms=s+1,me=e-1 display
+  syn match pythonBuiltinFunc /[^\.]\<bytearray\>\s*[^= \t]/ms=s+1,me=e-1 display
+  syn match pythonBuiltinFunc /[^\.]\<bytes\>\s*[^= \t]/ms=s+1,me=e-1 display
+  syn match pythonBuiltinFunc /[^\.]\<callable\>\s*[^= \t]/ms=s+1,me=e-1 display
+  syn match pythonBuiltinFunc /[^\.]\<chr\>\s*[^= \t]/ms=s+1,me=e-1 display
+  syn match pythonBuiltinFunc /[^\.]\<classmethod\>\s*[^= \t]/ms=s+1,me=e-1 display
+  syn match pythonBuiltinFunc /[^\.]\<cmp\>\s*[^= \t]/ms=s+1,me=e-1 display
+  syn match pythonBuiltinFunc /[^\.]\<coerce\>\s*[^= \t]/ms=s+1,me=e-1 display
+  syn match pythonBuiltinFunc /[^\.]\<compile\>\s*[^= \t]/ms=s+1,me=e-1 display
+  syn match pythonBuiltinFunc /[^\.]\<complex\>\s*[^= \t]/ms=s+1,me=e-1 display
+  syn match pythonBuiltinFunc /[^\.]\<delattr\>\s*[^= \t]/ms=s+1,me=e-1 display
+  syn match pythonBuiltinFunc /[^\.]\<dict\>\s*[^= \t]/ms=s+1,me=e-1 display
+  syn match pythonBuiltinFunc /[^\.]\<dir\>\s*[^= \t]/ms=s+1,me=e-1 display
+  syn match pythonBuiltinFunc /[^\.]\<divmod\>\s*[^= \t]/ms=s+1,me=e-1 display
+  syn match pythonBuiltinFunc /[^\.]\<enumerate\>\s*[^= \t]/ms=s+1,me=e-1 display
+  syn match pythonBuiltinFunc /[^\.]\<eval\>\s*[^= \t]/ms=s+1,me=e-1 display
+  syn match pythonBuiltinFunc /[^\.]\<execfile\>\s*[^= \t]/ms=s+1,me=e-1 display
+  syn match pythonBuiltinFunc /[^\.]\<file\>\s*[^= \t]/ms=s+1,me=e-1 display
+  syn match pythonBuiltinFunc /[^\.]\<filter\>\s*[^= \t]/ms=s+1,me=e-1 display
+  syn match pythonBuiltinFunc /[^\.]\<float\>\s*[^= \t]/ms=s+1,me=e-1 display
+  syn match pythonBuiltinFunc /[^\.]\<format\>\s*[^= \t]/ms=s+1,me=e-1 display
+  syn match pythonBuiltinFunc /[^\.]\<frozenset\>\s*[^= \t]/ms=s+1,me=e-1 display
+  syn match pythonBuiltinFunc /[^\.]\<getattr\>\s*[^= \t]/ms=s+1,me=e-1 display
+  syn match pythonBuiltinFunc /[^\.]\<globals\>\s*[^= \t]/ms=s+1,me=e-1 display
+  syn match pythonBuiltinFunc /[^\.]\<hasattr\>\s*[^= \t]/ms=s+1,me=e-1 display
+  syn match pythonBuiltinFunc /[^\.]\<hash\>\s*[^= \t]/ms=s+1,me=e-1 display
+  syn match pythonBuiltinFunc /[^\.]\<help\>\s*[^= \t]/ms=s+1,me=e-1 display
+  syn match pythonBuiltinFunc /[^\.]\<hex\>\s*[^= \t]/ms=s+1,me=e-1 display
+  syn match pythonBuiltinFunc /[^\.]\<id\>\s*[^= \t]/ms=s+1,me=e-1 display
+  syn match pythonBuiltinFunc /[^\.]\<input\>\s*[^= \t]/ms=s+1,me=e-1 display
+  syn match pythonBuiltinFunc /[^\.]\<int\>\s*[^= \t]/ms=s+1,me=e-1 display
+  syn match pythonBuiltinFunc /[^\.]\<intern\>\s*[^= \t]/ms=s+1,me=e-1 display
+  syn match pythonBuiltinFunc /[^\.]\<isinstance\>\s*[^= \t]/ms=s+1,me=e-1 display
+  syn match pythonBuiltinFunc /[^\.]\<issubclass\>\s*[^= \t]/ms=s+1,me=e-1 display
+  syn match pythonBuiltinFunc /[^\.]\<iter\>\s*[^= \t]/ms=s+1,me=e-1 display
+  syn match pythonBuiltinFunc /[^\.]\<len\>\s*[^= \t]/ms=s+1,me=e-1 display
+  syn match pythonBuiltinFunc /[^\.]\<list\>\s*[^= \t]/ms=s+1,me=e-1 display
+  syn match pythonBuiltinFunc /[^\.]\<locals\>\s*[^= \t]/ms=s+1,me=e-1 display
+  syn match pythonBuiltinFunc /[^\.]\<long\>\s*[^= \t]/ms=s+1,me=e-1 display
+  syn match pythonBuiltinFunc /[^\.]\<map\>\s*[^= \t]/ms=s+1,me=e-1 display
+  syn match pythonBuiltinFunc /[^\.]\<max\>\s*[^= \t]/ms=s+1,me=e-1 display
+  syn match pythonBuiltinFunc /[^\.]\<min\>\s*[^= \t]/ms=s+1,me=e-1 display
+  syn match pythonBuiltinFunc /[^\.]\<next\>\s*[^= \t]/ms=s+1,me=e-1 display
+  syn match pythonBuiltinFunc /[^\.]\<object\>\s*[^= \t]/ms=s+1,me=e-1 display
+  syn match pythonBuiltinFunc /[^\.]\<oct\>\s*[^= \t]/ms=s+1,me=e-1 display
+  syn match pythonBuiltinFunc /[^\.]\<open\>\s*[^= \t]/ms=s+1,me=e-1 display
+  syn match pythonBuiltinFunc /[^\.]\<ord\>\s*[^= \t]/ms=s+1,me=e-1 display
+  syn match pythonBuiltinFunc /[^\.]\<pow\>\s*[^= \t]/ms=s+1,me=e-1 display
+  syn match pythonBuiltinFunc /[^\.]\<property\>\s*[^= \t]/ms=s+1,me=e-1 display
+  syn match pythonBuiltinFunc /[^\.]\<range\>\s*[^= \t]/ms=s+1,me=e-1 display
+  syn match pythonBuiltinFunc /[^\.]\<raw_input\>\s*[^= \t]/ms=s+1,me=e-1 display
+  syn match pythonBuiltinFunc /[^\.]\<reduce\>\s*[^= \t]/ms=s+1,me=e-1 display
+  syn match pythonBuiltinFunc /[^\.]\<reload\>\s*[^= \t]/ms=s+1,me=e-1 display
+  syn match pythonBuiltinFunc /[^\.]\<repr\>\s*[^= \t]/ms=s+1,me=e-1 display
+  syn match pythonBuiltinFunc /[^\.]\<reversed\>\s*[^= \t]/ms=s+1,me=e-1 display
+  syn match pythonBuiltinFunc /[^\.]\<round\>\s*[^= \t]/ms=s+1,me=e-1 display
+  syn match pythonBuiltinFunc /[^\.]\<set\>\s*[^= \t]/ms=s+1,me=e-1 display
+  syn match pythonBuiltinFunc /[^\.]\<setattr\>\s*[^= \t]/ms=s+1,me=e-1 display
+  syn match pythonBuiltinFunc /[^\.]\<slice\>\s*[^= \t]/ms=s+1,me=e-1 display
+  syn match pythonBuiltinFunc /[^\.]\<sorted\>\s*[^= \t]/ms=s+1,me=e-1 display
+  syn match pythonBuiltinFunc /[^\.]\<staticmethod\>\s*[^= \t]/ms=s+1,me=e-1 display
+  syn match pythonBuiltinFunc /[^\.]\<str\>\s*[^= \t]/ms=s+1,me=e-1 display
+  syn match pythonBuiltinFunc /[^\.]\<sum\>\s*[^= \t]/ms=s+1,me=e-1 display
+  syn match pythonBuiltinFunc /[^\.]\<super\>\s*[^= \t]/ms=s+1,me=e-1 display
+  syn match pythonBuiltinFunc /[^\.]\<tuple\>\s*[^= \t]/ms=s+1,me=e-1 display
+  syn match pythonBuiltinFunc /[^\.]\<type\>\s*[^= \t]/ms=s+1,me=e-1 display
+  syn match pythonBuiltinFunc /[^\.]\<unichr\>\s*[^= \t]/ms=s+1,me=e-1 display
+  syn match pythonBuiltinFunc /[^\.]\<unicode\>\s*[^= \t]/ms=s+1,me=e-1 display
+  syn match pythonBuiltinFunc /[^\.]\<vars\>\s*[^= \t]/ms=s+1,me=e-1 display
+  syn match pythonBuiltinFunc /[^\.]\<xrange\>\s*[^= \t]/ms=s+1,me=e-1 display
+  syn match pythonBuiltinFunc /[^\.]\<zip\>\s*[^= \t]/ms=s+1,me=e-1 display
 
   if exists("python_print_as_function") && python_print_as_function != 0
       syn keyword pythonBuiltinFunc	print
