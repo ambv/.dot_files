@@ -271,6 +271,7 @@ let g:fuf_coveragefile_globPatterns = [
       \ '**/*.js',
       \ '**/*.html',
       \ '**/*.css',
+      \ '**/*.rst',
       \ '**/*.c',
       \ '**/*.cpp',
       \ '**/*.h',
