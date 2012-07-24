@@ -27,6 +27,7 @@ export PIP_DOWNLOAD_CACHE=~/.pip-cache
 export VIRTUALENV_USE_DISTRIBUTE=true
 LOCAL_BIN=~/.dot_files/bin
 export PATH="$LOCAL_BIN:/opt/automation:$PATH"
+export PYTHONWARNINGS=d
 
 #
 # my aliases
@@ -60,20 +61,21 @@ alias grep="grep --color=auto"
 # shortcuts
 alias :q='logout'
 alias :qa='logout'
+alias :n='vi'
 alias die='logout'
 alias jloc='let "a = 0"; for num in `find . -iname "*.java" | xargs -I {} wc -l {} | cut -d. -f1 | tr -d " "`; do let "a = a + num"; done; echo $a;'
 alias loc='let "a = 0"; for num in `find . -iname "*.py" | xargs -I {} wc -l {} | cut -d. -f1 | tr -d " "`; do let "a = a + num"; done; echo $a;'
 alias todo-list="ack --column -w \"\\W(TODO|FIXME|REMEMBER|WEDNESDAY|XXX|BUG|WTF|OMF?G|pdb\\.set_trace)\\W{1}\""
-alias depyc='find . -iname "*.pyc" -print -exec rm {} \; && find . -iname "*.orig" -print -exec rm {} \;'
+alias depyc='find . -iname "*.pyc" -print -exec rm {} \; && find . -iname "*.pyo" -print -exec rm {} \; && find . -iname "*.orig" -print -exec rm {} \;'
 
 # Django
-alias djrun='python -Wd manage.py runserver'
+alias djrun='django-admin.py runserver'
 alias djrs='python -Wd manage.py runserver'
-alias djsync='python -Wd manage.py syncdb'
-alias djevo='python -Wd manage.py evolve --hint'
-alias djmm='python -Wd manage.py makemessages -ae html,txt'
-alias djcm='python -Wd manage.py compilemessages'
-alias djsh='python -Wd manage.py shell'
+alias djsync='django-admin.py syncdb'
+alias djevo='django-admin.py evolve --hint'
+alias djmm='django-admin.py makemessages -ae html,txt'
+alias djcm='django-admin.py compilemessages'
+alias djsh='django-admin.py shell'
 
 #
 # my functions
