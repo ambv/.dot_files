@@ -35,16 +35,26 @@ function vim {
 # this handles cases where no file is expected or 
 # unnecessary E247 errors at first MacVim startup
 # or when there is no MacVim window open
-  FILE_SPECIFIED=0
-  for arg in "$@"; do
-      if [[ `expr "'$arg'" : "'-'"` -eq 0 ]]; then
-          FILE_SPECIFIED=1
-      fi
-  done
-  if [[ $FILE_SPECIFIED -eq 1 ]]; then
-    mvim -XO1 --remote-tab-silent $@
-  else
+  if [[ ! -z $BASH ]]; then
+    echo "The 'vi' function is incompatible with Bash. Use 'mvim' directly."
+    return
+  fi
+  cmd_line=()
+  if [[ -z `mvim --serverlist` ]]; then
     mvim -XO1 $@
+  else
+    remote_given=0
+    for arg in "$@"; do
+        arg_is_file=0
+        if [[ $remote_given -eq 0 ]] && [[ "$arg" != -* ]]; then
+          cmd_line[$(($#cmd_line+1))]="--remote-tab-silent"
+          cmd_line[$(($#cmd_line+1))]=$arg
+          remote_given=1
+        elif [[ "$arg" != "--" ]]; then
+          cmd_line[$(($#cmd_line+1))]=$arg
+        fi
+    done
+    mvim -XO1 $cmd_line
   fi
 }
 
