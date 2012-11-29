@@ -4,7 +4,7 @@
 # my exports
 #
 
-export PATH=/opt/local/sbin:/opt/local/bin:/opt/local/Library/Frameworks/Python.framework/Versions/2.7/bin:/opt/local/Library/Frameworks/Python.framework/Versions/3.2/bin:/opt/local/lib/mysql55/bin:$PATH
+export PATH=/opt/local/sbin:/opt/local/bin:/opt/local/Library/Frameworks/Python.framework/Versions/2.7/bin:/opt/local/Library/Frameworks/Python.framework/Versions/3.2/bin:/opt/local/lib/mysql55/bin:/usr/local/bin:/usr/local/sbin:$PATH
 export EDITOR="/opt/local/bin/mvim -f"
 export VIM_APP_DIR=/Applications/MacPorts/
 export QTDIR=/opt/local/lib/qt3
