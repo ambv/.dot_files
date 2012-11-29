@@ -22,8 +22,8 @@ $P minicom
 $P mysql55-server
 $P nmap
 $P pbzip2
-# $P postgresql92          # currently does not build on Mountain Lion
-# $P postgresql92-server   # use Postgres.app instead
+$P postgresql92
+$P postgresql92-server
 $P pstree
 $P python27
 $P py27-distribute
@@ -76,3 +76,9 @@ echo
 echo "If you want MacPorts' zsh as login shell, you should run:"
 echo "% sudo sh -c \"echo '/opt/local/bin/zsh' >> /etc/shells\""
 echo "% chsh -s /opt/local/bin/zsh"
+echo
+echo "You might want to load and configure PostgreSQL Server:"
+echo "$ sudo port load postgresql92-server"
+echo "$ sudo mkdir -p /opt/local/var/db/postgresql92/defaultdb"
+echo "$ sudo chown postgres:postgres /opt/local/var/db/postgresql92/defaultdb"
+echo "$ sudo su postgres -c '/opt/local/lib/postgresql92/bin/initdb -D /opt/local/var/db/postgresql92/defaultdb'"
