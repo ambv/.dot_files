@@ -46,17 +46,18 @@ alias allplay="ssh -Y allplay@176.31.225.113"
 alias alldev="ssh -Yp26 allplay@devel.allplay.pl"
 
 # SAFE COMMANDS
-alias rm="rm -i"
-alias mv="mv -i"
-alias cp="cp -ir"
-alias ll="ls -lah"
-alias lt="tree -AphL"
-alias tree="tree -A"
-alias vim="vim -XO" # if you want the default, just type vim -O1
-alias vi="vim"
 alias ci="echo \"You probably meant vi. Or are you still using RCS?\"; false"
+alias cp="cp -ir"
 alias dc="echo \"You don't really use 'dc', do you?\"; false"
 alias grep="grep --color=auto"
+alias hg="PYTHONWARNINGS=i hg"
+alias ll="ls -lah"
+alias lt="tree -AphL"
+alias mv="mv -i"
+alias rm="rm -i"
+alias tree="tree -A"
+alias vi="vim"
+alias vim="vim -XO" # if you want the default, just type vim -O1
 
 # shortcuts
 alias :q='logout'
