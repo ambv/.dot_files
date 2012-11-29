@@ -18,6 +18,7 @@ extdiff =
 fetch =
 mq =
 churn =
+shelve =
 
 [extdiff]
 cmd.vimdiff =
