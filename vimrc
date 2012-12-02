@@ -96,7 +96,7 @@ autocmd BufNewFile,BufRead *.html setlocal filetype=htmldjango
 autocmd BufNewFile,BufRead *.txt setlocal filetype=human
 autocmd BufNewFile,BufRead *.json setlocal filetype=javascript
 autocmd BufNewFile,BufRead *.sieve setlocal filetype=sieve
-autocmd FileType gitcommit,human,mail,rst setlocal formatoptions=1aconrtq textwidth=80 "fo+=w textwidth=72
+autocmd FileType gitcommit,human,mail,rst setlocal formatoptions=1aconrtq textwidth=79 "fo+=w textwidth=72
 autocmd FileType c setlocal formatoptions+=ro
 autocmd FileType perl setlocal smartindent
 autocmd FileType css setlocal smartindent
@@ -286,3 +286,7 @@ let g:fuf_splitPathMatching = 0
 nmap § :FufCoverageFile<CR>
 nmap <TAB> :FufBuffer<CR>
 nmap ,-3 :call Underline(3)<CR>
+
+let Tlist_Ctags_Cmd = 'rst2ctags --taglist'
+let tlist_rst_settings = 'rst;s:sections;i:images'
+set noswapfile
