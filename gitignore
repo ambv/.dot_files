@@ -36,3 +36,4 @@ __pycache__
 
 # Mac OS X specific
 .DS_Store
+settings-ralphtest.py

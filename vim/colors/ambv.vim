@@ -12,7 +12,7 @@ endif
 let colors_name = "ambv"
 
 if version >= 700
-  hi CursorLine ctermbg=233 guibg=#1c1c1c gui=underline
+  hi CursorLine ctermbg=233 guibg=#1c1c1c
   hi CursorColumn ctermbg=233 guibg=#1c1c1c
 endif
 
