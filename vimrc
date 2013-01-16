@@ -204,9 +204,9 @@ func Underline(type)
   """ toggling between paste mode and normal mode; includes removing
   """ mouse support and numbering (for terminal cut&paste purposes)
   if &paste
-    normal yypv$
+    normal "tyy"tpv$
     if a:type == 1
-      normal r=yykP
+      normal r="tyyk"tP
     elseif a:type == 2
       normal r-
     elseif a:type == 3
@@ -214,9 +214,9 @@ func Underline(type)
     endif
   else
     set paste nonumber nocursorline mouse=
-    normal yypv$
+    normal "tyy"tpv$
     if a:type == 1
-      normal r=yykP
+      normal r="tyyk"tP
     elseif a:type == 2
       normal r-
     elseif a:type == 3
@@ -285,7 +285,6 @@ let g:fuf_splitPathMatching = 0
 
 nmap § :FufCoverageFile<CR>
 nmap <TAB> :FufBuffer<CR>
-nmap ,-3 :call Underline(3)<CR>
 
 let Tlist_Ctags_Cmd = 'rst2ctags --taglist'
 let tlist_rst_settings = 'rst;s:sections;i:images'
