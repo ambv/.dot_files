@@ -99,9 +99,9 @@ function propy {
         else
             if [[ -d project ]]; then
                 cd project
-                lt 4
+                lt 4 -I ".venv*" -I ".tox"
             else
-                lt 3
+                lt 3 -I ".venv*" -I ".tox"
             fi
             echo
             git config --get remote.origin.url

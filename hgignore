@@ -43,6 +43,8 @@ syntax: regexp
 ^doc/_build
 ^build
 ^dist
+^.tox
+^.venv*
 
 syntax: glob
 

@@ -13,6 +13,7 @@ __pycache__
 # SQLite databases
 *.db
 *.sqlite
+*.sqlite3
 
 # Temporary or runtime files
 *.old
@@ -28,10 +29,12 @@ __pycache__
 *~
 .sass-cache
 
-# Python Sphinx and setuptools files
+# Python Sphinx, virtualenv and setuptools files
 /doc/_build
 /build
 /dist
+/.tox
+/.venv*
 *.egg-info
 
 # Mac OS X specific
