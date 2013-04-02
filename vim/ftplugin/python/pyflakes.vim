@@ -51,15 +51,10 @@ from pyflakes import checker, messages
 from operator import attrgetter
 import re
 
-class loc(object):
-    def __init__(self, lineno, col=None):
-        self.lineno = lineno
-        self.col_offset = col
-
 class SyntaxError(messages.Message):
     message = 'could not compile: %s'
     def __init__(self, filename, lineno, col, message):
-        messages.Message.__init__(self, filename, loc(lineno, col))
+        messages.Message.__init__(self, filename, lineno)
         self.message_args = (message,)
 
 class blackhole(object):

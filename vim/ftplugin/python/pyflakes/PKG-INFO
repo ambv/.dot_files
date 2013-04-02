@@ -1,0 +1,21 @@
+Metadata-Version: 1.1
+Name: pyflakes
+Version: 0.6.1
+Summary: passive checker of Python programs
+Home-page: https://launchpad.net/pyflakes
+Author: Florent Xicluna
+Author-email: pyflakes-dev@lists.launchpad.net
+License: MIT
+Description: Pyflakes is program to analyze Python programs and detect various errors. It
+        works by parsing the source file, not importing it, so it is safe to use on
+        modules with side effects. It's also much faster.
+Platform: UNKNOWN
+Classifier: Development Status :: 6 - Mature
+Classifier: Environment :: Console
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 2
+Classifier: Programming Language :: Python :: 3
+Classifier: Topic :: Software Development
+Classifier: Topic :: Utilities
