@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3.3
 """
 enable_offline.py - symlink files in your PIP_DOWNLOAD_CACHE so that
 ``pip install --find-links`` picks them up.
@@ -19,7 +19,27 @@ Usage
 3. To clear the symlinks simply run: ``find $PIP_DOWNLOAD_CACHE -type l -delete``
 """
 import os
-cache_directory = os.environ['PIP_DOWNLOAD_CACHE']
+import sys
+
+cache_directory = os.environ.get('PIP_DOWNLOAD_CACHE')
+
+if not cache_directory:
+    pip_conf = os.path.expanduser('~/.pip/pip.conf')
+    if not os.path.exists(pip_conf):
+        print("error: PIP_DOWNLOAD_CACHE not set and `{}` does not exist."
+              "".format(pip_conf), file=sys.stderr)
+        sys.exit(1)
+
+    import configparser
+    cp = configparser.ConfigParser()
+    cp.read([pip_conf])
+    if not 'global' in cp or not 'download-cache' in cp['global']:
+        print("error: global/download-cache not set in `{}`."
+              "".format(pip_conf), file=sys.stderr)
+        sys.exit(2)
+    cache_directory = cp['global']['download-cache']
+
+cache_directory = os.path.expanduser(cache_directory)
 for path, _, files in os.walk(cache_directory):
     for f in files:
         if f.endswith('.content-type'):
@@ -40,4 +60,6 @@ for path, _, files in os.walk(cache_directory):
         source_path = os.path.join(path, f)
         target_path = os.path.join(path, f[last_path_sep:first_params_sep])
         if not os.path.exists(target_path):
+            if os.path.lexists(target_path):
+                os.remove(target_path)
             os.symlink(source_path, target_path)
