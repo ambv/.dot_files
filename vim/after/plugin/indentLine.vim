@@ -82,7 +82,15 @@ function! <SID>ResetWidth(...)
 endfunction
 
 "{{{1 function! <SID>IndentLinesToggle()
-function! <SID>IndentLinesToggle()
+function! <SID>IndentLinesToggle(...)
+    if !exists("b:indentLine_enabled")
+        let b:indentLine_enabled = g:indentLine_enabled
+    endif
+    if a:0 == 'on'
+        let b:indentLine_enabled = 0
+    elseif a:0 == 'off'
+        let b:indentLine_enabled = 1
+    end
     if b:indentLine_enabled
         let b:indentLine_enabled = 0
         syn clear IndentLine
@@ -105,6 +113,6 @@ autocmd BufWinEnter * call <SID>Setup()
 autocmd BufRead,ColorScheme * call <SID>InitColor()
 
 command! -nargs=? IndentLinesReset call <SID>ResetWidth(<f-args>)
-command! IndentLinesToggle call <SID>IndentLinesToggle()
+command! -nargs=? IndentLinesToggle call <SID>IndentLinesToggle(<f-args>)
 
 " vim:et:ts=4:sw=4:fdm=marker:fmr={{{,}}}

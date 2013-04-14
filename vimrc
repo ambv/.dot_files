@@ -76,6 +76,7 @@ func! Python_init()
   "setlocal isk+=.,(
   match ExtraWhitespace /\s\+\%#\@<!$/
   match OverLength /\%80v.\+/
+  IndentLinesToggle on
 endfunc
 
 func! JS_init()
@@ -162,10 +163,14 @@ func Paste_toggle(insert_mode)
   """ mouse support and numbering (for terminal cut&paste purposes)
   if &paste || (a:insert_mode != 0 && !&number)
     set nopaste number cursorline mouse=a 
-    IndentLinesToggle
+    if &ft == 'python'
+      IndentLinesToggle off
+    endif
   else
     set paste nonumber nocursorline mouse=
-    IndentLinesToggle
+    if &ft == 'python'
+      IndentLinesToggle on
+    endif
   endif
 endfunc
 command PasteToggle :call Paste_toggle(0)
@@ -293,3 +298,4 @@ let tlist_rst_settings = 'rst;s:sections;i:images'
 set noswapfile
 
 let g:indentLine_color_gui = '#242424'
+let g:indentLine_enabled = 0
