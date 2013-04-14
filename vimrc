@@ -162,8 +162,10 @@ func Paste_toggle(insert_mode)
   """ mouse support and numbering (for terminal cut&paste purposes)
   if &paste || (a:insert_mode != 0 && !&number)
     set nopaste number cursorline mouse=a 
+    IndentLinesToggle
   else
     set paste nonumber nocursorline mouse=
+    IndentLinesToggle
   endif
 endfunc
 command PasteToggle :call Paste_toggle(0)
@@ -289,3 +291,5 @@ nmap <TAB> :FufBuffer<CR>
 let Tlist_Ctags_Cmd = 'rst2ctags --taglist'
 let tlist_rst_settings = 'rst;s:sections;i:images'
 set noswapfile
+
+let g:indentLine_color_gui = '#242424'
