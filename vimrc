@@ -77,6 +77,7 @@ func! Python_init()
   match ExtraWhitespace /\s\+\%#\@<!$/
   match OverLength /\%80v.\+/
   IndentLinesToggle on
+  setlocal foldcolumn=4
 endfunc
 
 func! JS_init()
@@ -93,11 +94,18 @@ func! HTML_init()
   "setlocal formatoptions+=tl1 textwidth=80
 endfunc
 
+func! REST_init()
+  setlocal formatoptions=1aconrtq textwidth=72
+  setlocal wrap
+  match ExtraWhitespace /\s\+\%#\@<!$/
+endfunc
+
 autocmd BufNewFile,BufRead *.html setlocal filetype=htmldjango
 autocmd BufNewFile,BufRead *.txt setlocal filetype=human
 autocmd BufNewFile,BufRead *.json setlocal filetype=javascript
 autocmd BufNewFile,BufRead *.sieve setlocal filetype=sieve
-autocmd FileType gitcommit,human,mail,rst setlocal formatoptions=1aconrtq textwidth=79 "fo+=w textwidth=72
+autocmd FileType gitcommit,human,mail setlocal formatoptions=1aconrtq textwidth=79
+autocmd FileType rst call REST_init()
 autocmd FileType c setlocal formatoptions+=ro
 autocmd FileType perl setlocal smartindent
 autocmd FileType css setlocal smartindent
@@ -114,12 +122,10 @@ autocmd InsertLeave * redraw!
 " Folding; closed by default because it caused confusion in the long run.
 "
 if has('folding')
-  set foldlevelstart=999 foldopen=all "foldclose=all
+  set foldlevelstart=0 foldclose=all
   nnoremap <silent> <Space> @=(foldlevel('.')?'za':'l')<CR>
   vnoremap <Space> zf
 endif
-
-
 
 "
 " Keyboard shortcuts
@@ -174,14 +180,6 @@ func Paste_toggle(insert_mode)
   endif
 endfunc
 command PasteToggle :call Paste_toggle(0)
-
-"F5 toggles taglist
-nnoremap <F5> :TlistToggle<CR>
-inoremap <F5> <C-O>:TlistToggle<CR>
-
-"F6 toggles between windows
-nnoremap <F6> <C-W>w
-nnoremap <S-F6> <C-W>W
 
 "F9 forces file reload in CP-850 charset
 map <F9> :call SwitchToCP850()<CR>
@@ -256,16 +254,6 @@ let python_highlight_string_templates=1
 let python_highlight_doctests=1
 let python_slow_sync=1
 
-let NERDTreeIgnore=['\~$', '^\~', '\.swp$', '\$$', 
-      \ '\.pyc$', '\.pyo$', '\.pyd$', 
-      \ '\.class$', '\.bak$', '\.bin$', 
-      \ '\.jpg$', '\.gif$', '\.png$', '\.bmp$',
-      \ '\.mo$']
-
-let Tlist_Use_Right_Window=1
-"let Tlist_Use_Horiz_Window=1
-let Tlist_Compact_Format=1
-
 let snips_author='Łukasz Langa'
 
 let bufExplorerFindActive=0
@@ -273,28 +261,6 @@ let bufExplorerShowRelativePath=1
 "let bufExplorerSortBy="fullpath"
 "
 
-let g:fuf_coveragefile_globPatterns = [
-      \ '**/*.py',
-      \ '**/*.js',
-      \ '**/*.html',
-      \ '**/*.css',
-      \ '**/*.rst',
-      \ '**/*.c',
-      \ '**/*.cpp',
-      \ '**/*.h',
-      \ '**/*.hpp',
-      \ '**/*.rb',
-      \ '**/*.php',
-      \ '**/*.pl',
-      \ '**/*.sql'] 
-
-let g:fuf_splitPathMatching = 0
-
-nmap § :FufCoverageFile<CR>
-nmap <TAB> :FufBuffer<CR>
-
-let Tlist_Ctags_Cmd = 'rst2ctags --taglist'
-let tlist_rst_settings = 'rst;s:sections;i:images'
 set noswapfile
 
 let g:indentLine_color_gui = '#242424'

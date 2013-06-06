@@ -135,6 +135,9 @@ execute 'syn match rstHyperlinkReference' .
 syn match   rstStandaloneHyperlink  contains=@NoSpell
       \ "\<\%(\%(\%(https\=\|file\|ftp\|gopher\)://\|\%(mailto\|news\):\)[^[:space:]'\"<>]\+\|www[[:alnum:]_-]*\.[[:alnum:]_-]\+\.[^[:space:]'\"<>]\+\)[[:alnum:]/]"
 
+syn match OverLength /\%73v.\+/
+
+
 " TODO: Use better syncing.  I don’t know the specifics of syncing well enough,
 " though.
 syn sync minlines=50

@@ -26,6 +26,7 @@ hgk =
 mq =
 pager =
 shelve =
+rdiff = ~/.dot_files/bin/rdiff.py
 
 [extdiff]
 cmd.vimdiff =
@@ -33,3 +34,4 @@ cmd.vimdiff =
 [alias]
 vi = vimdiff
 vim = vimdiff
+show = log --color=always -pr
