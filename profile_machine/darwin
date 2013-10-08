@@ -56,7 +56,7 @@ function vim {
 
 function pro {
     LAST=`pwd`
-    cd ~/Documents/Projekty
+    cd $PROJECTS_DIR
     if [[ -d "$@" ]]; then
         cd "$@"
         wintitle "$@"
@@ -86,7 +86,7 @@ function pro {
 
 function propy {
     LAST=`pwd`
-    cd ~/Documents/Projekty/Python
+    cd $PROJECTS_DIR/Python
     if [[ -d "$@" ]]; then
         cd "$@"
         wintitle "$@"
