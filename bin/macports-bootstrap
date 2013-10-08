@@ -26,10 +26,12 @@ $P postgresql92
 $P postgresql92-server
 $P pstree
 $P python27
-$P py27-distribute
+$P py27-setuptools
 $P py27-virtualenv
 $P python32
-$P py32-distribute
+$P py32-setuptools
+$P python33
+$P py33-setuptools
 $P pwgen
 $P redis
 $P smartmontools
