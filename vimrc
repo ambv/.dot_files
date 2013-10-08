@@ -35,8 +35,15 @@ set backspace=eol,start,indent "make backspace work between lines and with inden
 set whichwrap=<,>,~,[,] "allow crossing line borders with cursors in every mode
 set winminheight=0 "Allow windows to get fully squashed
 set scrolloff=10 "start scrolling 10 lines before the end of the buffer
+set sidescroll=10 "start scrolling 10 columns before the end of the buffer
+set showmatch "flash matching parent when typing
 set cursorline "highlight current line
 set cursorcolumn "highlight current column
+set noerrorbells "shut up about reaching buffer boundary, etc.
+set ttyfast "fast terminal connection, more bandwidth but better redrawing performance
+set undolevels=1000
+set viminfo='50,"50
+set noswapfile
 "set virtualedit=all "cursor can move anywhere (even beyond text boundaries)
 
 
@@ -94,29 +101,53 @@ func! HTML_init()
   "setlocal formatoptions+=tl1 textwidth=80
 endfunc
 
+func! PHP_init()
+  setlocal iskeyword+=$
+  setlocal includeexpr=substitute(v:fname,'^/','','')
+endfunc
+
 func! REST_init()
   setlocal formatoptions=1aconrtq textwidth=72
   setlocal wrap
   match ExtraWhitespace /\s\+\%#\@<!$/
 endfunc
 
+autocmd BufNewFile,BufRead *.cabal setlocal filetype=cabal
+autocmd BufNewFile,BufRead *.cconf setlocal filetype=python
+autocmd BufNewFile,BufRead *.cinc setlocal filetype=python
+autocmd BufNewFile,BufRead *.ctest setlocal filetype=python
+autocmd BufNewFile,BufRead *.hsc setlocal filetype=haskell
 autocmd BufNewFile,BufRead *.html setlocal filetype=htmldjango
-autocmd BufNewFile,BufRead *.txt setlocal filetype=human
 autocmd BufNewFile,BufRead *.json setlocal filetype=javascript
+autocmd BufNewFile,BufRead *.phpt setlocal filetype=php
 autocmd BufNewFile,BufRead *.sieve setlocal filetype=sieve
+autocmd BufNewFile,BufRead *.smcprops setlocal filetype=python
+autocmd BufNewFile,BufRead *.thrift setlocal filetype=thrift
+autocmd BufNewFile,BufRead *.thrift-cvalidator setlocal filetype=python
+autocmd BufNewFile,BufRead *.tw setlocal filetype=python
+autocmd BufNewFile,BufRead *.txt setlocal filetype=human
+autocmd BufNewFile,BufRead README setlocal filetype=human
 autocmd FileType gitcommit,human,mail setlocal formatoptions=1aconrtq textwidth=79
 autocmd FileType rst call REST_init()
 autocmd FileType c setlocal formatoptions+=ro
 autocmd FileType perl setlocal smartindent
+autocmd FileType php call PHP_init()
 autocmd FileType css setlocal smartindent
 autocmd FileType html call HTML_init()
 autocmd FileType htmldjango call HTML_init()
 autocmd FileType make setlocal noexpandtab shiftwidth=8 tabstop=8 softtabstop=8
 autocmd FileType python call Python_init()
 autocmd FileType pyrex call Python_init()
+" Kill trailing whitespace on save
+autocmd FileType c,cabal,cpp,haskell,javascript,php,python,readme,text
+  \ autocmd BufWritePre <buffer>
+  \ :call setline(1,map(getline(1,"$"),'substitute(v:val,"\\s\\+$","","")'))
 autocmd BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$") | exe "normal g`\"" |  endif "return to the last edited line in opened files:
 autocmd BufReadCmd *.egg,*.odp,*.ods,*.odt,*.jar,*.xmap,*.xmind,*.xpi call zip#Browse(expand("<amatch>"))
 autocmd InsertLeave * redraw!
+if $SVN_COMMIT_TEMPLATE != ""
+  autocmd BufNewFile,BufRead svn-commit.*tmp :0r $SVN_COMMIT_TEMPLATE
+endif
 
 "
 " Folding; closed by default because it caused confusion in the long run.
@@ -241,6 +272,10 @@ inoremap jj <ESC>
 "cmap W w !sudo tee % >/dev/null
 "Turned off because mapped each "W" typed. Gotta come up with something better.
 
+" bind "gb" to "git blame" for visual and normal mode.
+:vmap gb :<C-U>!git blame % -L<C-R>=line("'<") <CR>,<C-R>=line("'>") <CR><CR>
+:nmap gb :!git blame %<CR>
+
 "
 " Specific plug-in configuration
 "
@@ -260,8 +295,6 @@ let bufExplorerFindActive=0
 let bufExplorerShowRelativePath=1
 "let bufExplorerSortBy="fullpath"
 "
-
-set noswapfile
 
 let g:indentLine_color_gui = '#242424'
 let g:indentLine_enabled = 0
