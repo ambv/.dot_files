@@ -151,11 +151,11 @@ endif
 "
 " Folding; closed by default because it caused confusion in the long run.
 "
-" if has('folding')
-"   set foldlevelstart=0 foldclose=all
-"   nnoremap <silent> <Space> @=(foldlevel('.')?'za':'l')<CR>
-"   vnoremap <Space> zf
-" endif
+if has('folding')
+  set foldlevelstart=100 foldclose=all
+  nnoremap <silent> <Space> @=(foldlevel('.')?'za':'l')<CR>
+  vnoremap <Space> zf
+endif
 
 "
 " Keyboard shortcuts
