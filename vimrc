@@ -83,7 +83,7 @@ func! Python_init()
   "setlocal isk+=.,(
   match ExtraWhitespace /\s\+\%#\@<!$/
   match OverLength /\%80v.\+/
-  setlocal foldcolumn=4
+  "setlocal foldcolumn=4 "No confusion.
 endfunc
 
 func! JS_init()
