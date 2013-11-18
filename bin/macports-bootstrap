@@ -43,7 +43,7 @@ $P tree
 # $P valgrind              # incompatible with Mountain Lion
 $P watch
 $P wget
-$P zsh-devel
+$P zsh
 
 # with dependencies
 $P bzr
