@@ -9,8 +9,6 @@
 autocmd!
 set nomodeline
 
-
-
 "
 " UI configuration
 "
@@ -199,14 +197,8 @@ func Paste_toggle(insert_mode)
   """ mouse support and numbering (for terminal cut&paste purposes)
   if &paste || (a:insert_mode != 0 && !&number)
     set nopaste number cursorline mouse=a 
-    if &ft == 'python'
-      IndentLinesToggle off
-    endif
   else
     set paste nonumber nocursorline mouse=
-    if &ft == 'python'
-      IndentLinesToggle on
-    endif
   endif
 endfunc
 command PasteToggle :call Paste_toggle(0)
@@ -294,6 +286,3 @@ let bufExplorerFindActive=0
 let bufExplorerShowRelativePath=1
 "let bufExplorerSortBy="fullpath"
 "
-
-let g:indentLine_color_gui = '#242424'
-let g:indentLine_enabled = 0
