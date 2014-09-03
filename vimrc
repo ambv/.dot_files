@@ -13,8 +13,7 @@ set nomodeline
 " UI configuration
 "
 colorscheme ambv
-syntax on "highlight syntax with specific group for bad whitespace:
-highlight BadWhitespace ctermbg=red guibg=red
+syntax on "highlight syntax
 set history=250 "number of commands to remember in the command line
 set wildmenu wildmode=full "show a list of possible values on Tab
 set showmode "show what mode you're in (Insert, Replace, Visual, etc.)
@@ -136,9 +135,10 @@ autocmd FileType make setlocal noexpandtab shiftwidth=8 tabstop=8 softtabstop=8
 autocmd FileType python call Python_init()
 autocmd FileType pyrex call Python_init()
 " Kill trailing whitespace on save
-autocmd FileType c,cabal,cpp,haskell,javascript,php,python,readme,text
+autocmd FileType c,cabal,cpp,haskell,javascript,php,python,readme,rst,text
   \ autocmd BufWritePre <buffer>
   \ :call setline(1,map(getline(1,"$"),'substitute(v:val,"\\s\\+$","","")'))
+autocmd FileType python autocmd BufWritePost <buffer> botright cwindow 4
 autocmd BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$") | exe "normal g`\"" |  endif "return to the last edited line in opened files:
 autocmd BufReadCmd *.egg,*.odp,*.ods,*.odt,*.jar,*.xmap,*.xmind,*.xpi call zip#Browse(expand("<amatch>"))
 autocmd InsertLeave * redraw!
@@ -279,6 +279,7 @@ let python_highlight_string_format=1
 let python_highlight_string_templates=1
 let python_highlight_doctests=1
 let python_slow_sync=1
+let pyflakes_use_quickfix=1
 
 let snips_author='Łukasz Langa'
 
