@@ -13,7 +13,6 @@ export HOSTNAME="`hostname`"
 export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
 export LANGUAGE=en_US.UTF-8
-# export TZ="Europe/Warsaw"
 export TZ="America/Vancouver"
 export CLICOLOR=1
 export LSCOLORS=ExFxCxDxBxegedabagacad
@@ -103,6 +102,10 @@ function dot_files_update {
 
 function pipcached {
   pip install `find ~/.pip-cache/ -iname "*$@*" | grep -v content-type`
+}
+
+function r2h {
+  rst2html.py $@.rst $@.html
 }
 
 #

@@ -81,6 +81,7 @@ func! Python_init()
   match ExtraWhitespace /\s\+\%#\@<!$/
   match OverLength /\%80v.\+/
   "setlocal foldcolumn=4 "No confusion.
+  "IndentLinesToggle on
 endfunc
 
 func! JS_init()

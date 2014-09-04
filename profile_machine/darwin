@@ -4,10 +4,8 @@
 # my exports
 #
 
-export PATH=/opt/local/sbin:/opt/local/bin:/opt/local/Library/Frameworks/Python.framework/Versions/2.7/bin:/opt/local/Library/Frameworks/Python.framework/Versions/3.3/bin:/opt/local/lib/mysql55/bin:/usr/local/bin:/usr/local/sbin:$PATH
-export EDITOR="/opt/local/bin/mvim -f"
-export VIM_APP_DIR=/Applications/MacPorts/
-export QTDIR=/opt/local/lib/qt3
+export PATH=/usr/local/sbin:/usr/local/bin:$PATH
+export EDITOR="/usr/local/bin/vim -f"
 if [[ $TERM_PROGRAM == "iTerm.app" ]]; then
   export TERM=xterm-256color
 fi
@@ -16,18 +14,14 @@ fi
 # my aliases
 #
 
-alias cvim='/opt/local/bin/vim -XO'
+alias cvim='/usr/local/bin/vim -XO'
 alias ptar='tar --use-compress-program /opt/local/bin/pbzip2 '
-alias pgstart="sudo su postgres -c '/opt/local/lib/postgresql83/bin/pg_ctl -D /opt/local/var/db/postgresql83/defaultdb -l /opt/local/var/log/postgresql83/postgres.log start'"
-alias pgstop="sudo su postgres -c '/opt/local/lib/postgresql83/bin/pg_ctl -D /opt/local/var/db/postgresql83/defaultdb stop -m fast'"
-alias pgstatus="sudo su postgres -c '/opt/local/lib/postgresql83/bin/pg_ctl status -D /opt/local/var/db/postgresql83/defaultdb'"
 
 #
 # my functions
 #
 
-unalias vim
-function vim {
+function vim_mac {
 # this handles cases where no file is expected or 
 # unnecessary E247 errors at first MacVim startup
 # or when there is no MacVim window open

@@ -1,0 +1,27 @@
+I="brew install"
+
+$I pkg-config
+$I pcre
+$I xz
+$I cscope
+$I python
+$I python3
+$I vim
+
+$I fortune
+$I lftp
+$I mc
+$I pwgen
+$I pstree
+$I smartmontools
+$I tree
+$I watch
+$I wget
+$I zsh
+
+$I bzr
+$I git --with-pcre --with-gettext --with-brewed-curl --with-brewed-openssl
+$I mercurial
+
+# servers
+# mysql postgresql redis 
