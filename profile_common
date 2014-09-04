@@ -21,7 +21,6 @@ export LS_OPTIONS=--color=auto
 export EDITOR=vim
 export VIMFILES=~/.vim/
 export PYTHONSTARTUP=~/.pythonstartup
-export VIRTUALENV_USE_DISTRIBUTE=true
 LOCAL_BIN=~/.dot_files/bin
 export PATH="$LOCAL_BIN:/opt/automation:$PATH"
 export PYTHONWARNINGS=d
@@ -30,17 +29,8 @@ export PYTHONWARNINGS=d
 # my aliases
 #
 
-# LANDSRAAD
-alias landsraad="ssh -Yp26 ambv@193.33.35.200"
-alias caladan="ssh -Yp26 ambv@193.33.35.201"
-alias arrakis="ssh -Yp26 ambv@193.33.35.202"
-alias giediprime="ssh -Yp26 ambv@193.33.35.203"
-alias landsraad-tunnel-5900="ssh -Yp26 ambv@193.33.35.200 -L 5900:localhost:5900 -N"
-alias landsraad-tunnel-5901="ssh -Yp26 ambv@193.33.35.200 -L 5901:localhost:5901 -N"
-
 # ALLPLAY
 alias allplay="ssh -Y allplay@176.31.225.113"
-alias alldev="ssh -Yp26 allplay@devel.allplay.pl"
 
 # SAFE COMMANDS
 alias ci="echo \"You probably meant vi. Or are you still using RCS?\"; false"
