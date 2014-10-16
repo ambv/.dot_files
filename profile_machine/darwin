@@ -9,6 +9,9 @@ export EDITOR="/usr/local/bin/vim -f"
 if [[ $TERM_PROGRAM == "iTerm.app" ]]; then
   export TERM=xterm-256color
 fi
+if [[ $PROJECTS_DIR == "" ]]; then
+  export PROJECTS_DIR=/Users/ambv/Documents/Projekty
+fi
 
 #
 # my aliases

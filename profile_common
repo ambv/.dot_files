@@ -38,6 +38,7 @@ alias cp="cp -ir"
 alias dc="echo \"You don't really use 'dc', do you?\"; false"
 alias grep="grep --color=auto"
 alias hg="PYTHONWARNINGS=i hg"
+alias pip="PYTHONWARNINGS=i pip"
 alias ll="ls -lah"
 alias lt="tree -AphL"
 alias mv="mv -i"
@@ -53,7 +54,7 @@ alias :n='vi'
 alias die='logout'
 alias jloc='let "a = 0"; for num in `find . -iname "*.java" | xargs -I {} wc -l {} | cut -d. -f1 | tr -d " "`; do let "a = a + num"; done; echo $a;'
 alias loc='let "a = 0"; for num in `find . -iname "*.py" | xargs -I {} wc -l {} | cut -d. -f1 | tr -d " "`; do let "a = a + num"; done; echo $a;'
-alias todo-list="ack --ignore-dir=.tox --ignore-dir=.venv --ignore-dir=.venv27 --ignore-dir=.venv33 --column -w \"\\W(TODO|FIXME|REMEMBER|WEDNESDAY|XXX|BUG|WTF|OMF?G|pdb\\.set_trace)\\W{1}\""
+alias todo-list="ack --ignore-dir=.tox --ignore-dir=.venv --ignore-dir=.venv27 --ignore-dir=.venv33 --ignore-dir=.venv34 --column -w \"\\W(TODO|FIXME|REMEMBER|WEDNESDAY|XXX|BUG|WTF|OMF?G|pdb\\.set_trace)\\W{1}\""
 alias depyc='find . -iname "*.pyc" -print -exec rm {} \; && find . -iname "*.pyo" -print -exec rm {} \; && find . -iname "*.orig" -print -exec rm {} \;'
 
 # Django
