@@ -82,7 +82,7 @@ snippet !!
 	#!/usr/bin/env python
 	# -*- coding: utf-8 -*-
 	
-	# Copyright (C) 2014 ${1:`g:snips_author`}
+	# Copyright (C) 2014 ${1:`g:snips_author`} 
 
 	"""${2:short description}"""
 
@@ -168,3 +168,16 @@ snippet ifmain
 # __magic__
 snippet _
 	__${1:init}__${2}
+# assertions
+snippet a=
+	self.assertEqual(${1}, ${2})
+# test function/method
+snippet test
+	def test_${1:description}(${2:`indent('.') ? 'self' : ''`}):
+		${0}
+# test case
+snippet testcase
+	class ${1:ExampleCase}(unittest.TestCase):
+
+		def test_${2:description}(self):
+			${0}
