@@ -11,7 +11,7 @@
 "  1.0:
 "    - initial version
 
-if v:version < 700 || !has('python')
+if v:version < 700 || !has('python3')
     echo "This script requires vim7.0+ with Python support." 
     finish 
 endif

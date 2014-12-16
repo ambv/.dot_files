@@ -24,8 +24,8 @@ endif
 if !exists("b:did_python_init")
     let b:did_python_init = 0
 
-    if !has('python')
-        echoerr "Error: the pyflakes.vim plugin requires Vim to be compiled with +python"
+    if !has('python3')
+        echoerr "Error: the pyflakes.vim plugin requires Vim to be compiled with +python3"
         finish
     endif
 
@@ -34,27 +34,28 @@ if !exists('g:pyflakes_use_quickfix')
 endif
 
 
-    python << EOF
+    python3 << EOF
 import vim
 import os.path
 import sys
-
-if sys.version_info[:2] < (2, 5):
-    raise AssertionError('Vim must be compiled with Python 2.5 or higher; you have ' + sys.version)
 
 # get the directory this script is in: the pyflakes python module should be installed there.
 scriptdir = os.path.join(os.path.dirname(vim.eval('expand("<sfile>")')), 'pyflakes')
 sys.path.insert(0, scriptdir)
 
 import ast
+from collections import namedtuple
 from pyflakes import checker, messages
 from operator import attrgetter
 import re
 
+loc = namedtuple('loc', 'lineno col')
+
 class SyntaxError(messages.Message):
     message = 'could not compile: %s'
-    def __init__(self, filename, lineno, col, message):
-        messages.Message.__init__(self, filename, lineno)
+
+    def __init__(self, filename, loc, message):
+        messages.Message.__init__(self, filename, loc)
         self.message_args = (message,)
 
 class blackhole(object):
@@ -77,7 +78,7 @@ def check(buffer):
     contents = '\n'.join(contents) + '\n'
 
     vimenc = vim.eval('&encoding')
-    if vimenc:
+    if vimenc and isinstance(contents, bytes):
         contents = contents.decode(vimenc)
 
     builtins = set(['__file__'])
@@ -96,13 +97,13 @@ def check(buffer):
     except:
         try:
             value = sys.exc_info()[1]
-            lineno, offset, line = value[1][1:]
+            lineno, offset, line = value.lineno, value.offset, value.text
         except IndexError:
             lineno, offset, line = 1, 0, ''
         if line and line.endswith("\n"):
             line = line[:-1]
 
-        return [SyntaxError(filename, lineno, offset, str(value))]
+        return [SyntaxError(filename, loc(lineno, offset), str(value))]
     else:
         # pyflakes looks to _MAGIC_GLOBALS in checker.py to see which
         # UndefinedNames to ignore
@@ -227,7 +228,7 @@ if !exists("*s:RunPyflakes")
         let b:qf_list = []
         let b:qf_window_count = -1
         
-        python << EOF
+        python3 << EOF
 for w in check(vim.current.buffer):
     vim.command('let s:matchDict = {}')
     vim.command("let s:matchDict['lineNum'] = " + str(w.lineno))

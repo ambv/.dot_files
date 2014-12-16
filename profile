@@ -23,7 +23,7 @@ xterm*|rxvt*)
   bind -m vi-insert "\C-a":vi-append-eol
 esac
 export HISTCONTROL=erasedups
-export HISTSIZE=10000
+export HISTSIZE=200000
 set -o vi
 
 source ~/.profile_common
