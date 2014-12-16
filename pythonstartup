@@ -2,11 +2,14 @@ import readline
 import rlcompleter
 import atexit
 import os
+import sys
 readline.parse_and_bind('tab: complete')
-histfile = os.path.join(os.environ['HOME'], '.pythonhistory')
-try:
-  readline.read_history_file(histfile)
-except IOError:
-  pass
-atexit.register(readline.write_history_file, histfile)
-del os, histfile, readline, rlcompleter
+if sys.version[0] == 2:
+  histfile = os.path.join(os.environ['HOME'], '.pythonhistory')
+  try:
+    readline.read_history_file(histfile)
+  except IOError:
+    pass
+  atexit.register(readline.write_history_file, histfile)
+  del histfile
+del os, sys, readline, rlcompleter

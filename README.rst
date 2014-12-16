@@ -8,7 +8,7 @@ servers I have access to.  It consists of following parts:
   virtually the same regardless whether I'm working on *Mac OS X*, *Debian*,
   *Fedora*, *Solaris* or *Cygwin* (sic!)
 
-* the most badass *Python*-oriented *Vim* configuration out there
+* a sensible static *Python*-oriented *Vim* configuration; no Pathogen
 
 * `ack <http://betterthangrep.com/>`_ with a sensible default configuration
 
@@ -20,7 +20,7 @@ servers I have access to.  It consists of following parts:
   Vim)
 
 * decent global ``.gitignore`` and ``.hgignore`` files with the most common
-  temporary and runtime file masks included, plus some *Python* related goodies 
+  temporary and runtime file masks included, plus some *Python* related goodies
 
 * a *Python* shell startup config that enables readline support
 
@@ -28,20 +28,23 @@ servers I have access to.  It consists of following parts:
   setup my environment anywhere by simply cloning the repo and running
   ``./install.py``
 
+* a *Homebrew* bootstrap script that lets me set up a Mac OS X box
+  easily, or alternatively...
+
 * a *MacPorts* bootstrap script that lets me set up a Mac OS X box in just 10
   hours or so (compiling, compiling, compiling). No user attendance needed
   though so I can run it overnight.
 
-Y U NO USE PATHOGEN / OHMYZSH / HOMEBREW
-========================================
+Y U NO USE PATHOGEN / OHMYZSH
+=============================
 
-A question I get sometimes is why isn't this configuration using the new and hip
-package managers like *Pathogen* for Vim scripts, *oh-my-zsh* for ZSh or
-*homebrew* for Mac OS X. The answer is that I want to avoid additional package
-managers that become dependencies themselves. I didn't actually try using them
-in a distributed manner but my intuition tells me it would complicate the setup.
-Remember that its greatest feature is currently the ability to use the whole
-thing unmodified on Linux, Mac OS X, Solaris and Cygwin (and native Win32 Vim!).
+A question I get sometimes is why isn't this configuration using the new and
+hip package managers like *Pathogen* for Vim scripts or *oh-my-zsh* for ZSh.
+The answer is that I want to avoid additional package managers that become
+dependencies themselves. I didn't actually try using them in a distributed
+manner but my intuition tells me it would complicate the setup.  Remember that
+its greatest feature is currently the ability to use the whole thing unmodified
+on Linux, Mac OS X, Solaris and Cygwin (and native Win32 Vim!).
 
 How can you benefit from this
 =============================

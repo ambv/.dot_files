@@ -38,5 +38,6 @@ __pycache__
 *.egg-info
 
 # Mac OS X specific
+.propy
 .DS_Store
 settings-ralphtest.py

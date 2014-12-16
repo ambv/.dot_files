@@ -12,7 +12,7 @@ set nomodeline
 "
 " UI configuration
 "
-colorscheme ambv
+colorscheme ambvlight
 syntax on "highlight syntax
 set history=250 "number of commands to remember in the command line
 set wildmenu wildmode=full "show a list of possible values on Tab
@@ -81,6 +81,7 @@ func! Python_init()
   match ExtraWhitespace /\s\+\%#\@<!$/
   match OverLength /\%80v.\+/
   "setlocal foldcolumn=4 "No confusion.
+  "IndentLinesToggle on
 endfunc
 
 func! JS_init()
