@@ -36,3 +36,10 @@ if [ -f /opt/local/etc/bash_completion ]; then
 elif [ -f /etc/bash_completion ]; then
   . /etc/bash_completion
 fi
+
+#
+# execute local-specific settings
+#
+if [ -e ~/.profile_local ]; then
+  source ~/.profile_local
+fi
