@@ -29,6 +29,9 @@ bindkey -e
 autoload -Uz compinit
 compinit
 
+autoload -U select-word-style
+select-word-style bash
+
 bindkey '\e[1~' beginning-of-line
 bindkey '\e[4~' end-of-line
 bindkey '\e[7~' beginning-of-line

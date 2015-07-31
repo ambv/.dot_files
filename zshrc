@@ -1,6 +1,7 @@
 PS1=$PROMPT_TEMPLATE
 PROMPT=$PROMPT_TEMPLATE
 RPROMPT="%D{%T}"
+HISTSIZE=200000
 preexec() {
     print -rn -- $terminfo[cuu1]
     let cols=$COLUMNS-9

@@ -52,6 +52,6 @@ if sys.platform in ('win32',):
 vim.command("py3file %s%s" % (prefix, path))
 endpython
 
-command! ToggleWord :py ToggleWord()
+command! ToggleWord :py3 ToggleWord()
 
 nmap ,t :ToggleWord<CR>
