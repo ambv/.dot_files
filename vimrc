@@ -40,7 +40,7 @@ set noerrorbells "shut up about reaching buffer boundary, etc.
 set ttyfast "fast terminal connection, more bandwidth but better redrawing performance
 set undolevels=1000
 set viminfo='50,"50
-set noswapfile
+"set noswapfile
 "set virtualedit=all "cursor can move anywhere (even beyond text boundaries)
 
 

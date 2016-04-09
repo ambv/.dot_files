@@ -7,7 +7,7 @@ def PyDocSearch(keyword=None, current_buffer=False):
         import vim
         isk = vim.eval('&isk')
         vim.command('set isk+=.')
-        print vim.eval('&isk')
+        print(vim.eval('&isk'))
         search = 'search.html?q=%s' % vim.eval('expand("<cword>")')
         vim.command('set isk=%s' % isk)
     else:

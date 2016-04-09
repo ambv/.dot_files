@@ -62,6 +62,6 @@ hi Type	      cterm=NONE ctermfg=Blue gui=BOLD guifg=#7c7cff
 hi Structure  cterm=NONE ctermfg=Blue gui=italic guifg=#7c7cff
 hi Exception  cterm=NONE ctermfg=DarkCyan gui=italic guifg=#22cdcd
 
-hi OverLength ctermbg=233 guibg=#000040
-hi ExtraWhitespace ctermbg=233 guibg=#000080
-hi PyFlakes ctermbg=233 guibg=#000040
+hi OverLength ctermbg=234 guibg=#000040
+hi ExtraWhitespace ctermbg=234 guibg=#000080
+hi PyFlakes ctermbg=234 guibg=#000040

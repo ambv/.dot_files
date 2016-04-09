@@ -81,7 +81,7 @@ def ToggleWord():
                         next_word = next_word.upper()
                     elif cur_word[0].upper() + cur_word[1:] == cur_word:
                         next_word = next_word[0].upper() + next_word[1:]
-                except IndexRange, e:
+                except IndexRange as e:
                     pass
             break
 

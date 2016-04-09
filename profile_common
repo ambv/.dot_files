@@ -23,30 +23,28 @@ export EDITOR=vim
 export VIMFILES=~/.vim/
 export PYTHONSTARTUP=~/.pythonstartup
 LOCAL_BIN=~/.dot_files/bin
-export PATH="$LOCAL_BIN:/opt/automation:$PATH"
 export PYTHONWARNINGS=d
 
 #
 # my aliases
 #
 
-# ALLPLAY
-alias allplay="ssh -Y allplay@176.31.225.113"
-
-# SAFE COMMANDS
-alias ci="echo \"You probably meant vi. Or are you still using RCS?\"; false"
-alias cp="cp -ir"
-alias dc="echo \"You don't really use 'dc', do you?\"; false"
-alias grep="grep --color=auto"
-alias hg="PYTHONWARNINGS=i hg"
-alias pip="PYTHONWARNINGS=i pip"
-alias ll="ls -lah"
-alias lt="tree -AphL"
-alias mv="mv -i"
-alias rm="rm -i"
-alias tree="tree -A"
-alias vi="vim"
-alias vim="vim -XO" # if you want the default, just type vim -O1
+# SAFE COMMANDS WHEN INTERACTIVE
+if [ -t 0 ]; then
+  alias ci="echo \"You probably meant vi. Or are you still using RCS?\"; false"
+  alias cp="cp -ir"
+  alias dc="echo \"You don't really use 'dc', do you?\"; false"
+  alias grep="grep --color=auto"
+  alias hg="PYTHONWARNINGS=i hg"
+  alias pip="PYTHONWARNINGS=i pip"
+  alias ll="ls -lah"
+  alias lt="tree -AphL"
+  alias mv="mv -i"
+  alias rm="rm -i"
+  alias tree="tree -A"
+  alias vi="vim"
+  alias vim="vim -XO" # if you want the default, just type vim -O1
+fi
 
 # shortcuts
 alias :q='logout'
@@ -57,15 +55,6 @@ alias jloc='let "a = 0"; for num in `find . -iname "*.java" | xargs -I {} wc -l 
 alias loc='let "a = 0"; for num in `find . -iname "*.py" | xargs -I {} wc -l {} | cut -d. -f1 | tr -d " "`; do let "a = a + num"; done; echo $a;'
 alias todo-list="ack --ignore-dir=.tox --ignore-dir=.venv --ignore-dir=.venv27 --ignore-dir=.venv33 --ignore-dir=.venv34 --column -w \"\\W(TODO|FIXME|REMEMBER|WEDNESDAY|XXX|BUG|WTF|OMF?G|pdb\\.set_trace)\\W{1}\""
 alias depyc='find . -iname "*.pyc" -print -exec rm {} \; && find . -iname "*.pyo" -print -exec rm {} \; && find . -iname "*.orig" -print -exec rm {} \;'
-
-# Django
-alias djrun='django-admin.py runserver'
-alias djrs='python -Wd manage.py runserver'
-alias djsync='django-admin.py syncdb'
-alias djevo='django-admin.py evolve --hint'
-alias djmm='django-admin.py makemessages -ae html,txt'
-alias djcm='django-admin.py compilemessages'
-alias djsh='django-admin.py shell'
 
 #
 # my functions
@@ -106,11 +95,3 @@ function r2h {
 if [ -e ~/.profile_machine ]; then
   source ~/.profile_machine
 fi
-
-#
-# execute local-specific settings
-#
-if [ -e ~/.profile_local ]; then
-  source ~/.profile_local
-fi
-

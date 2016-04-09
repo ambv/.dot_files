@@ -2,19 +2,16 @@
 from _ast import PyCF_ONLY_AST
 from sys import version_info
 
-from unittest2 import skip, skipIf, TestCase
-
 from pyflakes import messages as m, checker
-from pyflakes.test import harness
+from pyflakes.test.harness import TestCase, skip, skipIf
 
 
-class Test(harness.Test):
+class Test(TestCase):
     def test_undefined(self):
         self.flakes('bar', m.UndefinedName)
 
     def test_definedInListComp(self):
         self.flakes('[a for a in range(10) if a]')
-
 
     def test_functionsNeedGlobalScope(self):
         self.flakes('''
@@ -27,14 +24,12 @@ class Test(harness.Test):
     def test_builtins(self):
         self.flakes('range(10)')
 
-
     def test_builtinWindowsError(self):
         """
         C{WindowsError} is sometimes a builtin name, so no warning is emitted
         for using it.
         """
         self.flakes('WindowsError')
-
 
     def test_magicGlobalsFile(self):
         """
@@ -43,7 +38,6 @@ class Test(harness.Test):
         """
         self.flakes('__file__')
 
-
     def test_magicGlobalsBuiltins(self):
         """
         Use of the C{__builtins__} magic global should not emit an undefined
@@ -51,14 +45,12 @@ class Test(harness.Test):
         """
         self.flakes('__builtins__')
 
-
     def test_magicGlobalsName(self):
         """
         Use of the C{__name__} magic global should not emit an undefined name
         warning.
         """
         self.flakes('__name__')
-
 
     def test_magicGlobalsPath(self):
         """
@@ -68,13 +60,15 @@ class Test(harness.Test):
         self.flakes('__path__', m.UndefinedName)
         self.flakes('__path__', filename='package/__init__.py')
 
-
     def test_globalImportStar(self):
-        '''Can't find undefined names with import *'''
+        """Can't find undefined names with import *."""
         self.flakes('from fu import *; bar', m.ImportStarUsed)
 
     def test_localImportStar(self):
-        '''A local import * still allows undefined names to be found in upper scopes'''
+        """
+        A local import * still allows undefined names to be found
+        in upper scopes.
+        """
         self.flakes('''
         def a():
             from fu import *
@@ -83,7 +77,7 @@ class Test(harness.Test):
 
     @skipIf(version_info >= (3,), 'obsolete syntax')
     def test_unpackedParameter(self):
-        '''Unpacked function parameters create bindings'''
+        """Unpacked function parameters create bindings."""
         self.flakes('''
         def a((bar, baz)):
             bar; baz
@@ -91,7 +85,10 @@ class Test(harness.Test):
 
     @skip("todo")
     def test_definedByGlobal(self):
-        '''"global" can make an otherwise undefined name in another function defined'''
+        """
+        "global" can make an otherwise undefined name in another function
+        defined.
+        """
         self.flakes('''
         def a(): global fu; fu = 1
         def b(): fu
@@ -108,11 +105,11 @@ class Test(harness.Test):
         ''', m.UndefinedName)
 
     def test_del(self):
-        '''del deletes bindings'''
+        """Del deletes bindings."""
         self.flakes('a = 1; del a; a', m.UndefinedName)
 
     def test_delGlobal(self):
-        '''del a global binding from a function'''
+        """Del a global binding from a function."""
         self.flakes('''
         a = 1
         def f():
@@ -122,11 +119,11 @@ class Test(harness.Test):
         ''')
 
     def test_delUndefined(self):
-        '''del an undefined name'''
+        """Del an undefined name."""
         self.flakes('del a', m.UndefinedName)
 
     def test_globalFromNestedScope(self):
-        '''global names are available from nested scopes'''
+        """Global names are available from nested scopes."""
         self.flakes('''
         a = 1
         def b():
@@ -163,7 +160,6 @@ class Test(harness.Test):
                     return a
         ''', m.UndefinedLocal)
 
-
     def test_intermediateClassScopeIgnored(self):
         """
         If a name defined in an enclosing scope is shadowed by a local variable
@@ -181,7 +177,6 @@ class Test(harness.Test):
                     print(x, a)
             print(x)
         ''', m.UndefinedLocal)
-
 
     def test_doubleNestingReportsClosestName(self):
         """
@@ -203,7 +198,6 @@ class Test(harness.Test):
                 return x
         ''', m.UndefinedLocal).messages[0]
         self.assertEqual(exc.message_args, ('x', 5))
-
 
     def test_laterRedefinedGlobalFromNestedScope3(self):
         """
@@ -239,7 +233,7 @@ class Test(harness.Test):
         )
 
     def test_nestedClass(self):
-        '''nested classes can access enclosing scope'''
+        """Nested classes can access enclosing scope."""
         self.flakes('''
         def f(foo):
             class C:
@@ -252,7 +246,7 @@ class Test(harness.Test):
         ''')
 
     def test_badNestedClass(self):
-        '''free variables in nested classes must bind at class creation'''
+        """Free variables in nested classes must bind at class creation."""
         self.flakes('''
         def f():
             class C:
@@ -263,7 +257,7 @@ class Test(harness.Test):
         ''', m.UndefinedName)
 
     def test_definedAsStarArgs(self):
-        '''star and double-star arg names are defined'''
+        """Star and double-star arg names are defined."""
         self.flakes('''
         def f(a, *b, **c):
             print(a, b, c)
@@ -271,7 +265,7 @@ class Test(harness.Test):
 
     @skipIf(version_info < (3,), 'new in Python 3')
     def test_definedAsStarUnpack(self):
-        '''star names in unpack are defined'''
+        """Star names in unpack are defined."""
         self.flakes('''
         a, *b = range(10)
         print(a, b)
@@ -286,8 +280,44 @@ class Test(harness.Test):
         ''')
 
     @skipIf(version_info < (3,), 'new in Python 3')
+    def test_usedAsStarUnpack(self):
+        """
+        Star names in unpack are used if RHS is not a tuple/list literal.
+        """
+        self.flakes('''
+        def f():
+            a, *b = range(10)
+        ''')
+        self.flakes('''
+        def f():
+            (*a, b) = range(10)
+        ''')
+        self.flakes('''
+        def f():
+            [a, *b, c] = range(10)
+        ''')
+
+    @skipIf(version_info < (3,), 'new in Python 3')
+    def test_unusedAsStarUnpack(self):
+        """
+        Star names in unpack are unused if RHS is a tuple/list literal.
+        """
+        self.flakes('''
+        def f():
+            a, *b = any, all, 4, 2, 'un'
+        ''', m.UnusedVariable, m.UnusedVariable)
+        self.flakes('''
+        def f():
+            (*a, b) = [bool, int, float, complex]
+        ''', m.UnusedVariable, m.UnusedVariable)
+        self.flakes('''
+        def f():
+            [a, *b, c] = 9, 8, 7, 6, 5, 4
+        ''', m.UnusedVariable, m.UnusedVariable, m.UnusedVariable)
+
+    @skipIf(version_info < (3,), 'new in Python 3')
     def test_keywordOnlyArgs(self):
-        '''kwonly arg names are defined'''
+        """Keyword-only arg names are defined."""
         self.flakes('''
         def f(*, a, b=None):
             print(a, b)
@@ -301,7 +331,7 @@ class Test(harness.Test):
 
     @skipIf(version_info < (3,), 'new in Python 3')
     def test_keywordOnlyArgsUndefined(self):
-        '''typo in kwonly name'''
+        """Typo in kwonly name."""
         self.flakes('''
         def f(*, a, b=default_c):
             print(a, b)
@@ -309,7 +339,7 @@ class Test(harness.Test):
 
     @skipIf(version_info < (3,), 'new in Python 3')
     def test_annotationUndefined(self):
-        """Undefined annotations"""
+        """Undefined annotations."""
         self.flakes('''
         from abc import note1, note2, note3, note4, note5
         def func(a: note1, *args: note2,
@@ -337,6 +367,73 @@ class Test(harness.Test):
         self.flakes('(a for a in %srange(10) if a)' %
                     ('x' if version_info < (3,) else ''))
 
+    def test_undefinedWithErrorHandler(self):
+        """
+        Some compatibility code checks explicitly for NameError.
+        It should not trigger warnings.
+        """
+        self.flakes('''
+        try:
+            socket_map
+        except NameError:
+            socket_map = {}
+        ''')
+        self.flakes('''
+        try:
+            _memoryview.contiguous
+        except (NameError, AttributeError):
+            raise RuntimeError("Python >= 3.3 is required")
+        ''')
+        # If NameError is not explicitly handled, generate a warning
+        self.flakes('''
+        try:
+            socket_map
+        except:
+            socket_map = {}
+        ''', m.UndefinedName)
+        self.flakes('''
+        try:
+            socket_map
+        except Exception:
+            socket_map = {}
+        ''', m.UndefinedName)
+
+    def test_definedInClass(self):
+        """
+        Defined name for generator expressions and dict/set comprehension.
+        """
+        self.flakes('''
+        class A:
+            T = range(10)
+
+            Z = (x for x in T)
+            L = [x for x in T]
+            B = dict((i, str(i)) for i in T)
+        ''')
+
+        if version_info >= (2, 7):
+            self.flakes('''
+            class A:
+                T = range(10)
+
+                X = {x for x in T}
+                Y = {x:x for x in T}
+            ''')
+
+    def test_undefinedInLoop(self):
+        """
+        The loop variable is defined after the expression is computed.
+        """
+        self.flakes('''
+        for i in range(i):
+            print(i)
+        ''', m.UndefinedName)
+        self.flakes('''
+        [42 for i in range(i)]
+        ''', m.UndefinedName)
+        self.flakes('''
+        (42 for i in range(i))
+        ''', m.UndefinedName)
 
 
 class NameTests(TestCase):

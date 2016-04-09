@@ -1,30 +1,25 @@
-# (c) 2005-2010 Divmod, Inc.
-# See LICENSE file for details
-
 """
 Tests for various Pyflakes behavior.
 """
 
 from sys import version_info
-from unittest2 import skip, skipIf
 
 from pyflakes import messages as m
-from pyflakes.test import harness
+from pyflakes.test.harness import TestCase, skip, skipIf
 
 
-class Test(harness.Test):
+class Test(TestCase):
 
     def test_duplicateArgs(self):
         self.flakes('def fu(bar, bar): pass', m.DuplicateArgument)
 
-    @skip("todo: this requires finding all assignments in the function body first")
     def test_localReferencedBeforeAssignment(self):
         self.flakes('''
         a = 1
         def f():
             a; a=1
         f()
-        ''', m.UndefinedName)
+        ''', m.UndefinedLocal, m.UnusedVariable)
 
     def test_redefinedInListComp(self):
         """
@@ -53,6 +48,95 @@ class Test(harness.Test):
         for a, b in [(1, 2)]:
             pass
         [1 for a, b in [(1, 2)]]
+        ''')
+
+    def test_redefinedInGenerator(self):
+        """
+        Test that reusing a variable in a generator does not raise
+        a warning.
+        """
+        self.flakes('''
+        a = 1
+        (1 for a, b in [(1, 2)])
+        ''')
+        self.flakes('''
+        class A:
+            a = 1
+            list(1 for a, b in [(1, 2)])
+        ''')
+        self.flakes('''
+        def f():
+            a = 1
+            (1 for a, b in [(1, 2)])
+        ''', m.UnusedVariable)
+        self.flakes('''
+        (1 for a, b in [(1, 2)])
+        (1 for a, b in [(1, 2)])
+        ''')
+        self.flakes('''
+        for a, b in [(1, 2)]:
+            pass
+        (1 for a, b in [(1, 2)])
+        ''')
+
+    @skipIf(version_info < (2, 7), "Python >= 2.7 only")
+    def test_redefinedInSetComprehension(self):
+        """
+        Test that reusing a variable in a set comprehension does not raise
+        a warning.
+        """
+        self.flakes('''
+        a = 1
+        {1 for a, b in [(1, 2)]}
+        ''')
+        self.flakes('''
+        class A:
+            a = 1
+            {1 for a, b in [(1, 2)]}
+        ''')
+        self.flakes('''
+        def f():
+            a = 1
+            {1 for a, b in [(1, 2)]}
+        ''', m.UnusedVariable)
+        self.flakes('''
+        {1 for a, b in [(1, 2)]}
+        {1 for a, b in [(1, 2)]}
+        ''')
+        self.flakes('''
+        for a, b in [(1, 2)]:
+            pass
+        {1 for a, b in [(1, 2)]}
+        ''')
+
+    @skipIf(version_info < (2, 7), "Python >= 2.7 only")
+    def test_redefinedInDictComprehension(self):
+        """
+        Test that reusing a variable in a dict comprehension does not raise
+        a warning.
+        """
+        self.flakes('''
+        a = 1
+        {1: 42 for a, b in [(1, 2)]}
+        ''')
+        self.flakes('''
+        class A:
+            a = 1
+            {1: 42 for a, b in [(1, 2)]}
+        ''')
+        self.flakes('''
+        def f():
+            a = 1
+            {1: 42 for a, b in [(1, 2)]}
+        ''', m.UnusedVariable)
+        self.flakes('''
+        {1: 42 for a, b in [(1, 2)]}
+        {1: 42 for a, b in [(1, 2)]}
+        ''')
+        self.flakes('''
+        for a, b in [(1, 2)]:
+            pass
+        {1: 42 for a, b in [(1, 2)]}
         ''')
 
     def test_redefinedFunction(self):
@@ -124,6 +208,31 @@ class Test(harness.Test):
             pass
         ''', m.RedefinedWhileUnused)
 
+    def test_redefinedIfElseInListComp(self):
+        """
+        Test that shadowing a variable in a list comprehension in
+        an if and else block does not raise a warning.
+        """
+        self.flakes('''
+        if False:
+            a = 1
+        else:
+            [a for a in '12']
+        ''')
+
+    def test_redefinedElseInListComp(self):
+        """
+        Test that shadowing a variable in a list comprehension in
+        an else (or if) block raises a warning.
+        """
+        self.flakes('''
+        if False:
+            pass
+        else:
+            a = 1
+            [a for a in '12']
+        ''', m.RedefinedInListComp)
+
     def test_functionDecorator(self):
         """
         Test that shadowing a function definition with a decorated version of
@@ -163,9 +272,8 @@ class Test(harness.Test):
         """)
 
     def test_unaryPlus(self):
-        '''Don't die on unary +'''
+        """Don't die on unary +."""
         self.flakes('+1')
-
 
     def test_undefinedBaseClass(self):
         """
@@ -177,7 +285,6 @@ class Test(harness.Test):
             pass
         ''', m.UndefinedName)
 
-
     def test_classNameUndefinedInClassBody(self):
         """
         If a class name is used in the body of that class's definition and
@@ -187,7 +294,6 @@ class Test(harness.Test):
         class foo:
             foo
         ''', m.UndefinedName)
-
 
     def test_classNameDefinedPreviously(self):
         """
@@ -201,45 +307,38 @@ class Test(harness.Test):
             foo
         ''')
 
-
     def test_classRedefinition(self):
         """
         If a class is defined twice in the same module, a warning is emitted.
         """
-        self.flakes(
-        '''
+        self.flakes('''
         class Foo:
             pass
         class Foo:
             pass
         ''', m.RedefinedWhileUnused)
-
 
     def test_functionRedefinedAsClass(self):
         """
         If a function is redefined as a class, a warning is emitted.
         """
-        self.flakes(
-        '''
+        self.flakes('''
         def Foo():
             pass
         class Foo:
             pass
         ''', m.RedefinedWhileUnused)
-
 
     def test_classRedefinedAsFunction(self):
         """
         If a class is redefined as a function, a warning is emitted.
         """
-        self.flakes(
-        '''
+        self.flakes('''
         class Foo:
             pass
         def Foo():
             pass
         ''', m.RedefinedWhileUnused)
-
 
     @skip("todo: Too hard to make this warn but other cases stay silent")
     def test_doubleAssignment(self):
@@ -247,38 +346,32 @@ class Test(harness.Test):
         If a variable is re-assigned to without being used, no warning is
         emitted.
         """
-        self.flakes(
-        '''
+        self.flakes('''
         x = 10
         x = 20
         ''', m.RedefinedWhileUnused)
-
 
     def test_doubleAssignmentConditionally(self):
         """
         If a variable is re-assigned within a conditional, no warning is
         emitted.
         """
-        self.flakes(
-        '''
+        self.flakes('''
         x = 10
         if True:
             x = 20
         ''')
-
 
     def test_doubleAssignmentWithUse(self):
         """
         If a variable is re-assigned to after being used, no warning is
         emitted.
         """
-        self.flakes(
-        '''
+        self.flakes('''
         x = 10
         y = x * 2
         x = 20
         ''')
-
 
     def test_comparison(self):
         """
@@ -296,7 +389,6 @@ class Test(harness.Test):
         x > y
         ''')
 
-
     def test_identity(self):
         """
         If a defined name is used on either side of an identity test, no
@@ -309,7 +401,6 @@ class Test(harness.Test):
         x is not y
         ''')
 
-
     def test_containment(self):
         """
         If a defined name is used on either side of a containment test, no
@@ -321,7 +412,6 @@ class Test(harness.Test):
         x in y
         x not in y
         ''')
-
 
     def test_loopControl(self):
         """
@@ -336,7 +426,6 @@ class Test(harness.Test):
             continue
         ''')
 
-
     def test_ellipsis(self):
         """
         Ellipsis in a slice is supported.
@@ -344,7 +433,6 @@ class Test(harness.Test):
         self.flakes('''
         [1, 2][...]
         ''')
-
 
     def test_extendedSlice(self):
         """
@@ -356,21 +444,27 @@ class Test(harness.Test):
         ''')
 
     def test_varAugmentedAssignment(self):
-        """Augmented assignment of a variable is supported. We don't care about var refs"""
+        """
+        Augmented assignment of a variable is supported.
+        We don't care about var refs.
+        """
         self.flakes('''
         foo = 0
         foo += 1
         ''')
 
     def test_attrAugmentedAssignment(self):
-        """Augmented assignment of attributes is supported. We don't care about attr refs"""
+        """
+        Augmented assignment of attributes is supported.
+        We don't care about attr refs.
+        """
         self.flakes('''
         foo = None
         foo.bar += foo.baz
         ''')
 
 
-class TestUnusedAssignment(harness.Test):
+class TestUnusedAssignment(TestCase):
     """
     Tests for warning about unused assignments.
     """
@@ -384,7 +478,6 @@ class TestUnusedAssignment(harness.Test):
         def a():
             b = 1
         ''', m.UnusedVariable)
-
 
     def test_unusedVariableAsLocals(self):
         """
@@ -420,7 +513,6 @@ class TestUnusedAssignment(harness.Test):
             b = 1
         ''')
 
-
     @skipIf(version_info < (3,), 'new in Python 3')
     def test_assignToNonlocal(self):
         """
@@ -433,7 +525,6 @@ class TestUnusedAssignment(harness.Test):
             nonlocal b
             b = b'1'
         ''')
-
 
     def test_assignToMember(self):
         """
@@ -450,7 +541,6 @@ class TestUnusedAssignment(harness.Test):
             b.foo = 1
         ''')
 
-
     def test_assignInForLoop(self):
         """
         Don't warn when a variable in a for loop is assigned to but not used.
@@ -461,27 +551,25 @@ class TestUnusedAssignment(harness.Test):
                 pass
         ''')
 
-
     def test_assignInListComprehension(self):
         """
-        Don't warn when a variable in a list comprehension is assigned to but
-        not used.
+        Don't warn when a variable in a list comprehension is
+        assigned to but not used.
         """
         self.flakes('''
         def f():
             [None for i in range(10)]
         ''')
 
-
     def test_generatorExpression(self):
         """
-        Don't warn when a variable in a generator expression is assigned to but not used.
+        Don't warn when a variable in a generator expression is
+        assigned to but not used.
         """
         self.flakes('''
         def f():
             (None for i in range(10))
         ''')
-
 
     def test_assignmentInsideLoop(self):
         """
@@ -496,7 +584,6 @@ class TestUnusedAssignment(harness.Test):
                 x = i * 2
         ''')
 
-
     def test_tupleUnpacking(self):
         """
         Don't warn when a variable included in tuple unpacking is unused. It's
@@ -504,20 +591,40 @@ class TestUnusedAssignment(harness.Test):
         in good Python code, so warning will only create false positives.
         """
         self.flakes('''
+        def f(tup):
+            (x, y) = tup
+        ''')
+        self.flakes('''
         def f():
             (x, y) = 1, 2
+        ''', m.UnusedVariable, m.UnusedVariable)
+        self.flakes('''
+        def f():
+            (x, y) = coords = 1, 2
+            if x > 1:
+                print(coords)
         ''')
-
+        self.flakes('''
+        def f():
+            (x, y) = coords = 1, 2
+        ''', m.UnusedVariable)
+        self.flakes('''
+        def f():
+            coords = (x, y) = 1, 2
+        ''', m.UnusedVariable)
 
     def test_listUnpacking(self):
         """
         Don't warn when a variable included in list unpacking is unused.
         """
         self.flakes('''
+        def f(tup):
+            [x, y] = tup
+        ''')
+        self.flakes('''
         def f():
             [x, y] = [1, 2]
-        ''')
-
+        ''', m.UnusedVariable, m.UnusedVariable)
 
     def test_closedOver(self):
         """
@@ -530,7 +637,6 @@ class TestUnusedAssignment(harness.Test):
                 return foo
             return bar
         ''')
-
 
     def test_doubleClosedOver(self):
         """
@@ -546,6 +652,15 @@ class TestUnusedAssignment(harness.Test):
             return bar
         ''')
 
+    def test_tracebackhideSpecialVariable(self):
+        """
+        Do not warn about unused local variable __tracebackhide__, which is
+        a special variable for py.test.
+        """
+        self.flakes("""
+            def helper():
+                __tracebackhide__ = True
+        """)
 
     def test_ifexp(self):
         """
@@ -554,7 +669,6 @@ class TestUnusedAssignment(harness.Test):
         self.flakes("a = 'moo' if True else 'oink'")
         self.flakes("a = foo if True else 'oink'", m.UndefinedName)
         self.flakes("a = 'moo' if True else bar", m.UndefinedName)
-
 
     def test_withStatementNoNames(self):
         """
@@ -581,7 +695,6 @@ class TestUnusedAssignment(harness.Test):
         bar
         ''')
 
-
     def test_withStatementAttributeName(self):
         """
         No warnings are emitted for using an attribute as the target of a
@@ -593,7 +706,6 @@ class TestUnusedAssignment(harness.Test):
         with open('foo') as foo.bar:
             pass
         ''')
-
 
     def test_withStatementSubscript(self):
         """
@@ -607,7 +719,6 @@ class TestUnusedAssignment(harness.Test):
             pass
         ''')
 
-
     def test_withStatementSubscriptUndefined(self):
         """
         An undefined name warning is emitted if the subscript used as the
@@ -619,7 +730,6 @@ class TestUnusedAssignment(harness.Test):
         with open('foo') as foo[bar]:
             pass
         ''', m.UndefinedName)
-
 
     def test_withStatementTupleNames(self):
         """
@@ -633,7 +743,6 @@ class TestUnusedAssignment(harness.Test):
         bar, baz
         ''')
 
-
     def test_withStatementListNames(self):
         """
         No warnings are emitted for using any of the list of names defined by a
@@ -645,7 +754,6 @@ class TestUnusedAssignment(harness.Test):
             bar, baz
         bar, baz
         ''')
-
 
     def test_withStatementComplicatedTarget(self):
         """
@@ -663,7 +771,6 @@ class TestUnusedAssignment(harness.Test):
         a, b, c, d, e, g, h, i
         ''')
 
-
     def test_withStatementSingleNameUndefined(self):
         """
         An undefined name warning is emitted if the name first defined by a
@@ -675,7 +782,6 @@ class TestUnusedAssignment(harness.Test):
         with open('foo') as bar:
             pass
         ''', m.UndefinedName)
-
 
     def test_withStatementTupleNamesUndefined(self):
         """
@@ -690,7 +796,6 @@ class TestUnusedAssignment(harness.Test):
             pass
         ''', m.UndefinedName)
 
-
     def test_withStatementSingleNameRedefined(self):
         """
         A redefined name warning is emitted if a name bound by an import is
@@ -702,7 +807,6 @@ class TestUnusedAssignment(harness.Test):
         with open('foo') as bar:
             pass
         ''', m.RedefinedWhileUnused)
-
 
     def test_withStatementTupleNamesRedefined(self):
         """
@@ -717,7 +821,6 @@ class TestUnusedAssignment(harness.Test):
             pass
         ''', m.RedefinedWhileUnused)
 
-
     def test_withStatementUndefinedInside(self):
         """
         An undefined name warning is emitted if a name is used inside the
@@ -728,7 +831,6 @@ class TestUnusedAssignment(harness.Test):
         with open('foo') as bar:
             baz
         ''', m.UndefinedName)
-
 
     def test_withStatementNameDefinedInBody(self):
         """
@@ -741,7 +843,6 @@ class TestUnusedAssignment(harness.Test):
             baz = 10
         baz
         ''')
-
 
     def test_withStatementUndefinedInExpression(self):
         """
@@ -794,18 +895,33 @@ class TestUnusedAssignment(harness.Test):
 
     def test_exceptWithoutNameInFunction(self):
         """
-        Don't issue false warning when an unnamed exception is used. Previously, there would be
-        a false warning, but only when the try..except was in a function
+        Don't issue false warning when an unnamed exception is used.
+        Previously, there would be a false warning, but only when the
+        try..except was in a function
         """
         self.flakes('''
+        import tokenize
         def foo():
             try: pass
-            except Exception: pass
+            except tokenize.TokenError: pass
+        ''')
+
+    def test_exceptWithoutNameInFunctionTuple(self):
+        """
+        Don't issue false warning when an unnamed exception is used.
+        This example catches a tuple of exception types.
+        """
+        self.flakes('''
+        import tokenize
+        def foo():
+            try: pass
+            except (tokenize.TokenError, IndentationError): pass
         ''')
 
     def test_augmentedAssignmentImportedFunctionCall(self):
-        """Consider a function that is called on the right part of an augassign operation to be
-        used.
+        """
+        Consider a function that is called on the right part of an
+        augassign operation to be used.
         """
         self.flakes('''
         from foo import bar
