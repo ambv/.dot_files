@@ -184,8 +184,9 @@ class Test(TestCase):
             def baz():
                 def fu():
                     pass
-        ''', m.RedefinedWhileUnused, m.RedefinedWhileUnused,
-             m.UnusedImport, m.UnusedImport)
+        ''',
+                    m.RedefinedWhileUnused, m.RedefinedWhileUnused,
+                    m.UnusedImport, m.UnusedImport)
 
     def test_redefinedButUsedLater(self):
         """
@@ -234,6 +235,22 @@ class Test(TestCase):
             fu = 1
         print(fu)
         ''')
+
+    def test_importInClass(self):
+        """
+        Test that import within class is a locally scoped attribute.
+        """
+        self.flakes('''
+        class bar:
+            import fu
+        ''')
+
+        self.flakes('''
+        class bar:
+            import fu
+
+        fu
+        ''', m.UndefinedName)
 
     def test_usedInFunction(self):
         self.flakes('''
@@ -472,6 +489,8 @@ class Test(TestCase):
         self.flakes('import fu; [fu for _ in range(1)]')
         self.flakes('import fu; [1 for _ in range(1) if fu]')
 
+    @skipIf(version_info >= (3,),
+            'in Python 3 list comprehensions execute in a separate scope')
     def test_redefinedByListComp(self):
         self.flakes('import fu; [1 for fu in range(1)]',
                     m.RedefinedInListComp)
@@ -502,10 +521,35 @@ class Test(TestCase):
         ''')
 
     def test_usedInGlobal(self):
+        """
+        A 'global' statement shadowing an unused import should not prevent it
+        from being reported.
+        """
         self.flakes('''
         import fu
         def f(): global fu
         ''', m.UnusedImport)
+
+    def test_usedAndGlobal(self):
+        """
+        A 'global' statement shadowing a used import should not cause it to be
+        reported as unused.
+        """
+        self.flakes('''
+            import foo
+            def f(): global foo
+            def g(): foo.is_used()
+        ''')
+
+    def test_assignedToGlobal(self):
+        """
+        Binding an import to a declared global should not cause it to be
+        reported as unused.
+        """
+        self.flakes('''
+            def f(): global foo; import foo
+            def g(): foo.is_used()
+        ''')
 
     @skipIf(version_info >= (3,), 'deprecated syntax')
     def test_usedInBackquote(self):
@@ -542,7 +586,7 @@ class Test(TestCase):
             import fu
             def fun(self):
                 fu
-        ''', m.UnusedImport, m.UndefinedName)
+        ''', m.UndefinedName)
 
     def test_nestedFunctionsNestScope(self):
         self.flakes('''
@@ -562,7 +606,38 @@ class Test(TestCase):
         ''')
 
     def test_importStar(self):
-        self.flakes('from fu import *', m.ImportStarUsed)
+        """Use of import * at module level is reported."""
+        self.flakes('from fu import *', m.ImportStarUsed, m.UnusedImport)
+        self.flakes('''
+        try:
+            from fu import *
+        except:
+            pass
+        ''', m.ImportStarUsed, m.UnusedImport)
+
+    @skipIf(version_info < (3,),
+            'import * below module level is a warning on Python 2')
+    def test_localImportStar(self):
+        """import * is only allowed at module level."""
+        self.flakes('''
+        def a():
+            from fu import *
+        ''', m.ImportStarNotPermitted)
+        self.flakes('''
+        class a:
+            from fu import *
+        ''', m.ImportStarNotPermitted)
+
+    @skipIf(version_info > (3,),
+            'import * below module level is an error on Python 3')
+    def test_importStarNested(self):
+        """All star imports are marked as used by an undefined variable."""
+        self.flakes('''
+        from fu import *
+        def f():
+            from bar import *
+            x
+        ''', m.ImportStarUsed, m.ImportStarUsed, m.ImportStarUsage)
 
     def test_packageImport(self):
         """
@@ -661,7 +736,6 @@ class Test(TestCase):
             pass
         ''')
 
-    @skip("todo: requires evaluating attribute access")
     def test_importedInClass(self):
         """Imports in class scope can be used through self."""
         self.flakes('''
@@ -714,6 +788,18 @@ class Test(TestCase):
         assert print_function is not division
         ''')
 
+    def test_futureImportUndefined(self):
+        """Importing undefined names from __future__ fails."""
+        self.flakes('''
+        from __future__ import print_statement
+        ''', m.FutureFeatureNotDefined)
+
+    def test_futureImportStar(self):
+        """Importing '*' from __future__ fails."""
+        self.flakes('''
+        from __future__ import *
+        ''', m.FutureFeatureNotDefined)
+
 
 class TestSpecialAll(TestCase):
     """
@@ -732,12 +818,11 @@ class TestSpecialAll(TestCase):
 
     def test_ignoredInClass(self):
         """
-        An C{__all__} definition does not suppress unused import warnings in a
-        class scope.
+        An C{__all__} definition in a class does not suppress unused import warnings.
         """
         self.flakes('''
+        import bar
         class foo:
-            import bar
             __all__ = ["bar"]
         ''', m.UnusedImport)
 
@@ -805,6 +890,14 @@ class TestSpecialAll(TestCase):
         from foolib import *
         __all__ = ["foo"]
         ''', m.ImportStarUsed)
+
+    def test_importStarNotExported(self):
+        """Report unused import when not needed to satisfy __all__."""
+        self.flakes('''
+        from foolib import *
+        a = 1
+        __all__ = ['a']
+        ''', m.ImportStarUsed, m.UnusedImport)
 
     def test_usedInGenExp(self):
         """
