@@ -4,6 +4,7 @@ Main module.
 Implement the central Checker class.
 Also, it models the Bindings and Scopes.
 """
+import __future__
 import doctest
 import os
 import sys
@@ -11,6 +12,12 @@ import sys
 PY2 = sys.version_info < (3, 0)
 PY32 = sys.version_info < (3, 3)    # Python 2.5 to 3.2
 PY33 = sys.version_info < (3, 4)    # Python 2.5 to 3.3
+try:
+    sys.pypy_version_info
+    PYPY = True
+except AttributeError:
+    PYPY = False
+
 builtin_vars = dir(__import__('__builtin__' if PY2 else 'builtins'))
 
 try:
@@ -92,8 +99,8 @@ class Binding(object):
     which names have not. See L{Assignment} for a special type of binding that
     is checked with stricter rules.
 
-    @ivar used: pair of (L{Scope}, line-number) indicating the scope and
-                line number that this binding was last used
+    @ivar used: pair of (L{Scope}, node) indicating the scope and
+                the node that this binding was last used.
     """
 
     def __init__(self, name, source):
@@ -139,6 +146,29 @@ class Importation(Definition):
         if isinstance(other, Importation):
             return self.fullName == other.fullName
         return isinstance(other, Definition) and self.name == other.name
+
+
+class StarImportation(Importation):
+    """A binding created by an 'from x import *' statement."""
+
+    def __init__(self, name, source):
+        super(StarImportation, self).__init__('*', source)
+        # Each star importation needs a unique name, and
+        # may not be the module name otherwise it will be deemed imported
+        self.name = name + '.*'
+        self.fullName = name
+
+
+class FutureImportation(Importation):
+    """
+    A binding created by a from `__future__` import statement.
+
+    `__future__` imports are implicitly used.
+    """
+
+    def __init__(self, name, source, scope):
+        super(FutureImportation, self).__init__(name, source)
+        self.used = (scope, source)
 
 
 class Argument(Binding):
@@ -237,7 +267,12 @@ class GeneratorScope(Scope):
 
 
 class ModuleScope(Scope):
-    pass
+    """Scope for a module."""
+    _futures_allowed = True
+
+
+class DoctestScope(ModuleScope):
+    """Scope for a doctest."""
 
 
 # Globally defined names which are not attributes of the builtins module, or
@@ -289,7 +324,6 @@ class Checker(object):
         self.withDoctest = withDoctest
         self.scopeStack = [ModuleScope()]
         self.exceptHandlers = [()]
-        self.futuresAllowed = True
         self.root = tree
         self.handleChildren(tree)
         self.runDeferred(self._deferredFunctions)
@@ -331,6 +365,24 @@ class Checker(object):
             self.offset = offset
             handler()
 
+    def _in_doctest(self):
+        return (len(self.scopeStack) >= 2 and
+                isinstance(self.scopeStack[1], DoctestScope))
+
+    @property
+    def futuresAllowed(self):
+        if not all(isinstance(scope, ModuleScope)
+                   for scope in self.scopeStack):
+            return False
+
+        return self.scope._futures_allowed
+
+    @futuresAllowed.setter
+    def futuresAllowed(self, value):
+        assert value is False
+        if isinstance(self.scope, ModuleScope):
+            self.scope._futures_allowed = False
+
     @property
     def scope(self):
         return self.scopeStack[-1]
@@ -344,17 +396,33 @@ class Checker(object):
         which were imported but unused.
         """
         for scope in self.deadScopes:
-            if isinstance(scope.get('__all__'), ExportBinding):
-                all_names = set(scope['__all__'].names)
+            # imports in classes are public members
+            if isinstance(scope, ClassScope):
+                continue
+
+            all_binding = scope.get('__all__')
+            if all_binding and not isinstance(all_binding, ExportBinding):
+                all_binding = None
+
+            if all_binding:
+                all_names = set(all_binding.names)
+                undefined = all_names.difference(scope)
+            else:
+                all_names = undefined = []
+
+            if undefined:
                 if not scope.importStarred and \
                    os.path.basename(self.filename) != '__init__.py':
                     # Look for possible mistakes in the export list
-                    undefined = all_names.difference(scope)
                     for name in undefined:
                         self.report(messages.UndefinedExport,
                                     scope['__all__'].source, name)
-            else:
-                all_names = []
+
+                # mark all import '*' as used by the undefined in __all__
+                if scope.importStarred:
+                    for binding in scope.values():
+                        if isinstance(binding, StarImportation):
+                            binding.used = all_binding
 
             # Look for imported names that aren't used.
             for value in scope.values():
@@ -448,6 +516,10 @@ class Checker(object):
             elif isinstance(existing, Importation) and value.redefines(existing):
                 existing.redefined.append(node)
 
+        if value.name in self.scope:
+            # then assume the rebound name is used as a global or within a loop
+            value.used = self.scope[value.name].used
+
         self.scope[value.name] = value
 
     def getNodeHandler(self, node_class):
@@ -462,23 +534,17 @@ class Checker(object):
         name = getNodeName(node)
         if not name:
             return
-        # try local scope
-        try:
-            self.scope[name].used = (self.scope, node)
-        except KeyError:
-            pass
-        else:
-            return
 
-        scopes = [scope for scope in self.scopeStack[:-1]
-                  if isinstance(scope, (FunctionScope, ModuleScope))]
-        if isinstance(self.scope, GeneratorScope) and scopes[-1] != self.scopeStack[-2]:
-            scopes.append(self.scopeStack[-2])
+        in_generators = None
+        importStarred = None
 
         # try enclosing function scopes and global scope
-        importStarred = self.scope.importStarred
-        for scope in reversed(scopes):
-            importStarred = importStarred or scope.importStarred
+        for scope in self.scopeStack[-1::-1]:
+            # only generators used in a class scope can access the names
+            # of the class. this is skipped during the first iteration
+            if in_generators is False and isinstance(scope, ClassScope):
+                continue
+
             try:
                 scope[name].used = (self.scope, node)
             except KeyError:
@@ -486,9 +552,30 @@ class Checker(object):
             else:
                 return
 
+            importStarred = importStarred or scope.importStarred
+
+            if in_generators is not False:
+                in_generators = isinstance(scope, GeneratorScope)
+
         # look in the built-ins
-        if importStarred or name in self.builtIns:
+        if name in self.builtIns:
             return
+
+        if importStarred:
+            from_list = []
+
+            for scope in self.scopeStack[-1::-1]:
+                for binding in scope.values():
+                    if isinstance(binding, StarImportation):
+                        # mark '*' imports as used for each scope
+                        binding.used = (self.scope, node)
+                        from_list.append(binding.fullName)
+
+            # report * usage, with a list of possible sources
+            from_list = ', '.join(sorted(from_list))
+            self.report(messages.ImportStarUsage, node, name, from_list)
+            return
+
         if name == '__path__' and os.path.basename(self.filename) == '__init__.py':
             # the special name __path__ is valid only in packages
             return
@@ -526,14 +613,30 @@ class Checker(object):
             binding = ExportBinding(name, node.parent, self.scope)
         else:
             binding = Assignment(name, node)
-        if name in self.scope:
-            binding.used = self.scope[name].used
         self.addBinding(node, binding)
 
     def handleNodeDelete(self, node):
+
+        def on_conditional_branch():
+            """
+            Return `True` if node is part of a conditional body.
+            """
+            current = getattr(node, 'parent', None)
+            while current:
+                if isinstance(current, (ast.If, ast.While, ast.IfExp)):
+                    return True
+                current = getattr(current, 'parent', None)
+            return False
+
         name = getNodeName(node)
         if not name:
             return
+
+        if on_conditional_branch():
+            # We can not predict if this conditional branch is going to
+            # be executed.
+            return
+
         if isinstance(self.scope, FunctionScope) and name in self.scope.globals:
             self.scope.globals.remove(name)
         else:
@@ -566,8 +669,13 @@ class Checker(object):
             node = node.value
         if not isinstance(node, ast.Str):
             return (None, None)
-        # Computed incorrectly if the docstring has backslash
-        doctest_lineno = node.lineno - node.s.count('\n') - 1
+
+        if PYPY:
+            doctest_lineno = node.lineno - 1
+        else:
+            # Computed incorrectly if the docstring has backslash
+            doctest_lineno = node.lineno - node.s.count('\n') - 1
+
         return (node.s, doctest_lineno)
 
     def handleNode(self, node, parent):
@@ -604,8 +712,12 @@ class Checker(object):
             return
         if not examples:
             return
+
+        # Place doctest in module scope
+        saved_stack = self.scopeStack
+        self.scopeStack = [self.scopeStack[0]]
         node_offset = self.offset or (0, 0)
-        self.pushScope()
+        self.pushScope(DoctestScope)
         underscore_in_builtins = '_' in self.builtIns
         if not underscore_in_builtins:
             self.builtIns.add('_')
@@ -614,6 +726,8 @@ class Checker(object):
                 tree = compile(example.source, "<doctest>", "exec", ast.PyCF_ONLY_AST)
             except SyntaxError:
                 e = sys.exc_info()[1]
+                if PYPY:
+                    e.offset += 1
                 position = (node_lineno + example.lineno + e.lineno,
                             example.indent + 4 + (e.offset or 0))
                 self.report(messages.DoctestSyntaxError, node, position)
@@ -625,19 +739,21 @@ class Checker(object):
         if not underscore_in_builtins:
             self.builtIns.remove('_')
         self.popScope()
+        self.scopeStack = saved_stack
 
     def ignore(self, node):
         pass
 
     # "stmt" type nodes
-    DELETE = PRINT = FOR = WHILE = IF = WITH = WITHITEM = RAISE = \
-        TRYFINALLY = ASSERT = EXEC = EXPR = ASSIGN = handleChildren
+    DELETE = PRINT = FOR = ASYNCFOR = WHILE = IF = WITH = WITHITEM = \
+        ASYNCWITH = ASYNCWITHITEM = RAISE = TRYFINALLY = EXEC = \
+        EXPR = ASSIGN = handleChildren
 
-    CONTINUE = BREAK = PASS = ignore
+    PASS = ignore
 
     # "expr" type nodes
     BOOLOP = BINOP = UNARYOP = IFEXP = DICT = SET = \
-        COMPARE = CALL = REPR = ATTRIBUTE = SUBSCRIPT = LIST = TUPLE = \
+        COMPARE = CALL = REPR = ATTRIBUTE = SUBSCRIPT = \
         STARRED = NAMECONSTANT = handleChildren
 
     NUM = STR = BYTES = ELLIPSIS = ignore
@@ -651,17 +767,46 @@ class Checker(object):
     # same for operators
     AND = OR = ADD = SUB = MULT = DIV = MOD = POW = LSHIFT = RSHIFT = \
         BITOR = BITXOR = BITAND = FLOORDIV = INVERT = NOT = UADD = USUB = \
-        EQ = NOTEQ = LT = LTE = GT = GTE = IS = ISNOT = IN = NOTIN = ignore
+        EQ = NOTEQ = LT = LTE = GT = GTE = IS = ISNOT = IN = NOTIN = \
+        MATMULT = ignore
 
     # additional node types
-    LISTCOMP = COMPREHENSION = KEYWORD = handleChildren
+    COMPREHENSION = KEYWORD = FORMATTEDVALUE = handleChildren
+
+    def ASSERT(self, node):
+        if isinstance(node.test, ast.Tuple) and node.test.elts != []:
+            self.report(messages.AssertTuple, node)
+        self.handleChildren(node)
 
     def GLOBAL(self, node):
         """
         Keep track of globals declarations.
         """
-        if isinstance(self.scope, FunctionScope):
-            self.scope.globals.update(node.names)
+        global_scope_index = 1 if self._in_doctest() else 0
+        global_scope = self.scopeStack[global_scope_index]
+
+        # Ignore 'global' statement in global scope.
+        if self.scope is not global_scope:
+
+            # One 'global' statement can bind multiple (comma-delimited) names.
+            for node_name in node.names:
+                node_value = Assignment(node_name, node)
+
+                # Remove UndefinedName messages already reported for this name.
+                # TODO: if the global is not used in this scope, it does not
+                # become a globally defined name.  See test_unused_global.
+                self.messages = [
+                    m for m in self.messages if not
+                    isinstance(m, messages.UndefinedName) or
+                    m.message_args[0] != node_name]
+
+                # Bind name to global scope if it doesn't exist already.
+                global_scope.setdefault(node_name, node_value)
+
+                # Bind name to non-global scopes, but as already "used".
+                node_value.used = (global_scope, node)
+                for scope in self.scopeStack[global_scope_index + 1:]:
+                    scope[node_name] = node_value
 
     NONLOCAL = GLOBAL
 
@@ -669,6 +814,8 @@ class Checker(object):
         self.pushScope(GeneratorScope)
         self.handleChildren(node)
         self.popScope()
+
+    LISTCOMP = handleChildren if PY2 else GENERATOREXP
 
     DICTCOMP = SETCOMP = GENERATOREXP
 
@@ -692,24 +839,67 @@ class Checker(object):
             # arguments, but these aren't dispatched through here
             raise RuntimeError("Got impossible expression context: %r" % (node.ctx,))
 
+    def CONTINUE(self, node):
+        # Walk the tree up until we see a loop (OK), a function or class
+        # definition (not OK), for 'continue', a finally block (not OK), or
+        # the top module scope (not OK)
+        n = node
+        while hasattr(n, 'parent'):
+            n, n_child = n.parent, n
+            if isinstance(n, (ast.While, ast.For)):
+                # Doesn't apply unless it's in the loop itself
+                if n_child not in n.orelse:
+                    return
+            if isinstance(n, (ast.FunctionDef, ast.ClassDef)):
+                break
+            # Handle Try/TryFinally difference in Python < and >= 3.3
+            if hasattr(n, 'finalbody') and isinstance(node, ast.Continue):
+                if n_child in n.finalbody:
+                    self.report(messages.ContinueInFinally, node)
+                    return
+        if isinstance(node, ast.Continue):
+            self.report(messages.ContinueOutsideLoop, node)
+        else:  # ast.Break
+            self.report(messages.BreakOutsideLoop, node)
+
+    BREAK = CONTINUE
+
     def RETURN(self, node):
-        if node.value and not self.scope.returnValue:
+        if isinstance(self.scope, (ClassScope, ModuleScope)):
+            self.report(messages.ReturnOutsideFunction, node)
+            return
+
+        if (
+            node.value and
+            hasattr(self.scope, 'returnValue') and
+            not self.scope.returnValue
+        ):
             self.scope.returnValue = node.value
         self.handleNode(node.value, node)
 
     def YIELD(self, node):
+        if isinstance(self.scope, (ClassScope, ModuleScope)):
+            self.report(messages.YieldOutsideFunction, node)
+            return
+
         self.scope.isGenerator = True
         self.handleNode(node.value, node)
 
-    YIELDFROM = YIELD
+    AWAIT = YIELDFROM = YIELD
 
     def FUNCTIONDEF(self, node):
         for deco in node.decorator_list:
             self.handleNode(deco, node)
         self.LAMBDA(node)
         self.addBinding(node, FunctionDefinition(node.name, node))
-        if self.withDoctest:
+        # doctest does not process doctest within a doctest,
+        # or in nested functions.
+        if (self.withDoctest and
+                not self._in_doctest() and
+                not isinstance(self.scope, FunctionScope)):
             self.deferFunction(lambda: self.handleDoctests(node))
+
+    ASYNCFUNCTIONDEF = FUNCTIONDEF
 
     def LAMBDA(self, node):
         args = []
@@ -806,7 +996,11 @@ class Checker(object):
             for keywordNode in node.keywords:
                 self.handleNode(keywordNode, node)
         self.pushScope(ClassScope)
-        if self.withDoctest:
+        # doctest does not process doctest within a doctest
+        # classes within classes are processed.
+        if (self.withDoctest and
+                not self._in_doctest() and
+                not isinstance(self.scope, FunctionScope)):
             self.deferFunction(lambda: self.handleDoctests(node))
         for stmt in node.body:
             self.handleNode(stmt, node)
@@ -817,6 +1011,31 @@ class Checker(object):
         self.handleNodeLoad(node.target)
         self.handleNode(node.value, node)
         self.handleNode(node.target, node)
+
+    def TUPLE(self, node):
+        if not PY2 and isinstance(node.ctx, ast.Store):
+            # Python 3 advanced tuple unpacking: a, *b, c = d.
+            # Only one starred expression is allowed, and no more than 1<<8
+            # assignments are allowed before a stared expression. There is
+            # also a limit of 1<<24 expressions after the starred expression,
+            # which is impossible to test due to memory restrictions, but we
+            # add it here anyway
+            has_starred = False
+            star_loc = -1
+            for i, n in enumerate(node.elts):
+                if isinstance(n, ast.Starred):
+                    if has_starred:
+                        self.report(messages.TwoStarredExpressions, node)
+                        # The SyntaxError doesn't distinguish two from more
+                        # than two.
+                        break
+                    has_starred = True
+                    star_loc = i
+            if star_loc >= 1 << 8 or len(node.elts) - star_loc - 1 >= 1 << 24:
+                self.report(messages.TooManyExpressionsInStarredAssignment, node)
+        self.handleChildren(node)
+
+    LIST = TUPLE
 
     def IMPORT(self, node):
         for alias in node.names:
@@ -833,25 +1052,38 @@ class Checker(object):
             self.futuresAllowed = False
 
         for alias in node.names:
-            if alias.name == '*':
+            name = alias.asname or alias.name
+            if node.module == '__future__':
+                importation = FutureImportation(name, node, self.scope)
+                if alias.name not in __future__.all_feature_names:
+                    self.report(messages.FutureFeatureNotDefined,
+                                node, alias.name)
+            elif alias.name == '*':
+                # Only Python 2, local import * is a SyntaxWarning
+                if not PY2 and not isinstance(self.scope, ModuleScope):
+                    self.report(messages.ImportStarNotPermitted,
+                                node, node.module)
+                    continue
+
                 self.scope.importStarred = True
                 self.report(messages.ImportStarUsed, node, node.module)
-                continue
-            name = alias.asname or alias.name
-            importation = Importation(name, node)
-            if node.module == '__future__':
-                importation.used = (self.scope, node)
+                importation = StarImportation(node.module, node)
+            else:
+                importation = Importation(name, node)
             self.addBinding(node, importation)
 
     def TRY(self, node):
         handler_names = []
         # List the exception handlers
-        for handler in node.handlers:
+        for i, handler in enumerate(node.handlers):
             if isinstance(handler.type, ast.Tuple):
                 for exc_type in handler.type.elts:
                     handler_names.append(getNodeName(exc_type))
             elif handler.type:
                 handler_names.append(getNodeName(handler.type))
+
+            if handler.type is None and i < len(node.handlers) - 1:
+                self.report(messages.DefaultExceptNotLast, handler)
         # Memorize the except handlers and process the body
         self.exceptHandlers.append(handler_names)
         for child in node.body:

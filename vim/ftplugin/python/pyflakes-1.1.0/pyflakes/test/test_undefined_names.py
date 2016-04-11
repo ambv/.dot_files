@@ -3,7 +3,7 @@ from _ast import PyCF_ONLY_AST
 from sys import version_info
 
 from pyflakes import messages as m, checker
-from pyflakes.test.harness import TestCase, skip, skipIf
+from pyflakes.test.harness import TestCase, skipIf, skip
 
 
 class Test(TestCase):
@@ -12,6 +12,15 @@ class Test(TestCase):
 
     def test_definedInListComp(self):
         self.flakes('[a for a in range(10) if a]')
+
+    @skipIf(version_info < (3,),
+            'in Python 2 list comprehensions execute in the same scope')
+    def test_undefinedInListComp(self):
+        self.flakes('''
+        [a for a in range(10)]
+        a
+        ''',
+                    m.UndefinedName)
 
     def test_functionsNeedGlobalScope(self):
         self.flakes('''
@@ -62,8 +71,10 @@ class Test(TestCase):
 
     def test_globalImportStar(self):
         """Can't find undefined names with import *."""
-        self.flakes('from fu import *; bar', m.ImportStarUsed)
+        self.flakes('from fu import *; bar',
+                    m.ImportStarUsed, m.ImportStarUsage)
 
+    @skipIf(version_info >= (3,), 'obsolete syntax')
     def test_localImportStar(self):
         """
         A local import * still allows undefined names to be found
@@ -73,7 +84,7 @@ class Test(TestCase):
         def a():
             from fu import *
         bar
-        ''', m.ImportStarUsed, m.UndefinedName)
+        ''', m.ImportStarUsed, m.UndefinedName, m.UnusedImport)
 
     @skipIf(version_info >= (3,), 'obsolete syntax')
     def test_unpackedParameter(self):
@@ -83,7 +94,6 @@ class Test(TestCase):
             bar; baz
         ''')
 
-    @skip("todo")
     def test_definedByGlobal(self):
         """
         "global" can make an otherwise undefined name in another function
@@ -92,6 +102,19 @@ class Test(TestCase):
         self.flakes('''
         def a(): global fu; fu = 1
         def b(): fu
+        ''')
+        self.flakes('''
+        def c(): bar
+        def b(): global bar; bar = 1
+        ''')
+
+    def test_definedByGlobalMultipleNames(self):
+        """
+        "global" can accept multiple names.
+        """
+        self.flakes('''
+        def a(): global fu, bar; fu = 1; bar = 2
+        def b(): fu; bar
         ''')
 
     def test_globalInGlobalScope(self):
@@ -102,6 +125,29 @@ class Test(TestCase):
         global x
         def foo():
             print(x)
+        ''', m.UndefinedName)
+
+    def test_global_reset_name_only(self):
+        """A global statement does not prevent other names being undefined."""
+        # Only different undefined names are reported.
+        # See following test that fails where the same name is used.
+        self.flakes('''
+        def f1():
+            s
+
+        def f2():
+            global m
+        ''', m.UndefinedName)
+
+    @skip("todo")
+    def test_unused_global(self):
+        """An unused global statement does not define the name."""
+        self.flakes('''
+        def f1():
+            m
+
+        def f2():
+            global m
         ''', m.UndefinedName)
 
     def test_del(self):
@@ -121,6 +167,74 @@ class Test(TestCase):
     def test_delUndefined(self):
         """Del an undefined name."""
         self.flakes('del a', m.UndefinedName)
+
+    def test_delConditional(self):
+        """
+        Ignores conditional bindings deletion.
+        """
+        self.flakes('''
+        context = None
+        test = True
+        if False:
+            del(test)
+        assert(test)
+        ''')
+
+    def test_delConditionalNested(self):
+        """
+        Ignored conditional bindings deletion even if they are nested in other
+        blocks.
+        """
+        self.flakes('''
+        context = None
+        test = True
+        if False:
+            with context():
+                del(test)
+        assert(test)
+        ''')
+
+    def test_delWhile(self):
+        """
+        Ignore bindings deletion if called inside the body of a while
+        statement.
+        """
+        self.flakes('''
+        def test():
+            foo = 'bar'
+            while False:
+                del foo
+            assert(foo)
+        ''')
+
+    def test_delWhileTestUsage(self):
+        """
+        Ignore bindings deletion if called inside the body of a while
+        statement and name is used inside while's test part.
+        """
+        self.flakes('''
+        def _worker():
+            o = True
+            while o is not True:
+                del o
+                o = False
+        ''')
+
+    def test_delWhileNested(self):
+        """
+        Ignore bindings deletions if node is part of while's test, even when
+        del is in a nested block.
+        """
+        self.flakes('''
+        context = None
+        def _worker():
+            o = True
+            while o is not True:
+                while True:
+                    with context():
+                        del o
+                o = False
+        ''')
 
     def test_globalFromNestedScope(self):
         """Global names are available from nested scopes."""
@@ -197,7 +311,11 @@ class Test(TestCase):
                     return x
                 return x
         ''', m.UndefinedLocal).messages[0]
-        self.assertEqual(exc.message_args, ('x', 5))
+
+        # _DoctestMixin.flakes adds two lines preceding the code above.
+        expected_line_num = 7 if self.withDoctest else 5
+
+        self.assertEqual(exc.message_args, ('x', expected_line_num))
 
     def test_laterRedefinedGlobalFromNestedScope3(self):
         """
@@ -364,8 +482,20 @@ class Test(TestCase):
         Using the loop variable of a generator expression results in no
         warnings.
         """
-        self.flakes('(a for a in %srange(10) if a)' %
-                    ('x' if version_info < (3,) else ''))
+        self.flakes('(a for a in [1, 2, 3] if a)')
+
+        self.flakes('(b for b in (a for a in [1, 2, 3] if a) if b)')
+
+    def test_undefinedInGenExpNested(self):
+        """
+        The loop variables of generator expressions nested together are
+        not defined in the other generator.
+        """
+        self.flakes('(b for b in (a for a in [1, 2, 3] if b) if b)',
+                    m.UndefinedName)
+
+        self.flakes('(b for b in (a for a in [1, 2, 3] if a) if a)',
+                    m.UndefinedName)
 
     def test_undefinedWithErrorHandler(self):
         """
@@ -420,6 +550,15 @@ class Test(TestCase):
                 Y = {x:x for x in T}
             ''')
 
+    def test_definedInClassNested(self):
+        """Defined name for nested generator expressions in a class."""
+        self.flakes('''
+        class A:
+            T = range(10)
+
+            Z = (x for x in (a for a in T))
+        ''')
+
     def test_undefinedInLoop(self):
         """
         The loop variable is defined after the expression is computed.
@@ -433,6 +572,44 @@ class Test(TestCase):
         ''', m.UndefinedName)
         self.flakes('''
         (42 for i in range(i))
+        ''', m.UndefinedName)
+
+    @skipIf(version_info < (2, 7), 'Dictionary comprehensions do not exist')
+    def test_definedFromLambdaInDictionaryComprehension(self):
+        """
+        Defined name referenced from a lambda function within a dict/set
+        comprehension.
+        """
+        self.flakes('''
+        {lambda: id(x) for x in range(10)}
+        ''')
+
+    def test_definedFromLambdaInGenerator(self):
+        """
+        Defined name referenced from a lambda function within a generator
+        expression.
+        """
+        self.flakes('''
+        any(lambda: id(x) for x in range(10))
+        ''')
+
+    @skipIf(version_info < (2, 7), 'Dictionary comprehensions do not exist')
+    def test_undefinedFromLambdaInDictionaryComprehension(self):
+        """
+        Undefined name referenced from a lambda function within a dict/set
+        comprehension.
+        """
+        self.flakes('''
+        {lambda: id(y) for x in range(10)}
+        ''', m.UndefinedName)
+
+    def test_undefinedFromLambdaInComprehension(self):
+        """
+        Undefined name referenced from a lambda function within a generator
+        expression.
+        """
+        self.flakes('''
+        any(lambda: id(y) for x in range(10))
         ''', m.UndefinedName)
 
 
