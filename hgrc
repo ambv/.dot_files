@@ -23,7 +23,6 @@ convert =
 extdiff =
 fetch =
 hgk =
-mq =
 pager =
 shelve =
 rdiff = ~/.dot_files/bin/rdiff.py
