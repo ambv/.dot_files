@@ -1,0 +1,1 @@
+/mnt/vol/engshare/admin/scripts/vim/syntax/sps.vim

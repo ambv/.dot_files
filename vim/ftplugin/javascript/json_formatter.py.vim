@@ -11,7 +11,7 @@
 "  1.0:
 "    - initial version
 
-if v:version < 700 || !has('python')
+if v:version < 700 || !has('python3')
     echo "This script requires vim7.0+ with Python support." 
     finish 
 endif
@@ -22,15 +22,15 @@ endif
 
 let g:load_json_formatter = "py1.0"
 
-python << endpython
+python3 << endpython3
 import os, sys, vim
 path = "/ftplugin/javascript/json_formatter.py"
 prefix = "~/.vim"
 if sys.platform in ('win32',):
   path = path.replace('/', '\\')
   prefix = r"C:\Tools\Vim\vimfiles"
-vim.command("pyfile %s%s" % (prefix, path))
-endpython
+vim.command("py3file %s%s" % (prefix, path))
+endpython3
 
 command! ReformatJSON :py ReformatJSON()
 

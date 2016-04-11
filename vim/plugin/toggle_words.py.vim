@@ -34,24 +34,24 @@ if exists("g:load_toggle_words")
    finish
 endif
 
-if !exists('g:embedded_python_version') || g:embedded_python_version < 230 || g:embedded_python_version > 299
-  "echo "This plugin requires Python 2.3+ (not 3.x though)."
+if !exists('g:embedded_python_version') || g:embedded_python_version < 320
+  "echo "This plugin requires Python 3.2+"
   let g:load_toggle_words = "ERROR"
   finish
 else
   let g:load_toggle_words = "py1.0"
 endif
 
-python << endpython
+python3 << endpython
 import os, sys, vim
 path = "/plugin/toggle_words.py"
 prefix = "~/.vim"
 if sys.platform in ('win32',):
   path = path.replace('/', '\\')
   prefix = r"C:\Tools\Vim\vimfiles"
-vim.command("pyfile %s%s" % (prefix, path))
+vim.command("py3file %s%s" % (prefix, path))
 endpython
 
-command! ToggleWord :py ToggleWord()
+command! ToggleWord :py3 ToggleWord()
 
 nmap ,t :ToggleWord<CR>

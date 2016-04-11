@@ -13,7 +13,8 @@ export HOSTNAME="`hostname`"
 export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
 export LANGUAGE=en_US.UTF-8
-export TZ="Europe/Warsaw"
+#export TZ="Europe/Warsaw"
+export TZ="America/Vancouver"
 export CLICOLOR=1
 export LSCOLORS=ExFxCxDxBxegedabagacad
 export LS_COLORS="no=00:fi=00:di=01;34:ln=01;36:pi=40;33:so=01;35:bd=40;33;01:cd=40;33;01:or=01;05;37;41:mi=01;05;37;41:ex=01;32:*.cmd=01;32:*.exe=01;32:*.com=01;32:*.btm=01;32:*.bat=01;32:*.sh=01;32:*.csh=01;32:*.tar=01;31:*.tgz=01;31:*.arj=01;31:*.taz=01;31:*.lzh=01;31:*.zip=01;31:*.z=01;31:*.Z=01;31:*.gz=01;31:*.bz2=01;31:*.bz=01;31:*.tz=01;31:*.rpm=01;31:*.cpio=01;31:*.jpg=01;35:*.gif=01;35:*.bmp=01;35:*.xbm=01;35:*.xpm=01;35:*.png=01;35:*.tif=01;35:"
@@ -22,30 +23,28 @@ export EDITOR=vim
 export VIMFILES=~/.vim/
 export PYTHONSTARTUP=~/.pythonstartup
 LOCAL_BIN=~/.dot_files/bin
-export PATH="$LOCAL_BIN:/opt/automation:$PATH"
 export PYTHONWARNINGS=d
 
 #
 # my aliases
 #
 
-# ALLPLAY
-alias allplay="ssh -Y allplay@176.31.225.113"
-
-# SAFE COMMANDS
-alias ci="echo \"You probably meant vi. Or are you still using RCS?\"; false"
-alias cp="cp -ir"
-alias dc="echo \"You don't really use 'dc', do you?\"; false"
-alias grep="grep --color=auto"
-alias hg="PYTHONWARNINGS=i hg"
-alias pip="PYTHONWARNINGS=i pip"
-alias ll="ls -lah"
-alias lt="tree -AphL"
-alias mv="mv -i"
-alias rm="rm -i"
-alias tree="tree -A"
-alias vi="vim"
-alias vim="vim -XO" # if you want the default, just type vim -O1
+# SAFE COMMANDS WHEN INTERACTIVE
+if [ -t 0 ]; then
+  alias ci="echo \"You probably meant vi. Or are you still using RCS?\"; false"
+  alias cp="cp -ir"
+  alias dc="echo \"You don't really use 'dc', do you?\"; false"
+  alias grep="grep --color=auto"
+  alias hg="PYTHONWARNINGS=i hg"
+  alias pip="PYTHONWARNINGS=i pip"
+  alias ll="ls -lah"
+  alias lt="tree -AphL"
+  alias mv="mv -i"
+  alias rm="rm -i"
+  alias tree="tree -A"
+  alias vi="vim"
+  alias vim="vim -XO" # if you want the default, just type vim -O1
+fi
 
 # shortcuts
 alias :q='logout'
@@ -56,15 +55,6 @@ alias jloc='let "a = 0"; for num in `find . -iname "*.java" | xargs -I {} wc -l 
 alias loc='let "a = 0"; for num in `find . -iname "*.py" | xargs -I {} wc -l {} | cut -d. -f1 | tr -d " "`; do let "a = a + num"; done; echo $a;'
 alias todo-list="ack --ignore-dir=.tox --ignore-dir=.venv --ignore-dir=.venv27 --ignore-dir=.venv33 --ignore-dir=.venv34 --column -w \"\\W(TODO|FIXME|REMEMBER|WEDNESDAY|XXX|BUG|WTF|OMF?G|pdb\\.set_trace)\\W{1}\""
 alias depyc='find . -iname "*.pyc" -print -exec rm {} \; && find . -iname "*.pyo" -print -exec rm {} \; && find . -iname "*.orig" -print -exec rm {} \;'
-
-# Django
-alias djrun='django-admin.py runserver'
-alias djrs='python -Wd manage.py runserver'
-alias djsync='django-admin.py syncdb'
-alias djevo='django-admin.py evolve --hint'
-alias djmm='django-admin.py makemessages -ae html,txt'
-alias djcm='django-admin.py compilemessages'
-alias djsh='django-admin.py shell'
 
 #
 # my functions
@@ -105,11 +95,3 @@ function r2h {
 if [ -e ~/.profile_machine ]; then
   source ~/.profile_machine
 fi
-
-#
-# execute local-specific settings
-#
-if [ -e ~/.profile_local ]; then
-  source ~/.profile_local
-fi
-

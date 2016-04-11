@@ -23,7 +23,7 @@ xterm*|rxvt*)
   bind -m vi-insert "\C-a":vi-append-eol
 esac
 export HISTCONTROL=erasedups
-export HISTSIZE=10000
+export HISTSIZE=200000
 set -o vi
 
 source ~/.profile_common
@@ -35,4 +35,11 @@ if [ -f /opt/local/etc/bash_completion ]; then
   . /opt/local/etc/bash_completion 
 elif [ -f /etc/bash_completion ]; then
   . /etc/bash_completion
+fi
+
+#
+# execute local-specific settings
+#
+if [ -e ~/.profile_local ]; then
+  source ~/.profile_local
 fi
