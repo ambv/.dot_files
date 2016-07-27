@@ -36,7 +36,7 @@ vim = vimdiff
 show = log --color=always -pr
 
 [hooks]
-pretxnchangegroup.checkbranch = python:~/.dot_files/bin/checkbranch.py:hook
+# pretxnchangegroup.checkbranch = python:~/.dot_files/bin/checkbranch.py:hook
 pretxnchangegroup.checkheads = python:~/.dot_files/bin/checkheads.py:hook
 pretxncommit.whitespace = python:~/.dot_files/bin/checkwhitespace.py:check_whitespace_single
 
