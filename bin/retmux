@@ -1,0 +1,11 @@
+#!/bin/bash
+
+if [ -t 0 ]; then
+  if [ -z "$TMUX" ] && which tmux >/dev/null 2>/dev/null && [[ "`tmux -V`" == "tmux 1.8" ]]; then
+    if tmux has-session -t 0 >/dev/null 2>/dev/null; then
+      tmux -2CCd attach -t 0
+    else
+      tmux -2CC
+    fi
+  fi
+fi

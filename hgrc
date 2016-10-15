@@ -1,11 +1,11 @@
 [ui]
-askusername = True
 fallbackencoding = utf-8
 ignore = ~/.hgignore
+username = Łukasz Langa <lukasz@langa.pl>
 
 [merge-tools]
 filemerge.executable = vim
-filemerge.args = -d $base $local $other
+filemerge.args = -d "$base" "$local" "$other"
 filemerge.checkchanged = true
 
 [pager]
@@ -23,7 +23,6 @@ convert =
 extdiff =
 fetch =
 hgk =
-mq =
 pager =
 shelve =
 rdiff = ~/.dot_files/bin/rdiff.py
@@ -36,3 +35,11 @@ cmd.vimdiff =
 vi = vimdiff
 vim = vimdiff
 show = log --color=always -pr
+
+[hooks]
+# pretxnchangegroup.checkbranch = python:~/.dot_files/bin/checkbranch.py:hook
+pretxnchangegroup.checkheads = python:~/.dot_files/bin/checkheads.py:hook
+pretxncommit.whitespace = python:~/.dot_files/bin/checkwhitespace.py:check_whitespace_single
+
+[checkbranch]
+allow-branches = default, 3.4, 3.3, 2.7, 2.6
