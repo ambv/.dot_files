@@ -27,6 +27,7 @@ mq =
 pager =
 shelve =
 rdiff = ~/.dot_files/bin/rdiff.py
+lz4revlog = ~/.dot_files/lz4revlog/lz4revlog.py
 
 [extdiff]
 cmd.vimdiff =

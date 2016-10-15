@@ -22,7 +22,6 @@ export LS_OPTIONS=--color=auto
 export EDITOR=vim
 export VIMFILES=~/.vim/
 export PYTHONSTARTUP=~/.pythonstartup
-LOCAL_BIN=~/.dot_files/bin
 export PYTHONWARNINGS=d
 
 #

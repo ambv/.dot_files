@@ -1,0 +1,7 @@
+data/setup.py.i
+data/lz4revlog.py.i
+data/.hgtags.i
+data/.hgignore.i
+data/tests/test-lz4revlog.t.i
+data/COPYING.i
+data/README.md.i

@@ -105,6 +105,7 @@ syn keyword pythonStatement	exec return
 syn keyword pythonStatement	pass raise
 syn keyword pythonStatement	global nonlocal assert
 syn keyword pythonStatement	lambda yield
+syn keyword pythonStatement	async await
 syn keyword pythonStatement	with
 syn keyword pythonStatement	def class nextgroup=pythonFunction skipwhite
 syn match   pythonFunction	"[a-zA-Z_][a-zA-Z0-9_]*" display contained
