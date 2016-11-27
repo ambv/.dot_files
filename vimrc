@@ -139,7 +139,7 @@ autocmd FileType pyrex call Python_init()
 autocmd FileType c,cabal,cpp,haskell,javascript,php,python,readme,rst,text
   \ autocmd BufWritePre <buffer>
   \ :call setline(1,map(getline(1,"$"),'substitute(v:val,"\\s\\+$","","")'))
-autocmd FileType python autocmd BufWritePost <buffer> botright cwindow 4
+autocmd FileType python autocmd BufWritePost <buffer> call Flake8()
 autocmd BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$") | exe "normal g`\"" |  endif "return to the last edited line in opened files:
 autocmd BufReadCmd *.egg,*.odp,*.ods,*.odt,*.jar,*.xmap,*.xmind,*.xpi call zip#Browse(expand("<amatch>"))
 autocmd InsertLeave * redraw!
@@ -204,30 +204,6 @@ func Paste_toggle(insert_mode)
 endfunc
 command PasteToggle :call Paste_toggle(0)
 
-"F9 forces file reload in CP-850 charset
-map <F9> :call SwitchToCP850()<CR>
-func! SwitchToCP850()
-  e! ++enc=cp850
-endfunc
-
-"F10 forces file reload in CP-1250 charset
-map <F10> :call SwitchToCP1250()<CR>
-func! SwitchToCP1250()
-  e! ++enc=cp1250
-endfunc
-
-"F11 forces file reload in ISO-8859-2 charset
-map <F11> :call SwitchToISO()<CR>
-func! SwitchToISO()
-  e! ++enc=iso-8859-2
-endfunc
-
-"F12 forces file reload in UTF-8 charset
-map <F12> :call SwitchToUTF8()<CR>
-func! SwitchToUTF8()
-  e! ++enc=utf-8
-endfunc
-
 func Underline(type)
   """ toggling between paste mode and normal mode; includes removing
   """ mouse support and numbering (for terminal cut&paste purposes)
@@ -280,7 +256,9 @@ let python_highlight_string_format=1
 let python_highlight_string_templates=1
 let python_highlight_doctests=1
 let python_slow_sync=1
-let pyflakes_use_quickfix=1
+let g:flake8_show_quickfix=1
+let g:flake8_show_in_gutter=1
+let g:flake8_show_in_file=1
 
 let snips_author='Łukasz Langa'
 
