@@ -6,7 +6,7 @@ $I xz
 $I cscope
 $I python
 $I python3
-$I vim
+$I vim --with-python3
 
 $I fortune
 $I lftp
@@ -24,4 +24,4 @@ $I git --with-pcre --with-gettext --with-brewed-curl --with-brewed-openssl
 $I mercurial
 
 # servers
-# mysql postgresql redis 
+# mysql postgresql redis
