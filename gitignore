@@ -40,4 +40,4 @@ __pycache__
 # Mac OS X specific
 .propy
 .DS_Store
-settings-ralphtest.py
+.python3
