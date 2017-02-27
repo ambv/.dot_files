@@ -139,7 +139,7 @@ autocmd FileType pyrex call Python_init()
 autocmd FileType c,cabal,cpp,haskell,javascript,php,python,readme,rst,text
   \ autocmd BufWritePre <buffer>
   \ :call setline(1,map(getline(1,"$"),'substitute(v:val,"\\s\\+$","","")'))
-autocmd FileType python autocmd BufWritePost <buffer> call Flake8()
+" autocmd FileType python autocmd BufWritePost <buffer> call Flake8()
 autocmd BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$") | exe "normal g`\"" |  endif "return to the last edited line in opened files:
 autocmd BufReadCmd *.egg,*.odp,*.ods,*.odt,*.jar,*.xmap,*.xmind,*.xpi call zip#Browse(expand("<amatch>"))
 autocmd InsertLeave * redraw!
@@ -256,13 +256,19 @@ let python_highlight_string_format=1
 let python_highlight_string_templates=1
 let python_highlight_doctests=1
 let python_slow_sync=1
-let g:flake8_show_quickfix=1
-let g:flake8_show_in_gutter=1
-let g:flake8_show_in_file=1
 
 let snips_author='Łukasz Langa'
 
 let bufExplorerFindActive=0
 let bufExplorerShowRelativePath=1
 "let bufExplorerSortBy="fullpath"
-"
+
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+let g:syntastic_python_checkers = ["flake8"]
