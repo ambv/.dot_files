@@ -1,0 +1,61 @@
+#!/usr/bin/env python3.6
+
+from itertools import chain
+import os
+from pathlib import Path
+import sys
+
+
+cwd = Path(os.getcwd())
+homedir = Path(os.environ['HOME'])
+
+
+def get_toxinidir():
+    resolved = cwd.resolve(strict=True)
+    for d in chain([cwd], cwd.parents, [resolved], resolved.parents):
+        if (d / 'tox.ini').is_file():
+            return d
+
+    raise FileNotFoundError(d)
+
+
+def make_toxworkdir(*, project):
+    toxworkdir = homedir / '.venvs' / 'tox' / project
+    toxworkdir.mkdir(parents=True, exist_ok=True)
+    return toxworkdir
+
+
+def silence_warnings():
+    if 'PYTHONWARNINGS' in os.environ:
+        del os.environ['PYTHONWARNINGS']
+
+
+def main():
+    try:
+        toxinidir = get_toxinidir()
+    except FileNotFoundError:
+        print(
+            f'fatal: tox.ini not found in {cwd} or any parent directory.',
+            file=sys.stderr,
+        )
+        sys.exit(1)
+
+    try:
+        toxworkdir = make_toxworkdir(project=toxinidir.name)
+    except OSError as ose:
+        print(
+            f'fatal: toxworkdir could not be created: {ose}',
+            file=sys.stderr,
+        )
+        sys.exit(2)
+
+    silence_warnings()
+
+    print(f'Using working directory in {toxworkdir}')
+    sys.stdout.flush()
+    sys.stderr.flush()
+    os.execvpe('tox', ['tox', f'--workdir={toxworkdir}'] + sys.argv[1:], os.environ)
+
+
+if __name__ == '__main__':
+    main()
