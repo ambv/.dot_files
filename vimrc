@@ -116,6 +116,7 @@ autocmd BufNewFile,BufRead *.ctest setlocal filetype=python
 autocmd BufNewFile,BufRead *.hsc setlocal filetype=haskell
 autocmd BufNewFile,BufRead *.html setlocal filetype=htmldjango
 autocmd BufNewFile,BufRead *.json setlocal filetype=javascript
+autocmd BufNewFile,BufRead *.pyi setlocal filetype=python
 autocmd BufNewFile,BufRead *.phpt setlocal filetype=php
 autocmd BufNewFile,BufRead *.sieve setlocal filetype=sieve
 autocmd BufNewFile,BufRead *.smcprops setlocal filetype=python
