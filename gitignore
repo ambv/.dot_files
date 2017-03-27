@@ -36,6 +36,8 @@ __pycache__
 /.tox
 /.venv*
 *.egg-info
+.python3
+.python-version
 
 # Mac OS X specific
 .propy
