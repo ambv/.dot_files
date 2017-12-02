@@ -1,0 +1,66 @@
+#!/usr/bin/env python3.6
+
+from configparser import ConfigParser
+from pathlib import Path
+from subprocess import run
+import sys
+
+
+FIREFOX_DIR = Path("/Users/ambv/Library/Application Support/Firefox/")
+
+
+def main():
+    assert_exists(FIREFOX_DIR)
+    assert_exists(FIREFOX_DIR / 'profiles.ini')
+    switch_to_profile_or_die(FIREFOX_DIR / 'profiles.ini', name='safe')
+    try:
+        proc = run(['open', '-a', 'Firefox'])
+        if proc.stdout:
+            print(proc.stdout)
+        if proc.stderr:
+            print(proc.stderr, file=sys.stderr)
+        if proc.returncode:
+            print("error: unable to start Firefox", file=sys.stderr)
+            sys.exit(3)
+    finally:
+        switch_to_profile_or_die(FIREFOX_DIR / 'profiles.ini', name='default')
+
+
+def assert_exists(path):
+    if not path.exists():
+        print(f"fatal: no Firefox config under {path}", file=sys.stderr)
+        sys.exit(1)
+
+
+def switch_to_profile(path, name):
+    cp = ConfigParser(default_section='General')
+    cp.optionxform = lambda option: option
+    cp.read(path)
+    found = False
+    for section in cp:
+        if 'Name' not in cp[section]:
+            continue
+
+        if cp[section]['Name'] == name:
+            found = True
+            cp[section]['Default'] = '1'
+        elif 'Default' in cp[section]:
+            del cp[section]['Default']
+
+    if not found:
+        raise LookupError(f'profile {name!r} not found in Firefox profile.ini')
+
+    with path.open('w') as f:
+        cp.write(f, space_around_delimiters=False)
+
+
+def switch_to_profile_or_die(path, name):
+    try:
+        return switch_to_profile(path, name)
+    except LookupError as le:
+        print(le, file=sys.stderr)
+        sys.exit(2)
+
+
+if __name__ == '__main__':
+    main()
