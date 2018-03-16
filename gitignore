@@ -38,6 +38,7 @@ __pycache__
 *.egg-info
 .python3
 .python-version
+.mypy_cache
 
 # Mac OS X specific
 .propy
