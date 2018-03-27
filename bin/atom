@@ -1,0 +1,60 @@
+#!/usr/bin/env python3
+
+"""A primitive wrapper to ensure that typos in file names or creating new
+files deliberately don't end up wasting 3 seconds of my life by opening an
+entire new Atom window.
+"""
+
+from pathlib import Path
+from os import execv
+import sys
+
+
+def check_files():
+    if not sys.stdout.isatty():
+        return
+
+    for entry in sys.argv[1:]:
+        if entry.startswith('-'):
+            continue
+
+        path = Path(entry)
+        if not path.exists():
+            if not path.parent.exists():
+                create_parents = input(
+                    f"Parent directory of `{path}` does not exist. Create? (y/N) "
+                )
+                if create_parents in ('y', 'Y'):
+                    try:
+                        os.makedirs(path.parent)
+                        continue
+                    except OSError as ose:
+                        print(
+                            f'error: failed to make dirs `{path.parent}`: {ose}',
+                            file=sys.stderr,
+                        )
+                raise KeyboardInterrupt
+
+            if not path.parent.exists():
+                continue
+
+            create_file = input(f'File `{path}` does not exist. Create? (y/N) ')
+            if create_file in ('y', 'Y'):
+                try:
+                    path.touch()
+                    continue
+                except OSError as ose:
+                    print(f'error: failed to touch `{path}`: {ose}', file=sys.stderr)
+
+            raise KeyboardInterrupt
+
+
+
+if __name__ == '__main__':
+    try:
+        check_files()
+    except KeyboardInterrupt:
+        print()
+        print('Aborted by user.', file=sys.stderr)
+    else:
+        execv('/usr/local/bin/atom', sys.argv)
