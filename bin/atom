@@ -14,12 +14,17 @@ def check_files():
     if not sys.stdout.isatty():
         return
 
+    result = [sys.argv[0]]
     for entry in sys.argv[1:]:
+        result.append(entry)
         if entry.startswith('-'):
             continue
 
         path = Path(entry)
-        if not path.exists():
+        if path.exists():
+            result[-1] = str(path.resolve())
+            print(result[-1])
+        else:
             if not path.parent.exists():
                 create_parents = input(
                     f"Parent directory of `{path}` does not exist. Create? (y/N) "
@@ -48,13 +53,14 @@ def check_files():
 
             raise KeyboardInterrupt
 
+    return result
 
 
 if __name__ == '__main__':
     try:
-        check_files()
+        new_argv = check_files()
     except KeyboardInterrupt:
         print()
         print('Aborted by user.', file=sys.stderr)
     else:
-        execv('/usr/local/bin/atom', sys.argv)
+        execv('/usr/local/bin/atom', new_argv)
