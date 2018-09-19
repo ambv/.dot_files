@@ -4,12 +4,21 @@ import atexit
 import os
 import sys
 readline.parse_and_bind('tab: complete')
-if sys.version[0] == 2:
-  histfile = os.path.join(os.environ['HOME'], '.pythonhistory')
-  try:
+histfile = os.path.join(os.environ['HOME'], '.pythonhistory{}'.format(sys.version[0]))
+try:
     readline.read_history_file(histfile)
-  except IOError:
+except IOError:
     pass
-  atexit.register(readline.write_history_file, histfile)
-  del histfile
-del os, sys, readline, rlcompleter
+atexit.register(readline.write_history_file, histfile)
+del histfile
+del atexit, readline, rlcompleter
+# leaving sys, os and adding a few other useful
+import re
+__autoimported__ = ['sys', 'os', 're']
+try:
+    from pathlib import Path
+    __autoimported__.append('Path')
+except ImportError:
+    pass
+print('Auto-imported for your convenience:')
+print(', '.join(__autoimported__))
