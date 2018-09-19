@@ -36,6 +36,8 @@ if [ -t 0 ]; then
   alias grep="grep --color=auto"
   alias hg="PYTHONWARNINGS=i hg"
   alias pip="PYTHONWARNINGS=i pip"
+  alias pipenv="PYTHONWARNINGS=i pipenv"
+  alias poetry="PYTHONWARNINGS=i poetry"
   alias ll="ls -lah"
   alias lt="tree -AphL"
   alias mv="mv -i"
@@ -66,11 +68,11 @@ function git_diff {
   git diff --no-ext-diff "$@" | vim -R -
 }
 
-function dot_files_version { 
+function dot_files_version {
   CWD=`pwd`
   cd ~/.dot_files
   echo `git log --pretty=format:"%h: %ar" | head -n 1`
-  cd $CWD 
+  cd $CWD
 }
 
 function dot_files_update {
