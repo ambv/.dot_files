@@ -1,6 +1,7 @@
 [user]
 	email = lukasz@langa.pl
 	name = Łukasz Langa
+	signingkey = lukasz@langa.pl
 [push]
 	default = current
 [color]
@@ -32,3 +33,5 @@
 	trustExitCode = true
 [log-compact]
   defaults = --initials=author,committer --no-times
+[commit]
+	gpgsign = true
