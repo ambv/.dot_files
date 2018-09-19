@@ -14,7 +14,7 @@ HISTSIZE=200000
 SAVEHIST=200000
 HISTIGNORE="&:ls:[bf]g:exit:reset:clear:cd:cd ..:cd.."
 setopt INC_APPEND_HISTORY HIST_IGNORE_ALL_DUPS HIST_IGNORE_SPACE \
-  HIST_REDUCE_BLANKS HIST_SAVE_NO_DUPS HIST_VERIFY EXTENDED_HISTORY 
+  HIST_REDUCE_BLANKS HIST_SAVE_NO_DUPS HIST_VERIFY EXTENDED_HISTORY
 unsetopt share_history
 
 setopt alwaystoend autocontinue autolist autoresume autopushd \
@@ -26,6 +26,7 @@ unsetopt autocd bgnice beep menucomplete
 
 bindkey -e
 
+fpath+=~/.zfunc
 autoload -Uz compinit
 compinit
 
