@@ -1,7 +1,9 @@
 PS1=$PROMPT_TEMPLATE
 PROMPT=$PROMPT_TEMPLATE
 RPROMPT="%D{%T}"
+HISTFILE=~/.zhistory
 HISTSIZE=200000
+SAVEHIST=200000
 preexec() {
     print -rn -- $terminfo[cuu1]
     let cols=$COLUMNS-9
