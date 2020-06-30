@@ -24,13 +24,13 @@ endif
 " Note: we never set 'term' because the defaults for B&W terminals are OK
 hi Conceal    guifg=#ff0000 guibg=#00ff00
 hi DiffAdd    ctermbg=253 guibg=#1c1c1c
-hi DiffChange ctermbg=250 guibg=#262626
-hi DiffDelete ctermfg=red ctermbg=0 guifg=#5f0000 guibg=#000000
-hi DiffText   ctermbg=238 ctermfg=White cterm=NONE guibg=#444444 guifg=#ffffff gui=NONE
+hi DiffChange ctermbg=229 guibg=#262626
+hi DiffDelete ctermfg=DarkRed ctermbg=217 guifg=#5f0000 guibg=#000000
+hi DiffText   ctermbg=221 guibg=#444444 guifg=#ffffff gui=NONE
 hi Directory  ctermfg=244 guifg=#2222ee
 hi Error      ctermfg=White	   ctermbg=DarkRed gui=BOLD guifg=#efaaaa guibg=#cd2222
 hi ErrorMsg   ctermfg=White	   ctermbg=DarkRed gui=BOLD guifg=#ffffff guibg=#cd2222
-hi FoldColumn ctermbg=238 guifg=#7c7c7c guibg=#111111
+hi FoldColumn ctermbg=253 guifg=#7c7c7c guibg=#111111
 hi Folded     ctermbg=Grey guifg=#7c7c7c guibg=#111111
 hi IncSearch  cterm=reverse gui=reverse
 hi LineNr     ctermfg=242	guifg=#7c7c7c
