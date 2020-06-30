@@ -1,8 +1,9 @@
-#!/usr/bin/env python3.7
+#!/usr/bin/env python3.8
 
 from configparser import ConfigParser
 from pathlib import Path
 from subprocess import run
+import time
 import sys
 
 
@@ -11,8 +12,9 @@ FIREFOX_DIR = Path("/Users/ambv/Library/Application Support/Firefox/")
 
 def main():
     assert_exists(FIREFOX_DIR)
+    assert_exists(FIREFOX_DIR / 'installs.ini')
     assert_exists(FIREFOX_DIR / 'profiles.ini')
-    switch_to_profile_or_die(FIREFOX_DIR / 'profiles.ini', name='safe')
+    switch_to_profile_or_die(name='safe')
     try:
         proc = run(['open', '-a', 'Firefox'])
         if proc.stdout:
@@ -23,7 +25,8 @@ def main():
             print("error: unable to start Firefox", file=sys.stderr)
             sys.exit(3)
     finally:
-        switch_to_profile_or_die(FIREFOX_DIR / 'profiles.ini', name='default')
+        time.sleep(5)
+        switch_to_profile_or_die(name='default')
 
 
 def assert_exists(path):
@@ -32,31 +35,48 @@ def assert_exists(path):
         sys.exit(1)
 
 
-def switch_to_profile(path, name):
-    cp = ConfigParser(default_section='General')
-    cp.optionxform = lambda option: option
-    cp.read(path)
+def switch_to_profile(name):
+    # Switch all installs to profile `name` first
+    installs_path = FIREFOX_DIR / 'installs.ini'
+    installs = ConfigParser()
+    installs.optionxform = lambda option: option
+    installs.read(installs_path)
+    for install in installs:
+        installs[install]['Default'] = f'Profiles/{name}'
+    with installs_path.open('w') as f:
+        installs.write(f, space_around_delimiters=False)
+
+    # Now patch profiles.ini, along with the duplicate "Install" sections
+    profiles_path = FIREFOX_DIR / 'profiles.ini'
+    profiles = ConfigParser(default_section='General')
+    profiles.optionxform = lambda option: option
+    profiles.read(profiles_path)
     found = False
-    for section in cp:
-        if 'Name' not in cp[section]:
+    for profile in profiles:
+        if 'Name' not in profiles[profile]:
+            if (
+                profile.startswith('Install')
+                and profile[len('Install'):] in installs
+            ):
+                profiles[profile]['Default'] = f'Profiles/{name}'
             continue
 
-        if cp[section]['Name'] == name:
+        if profiles[profile]['Name'] == name:
             found = True
-            cp[section]['Default'] = '1'
-        elif 'Default' in cp[section]:
-            del cp[section]['Default']
+            profiles[profile]['Default'] = '1'
+        elif 'Default' in profiles[profile]:
+            del profiles[profile]['Default']
 
     if not found:
         raise LookupError(f'profile {name!r} not found in Firefox profile.ini')
 
-    with path.open('w') as f:
-        cp.write(f, space_around_delimiters=False)
+    with profiles_path.open('w') as f:
+        profiles.write(f, space_around_delimiters=False)
 
 
-def switch_to_profile_or_die(path, name):
+def switch_to_profile_or_die(name):
     try:
-        return switch_to_profile(path, name)
+        return switch_to_profile(name)
     except LookupError as le:
         print(le, file=sys.stderr)
         sys.exit(2)
