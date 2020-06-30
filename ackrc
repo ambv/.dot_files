@@ -1,3 +1,6 @@
 --type-set=rest=.rst
 --nojs
 --nohtml
+--ignore-dir=.vscode
+--ignore-dir=.mypy_cache
+--ignore-dir=__pycache__
