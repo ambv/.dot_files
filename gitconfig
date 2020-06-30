@@ -35,3 +35,5 @@
   defaults = --initials=author,committer --no-times
 [commit]
 	gpgsign = true
+[pull]
+	ff = only
