@@ -13,12 +13,19 @@ atexit.register(readline.write_history_file, histfile)
 del histfile
 del atexit, readline, rlcompleter
 # leaving sys, os and adding a few other useful
-import re
-__autoimported__ = ['sys', 'os', 're']
-try:
-    from pathlib import Path
-    __autoimported__.append('Path')
-except ImportError:
-    pass
-print('Auto-imported for your convenience:')
-print(', '.join(__autoimported__))
+if not os.environ.get('IN_REGRTEST'):
+    import re
+    import datetime
+    import time
+    __autoimported__ = ['sys', 'os', 're', 'datetime', 'time']
+    try:
+        import asyncio
+        __autoimported__.append("asyncio")
+        from typing import *
+        __autoimported__.append("typing*")
+        from pathlib import Path
+        __autoimported__.append('Path')
+    except ImportError:
+        pass
+    print('Auto-imported for your convenience:')
+    print(', '.join(sorted(__autoimported__)))
