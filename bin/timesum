@@ -4,13 +4,12 @@ import sys
 
 TIME_RE = re.compile(
     r"""
-    (
-        (\d{1,3})
-        :
+    ( ( \d{1,3} )  # HH
+      :
     )?
-    (\d{1,3})
-    :
-    (\d{2})
+    ( \d{1,3} )    # MM
+      :
+    ( \d{2} )      # SS
     """,
     re.X,
 )
@@ -20,16 +19,14 @@ def timesum(times: str) -> str:
     result = 0
     for _, h, m, s in TIME_RE.findall(times):
         result += 3600 * int(h or 0) + 60 * int(m) + int(s)
-    if result > 3600:
+    if result >= 3600:
         return f"{result // 3600:02d}:{(result % 3600) // 60:02d}:{result % 60:02d}"
     return f"{result // 60:02d}:{result % 60:02d}"
 
 
 def main() -> None:
-    if len(sys.argv) > 1:
-        times = " ".join(sys.argv[1:])
-    else:
-        times = " ".join(line.strip() for line in sys.stdin.readlines())
+    times = " ".join(line.strip() for line in sys.stdin.readlines())
+    times += " " + " ".join(sys.argv[1:])
     print(timesum(times))
 
 
