@@ -4,3 +4,5 @@
 --ignore-dir=.vscode
 --ignore-dir=.mypy_cache
 --ignore-dir=__pycache__
+--ignore-dir=Debug
+--ignore-dir=Release
