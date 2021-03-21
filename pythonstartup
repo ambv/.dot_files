@@ -25,6 +25,8 @@ if not os.environ.get('IN_REGRTEST'):
         __autoimported__.append("typing*")
         from pathlib import Path
         __autoimported__.append('Path')
+        from dataclasses import dataclass
+        __autoimported__.append('dataclass')
     except ImportError:
         pass
     print('Auto-imported for your convenience:')
