@@ -24,7 +24,8 @@
   incoming = "!git remote update -p; git log ..@{u}"
   outgoing = "log @{u}.."
   who = "!git log . | grep Author | sort | uniq -c | sort -rn | head -n20"
-
+[tag]
+  forceSignAnnotated = true
 [difftool "sourcetree"]
 	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
 	path =

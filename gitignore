@@ -40,9 +40,13 @@ __pycache__
 .python-version
 .mypy_cache
 .vscode
+.idea
 *.code-workspace
 
 # Mac OS X specific
 .propy
 .DS_Store
 .python3
+
+# Secrets
+.env
