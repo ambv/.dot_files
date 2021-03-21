@@ -1,0 +1,17 @@
+#!/bin/bash
+
+DIR="Users/ambv/Library/Caches/vscode-cpptools"
+du -sh "$DIR" 2>/dev/null
+rm -rf "$DIR"
+
+DIR="/Users/ambv/Library/Containers/com.gifox.gifox2-appstore/Data/Library/Application Support/Gifox 2/Compositions/"
+du -sh "$DIR" 2>/dev/null
+rm -rf "$DIR"
+
+DIR="/Users/ambv/CacheClip"
+du -sh "$DIR" 2>/dev/null
+rm -rf "$DIR"
+
+DIR="/Users/ambv/Dropbox/RPLKTR/CacheClip"
+du -sh "$DIR" 2>/dev/null
+rm -rf "$DIR"
