@@ -115,3 +115,5 @@ function propy {
     fi
 }
 alias pp='propy'
+
+alias oni="/Applications/Onivim2.app/Contents/MacOS/Oni2"
