@@ -13,10 +13,8 @@ attend = annotate, cat, diff, export, glog, log, qdiff
 quiet = True
 pager = LESS='FRX' less -d
 
-[trusted]
-groups = django
-
 [extensions]
+amend =
 churn =
 color =
 convert =
@@ -34,11 +32,3 @@ cmd.vimdiff =
 vi = vimdiff
 vim = vimdiff
 show = log --color=always -pr
-
-[hooks]
-# pretxnchangegroup.checkbranch = python:~/.dot_files/bin/checkbranch.py:hook
-pretxnchangegroup.checkheads = python:~/.dot_files/bin/checkheads.py:hook
-pretxncommit.whitespace = python:~/.dot_files/bin/checkwhitespace.py:check_whitespace_single
-
-[checkbranch]
-allow-branches = default, 3.4, 3.3, 2.7, 2.6
