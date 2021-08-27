@@ -1,0 +1,7 @@
+#!/bin/bash -ex
+# cd $1
+# shift
+date
+./python.exe -V
+# PYTHONWARNINGS= PYTHONSTARTUP= IN_REGRTEST=1 time ./python.exe -Xoldparser -E -Wd -m test --slowest --fail-env-changed $*
+PYTHONWARNINGS= PYTHONSTARTUP= IN_REGRTEST=1 time ./python.exe -E -Wd -m test --slowest --fail-env-changed $*

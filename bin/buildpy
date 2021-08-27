@@ -1,0 +1,14 @@
+#!/bin/bash -ex
+# cd $1
+export BRANCH="/tmp/configurecache-$(git branch --show-current)"
+export CC=/usr/bin/clang
+export CFLAGS="-I$(brew --prefix readline)/include"
+export LDFLAGS="-L$(brew --prefix readline)/lib"
+export CONFIGURE_FLAGS="--quiet --cache-file=$BRANCH --with-pydebug --with-openssl=$(brew --prefix openssl)" # --with-undefined-behavior-sanitizer
+# export CFLAGS="-fsanitize=undefined -fno-omit-frame-pointer"
+# export LDFLAGS="-fsanitize=undefined -fno-omit-frame-pointer"
+# export CONFIGURE_FLAGS="--enable-optimizations --with-lto --with-openssl="$(brew --prefix openssl)"
+
+make distclean || (./configure $CONFIGURE_FLAGS && make distclean)
+time ./configure $CONFIGURE_FLAGS 
+time make --quiet -j10
