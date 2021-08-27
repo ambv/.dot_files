@@ -1,17 +1,39 @@
-#!/bin/bash
+#!/usr/bin/env fish
 
-DIR="Users/ambv/Library/Caches/vscode-cpptools"
-du -sh "$DIR" 2>/dev/null
-rm -rf "$DIR"
+set PROCS \
+    "/Homebrew/" \
+    "Visual Studio Code.app" \
+    "Gifox" \
+    "Ableton" \
 
-DIR="/Users/ambv/Library/Containers/com.gifox.gifox2-appstore/Data/Library/Application Support/Gifox 2/Compositions/"
-du -sh "$DIR" 2>/dev/null
-rm -rf "$DIR"
+for proc in $PROCS
+    if pgrep -f $proc >/dev/null
+        echo Please close $proc first before continuing.
+        exit 1
+    end
+end
 
-DIR="/Users/ambv/CacheClip"
-du -sh "$DIR" 2>/dev/null
-rm -rf "$DIR"
+set DIRS \
+    "/Users/ambv/Library/Caches/vscode-cpptools" \
+    "/Users/ambv/Library/Containers/com.gifox.gifox2-appstore/Data/Library/Application Support/Gifox 2/Compositions/" \
+    "/Users/ambv/CacheClip" \
+    "/Users/ambv/Downloads/CacheClip" \
+    "/Users/ambv/Dropbox/RPLKTR/CacheClip" \
+    "/Users/ambv/Library/Caches/Ableton/Cache/" \
+    "/Users/ambv/Library/Caches/Logic/" \
+    "/Users/ambv/Library/Caches/pypoetry/" \
+    "/Users/ambv/Library/Caches/pip/" \
+    "/Users/ambv/Library/Caches/pipenv/" \
+    "/Users/ambv/Library/Caches/Jedi/" \
+    "/Users/ambv/Library/Caches/Homebrew/downloads/" \
+    "/Users/ambv/Library/Caches/Yarn/" \
+    "/Users/ambv/Library/Caches/node-gyp/" \
+    "/Users/ambv/Library/Caches/go-build/" \
 
-DIR="/Users/ambv/Dropbox/RPLKTR/CacheClip"
-du -sh "$DIR" 2>/dev/null
-rm -rf "$DIR"
+for dir in $DIRS
+    if du -sh "$dir" 2>/dev/null
+        rm -rf "$dir"
+    else
+        echo ----\t$dir
+    end
+end
