@@ -35,6 +35,7 @@ __pycache__
 /dist
 /.tox
 /.venv*
+/.eggs
 *.egg-info
 .python3
 .python-version
