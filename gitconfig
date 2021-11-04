@@ -9,6 +9,9 @@
 	diff = auto
 	interactive = auto
 	status = auto
+[diff]
+	new='bold reverse green'
+	old='bold reverse red'
 [pager]
   diff =
 [core]
