@@ -1,2 +1,2 @@
-import os, rlcompleter
+import os, pdb, rlcompleter
 if not os.environ.get('IN_REGRTEST'): pdb.Pdb.complete = rlcompleter.Completer(locals()).complete
