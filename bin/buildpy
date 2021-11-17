@@ -1,5 +1,4 @@
-#!/bin/bash -ex
-# cd $1
+#!/bin/bash -e
 export BRANCH="/tmp/configurecache-$(git branch --show-current)"
 export CC=/usr/local/opt/ccache/libexec/clang
 export CFLAGS="-I$(brew --prefix readline)/include"
@@ -8,8 +7,8 @@ export PKG_CONFIG_PATH="$(brew --prefix openssl@1.1)/lib/pkgconfig:$(brew --pref
 # export CC=/usr/bin/clang
 # export CFLAGS="-fsanitize=undefined -fno-omit-frame-pointer"
 # export LDFLAGS="-fsanitize=undefined -fno-omit-frame-pointer"
-export CONFIGURE_FLAGS=(--enable-framework=/tmp/cpython-root-$(git branch --show-current)/Library/Frameworks "--with-tcltk-libs=$(pkg-config tk --libs)" "--with-tcltk-includes=$(pkg-config tk --cflags)")
-echo ${#CONFIGURE_FLAGS[@]}
+FRAMEWORK_INSTALL_DIR="/tmp/cpython-root-$(git branch --show-current)"
+export CONFIGURE_FLAGS=(--enable-framework=$FRAMEWORK_INSTALL_DIR/Library/Frameworks "--with-tcltk-libs=$(pkg-config tk --libs)" "--with-tcltk-includes=$(pkg-config tk --cflags)")
 if [[ "$1" == "opt" ]]; then
     echo "optimized production build"
     CONFIGURE_FLAGS+=(--enable-optimizations --with-lto)
@@ -22,4 +21,10 @@ make distclean || (./configure "${CONFIGURE_FLAGS[@]}" && make distclean)
 time ./configure "${CONFIGURE_FLAGS[@]}"
 # time make regen-all
 time make --quiet -j10
-time make --quiet install
+if [[ -d $FRAMEWORK_INSTALL_DIR ]]; then
+    echo "Removing stale framework directory: $FRAMEWORK_INSTALL_DIR"
+    rm -rf $FRAMEWORK_INSTALL_DIR
+fi
+
+echo
+echo "NOTE: buildpy doesn't \`make install\` automatically anymore"

@@ -1,0 +1,4 @@
+#!/usr/bin/env fish
+export PYTHONBINARY=/tmp/cpython-root-(git branch --show-current)/bin/python3
+echo "Let's see if you need to `make install`..."
+testpy $argv

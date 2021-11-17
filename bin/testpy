@@ -1,7 +1,12 @@
-#!/bin/bash -ex
-# cd $1
-# shift
+#!/usr/bin/env fish
 date
-export PYTHONBINARY=/tmp/cpython-root-$(git branch --show-current)/bin/python3
-$PYTHONBINARY -V
-PYTHONWARNINGS= PYTHONSTARTUP= IN_REGRTEST=1 time $PYTHONBINARY -E -Wd -m test --slowest --fail-env-changed $*
+if ! set -q PYTHONBINARY
+    export PYTHONBINARY=./python.exe
+end
+export PYTHONWARNINGS=
+export PYTHONSTARTUP=
+export DISPLAY=
+export IN_REGRTEST=1
+set -l fish_trace on
+$PYTHONBINARY -V; or exit
+time $PYTHONBINARY -E -Wd -m test --slowest --fail-env-changed $argv
