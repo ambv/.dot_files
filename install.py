@@ -1,19 +1,10 @@
 #!/usr/bin/env python
+from __future__ import print_function
 import sys
 import os
 import subprocess
 import optparse
 
-try:
-    from hashlib import md5
-except ImportError:
-    import md5
-    md5 = md5.new
-
-if sys.version_info[:2] < (2, 4):
-    # subprocess was introduced in Python 2.4
-    print "Sorry, Python 2.4 required."
-    sys.exit(1)
 
 user_home_dir = os.path.expanduser("~")
 dot_files_dir = os.path.dirname(__file__)
@@ -123,6 +114,32 @@ def obtain_machine_type():
     return os_type, os_version
 
 
+def handle_subdir(subdir):
+    _source_prefix = os.path.join(dot_files_dir,  subdir)
+    _target_prefix = os.path.join(options.dir,  subdir)
+
+    if not os.path.isdir(_source_prefix):
+        return
+    
+    if not os.path.isdir(_target_prefix):
+        os.makedirs(_target_prefix)
+    for entry in os.listdir(_source_prefix):
+        source = os.path.join(_source_prefix, entry)
+        target = os.path.join(_target_prefix, entry)
+
+        if not os.path.exists(target):
+            handler.no_target(source, target)
+        elif os.path.islink(target):
+            real_source = os.path.realpath(source)
+            real_target = os.path.realpath(target)
+            if real_source == real_target:
+                handler.target_link_same(source, target, real_source, real_target)
+            else:
+                handler.target_link_different(source, target, real_source, real_target)
+        else:
+            handler.target_different(source, target)
+
+
 if not options.uninstall:
     handler = Install()
 else:
@@ -135,7 +152,7 @@ if machine_type:
 else:
     additional_info = options.dir
 
-print handler.cmd_message, "%s..." % additional_info,
+print(handler.cmd_message, "%s..." % additional_info, end="")
 
 for entry in os.listdir(dot_files_dir):
     source = os.path.join(dot_files_dir, entry)
@@ -161,11 +178,14 @@ for entry in os.listdir(dot_files_dir):
     else:
         handler.target_different(source, target)
 
-print "done."
+handle_subdir(".config")
+handle_subdir(".local")
+
+print("done.")
 
 for w in handler.warnings:
-    print "Warning:", w
+    print("Warning:", w)
 
 if options.verbose:
     for v in handler.verbose:
-        print v
+        print(v)

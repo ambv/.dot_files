@@ -1,0 +1,18 @@
+[custom.sudo]
+description = 'valid sudo timestamp marker'
+command = "echo -n '⚡️'"
+format = '[$symbol$output]($style) '
+style = 'bold fg:bright-red'
+when = 'sudo -vn &>/dev/null'
+
+[git_status]
+style = 'yellow'
+
+[aws]
+disabled = true
+
+[python]
+format = 'via [${symbol}${pyenv_prefix}(${version} )(\($virtualenv\))]($style) '
+
+[battery]
+format = '[⚡️ $percentage]($style) '
