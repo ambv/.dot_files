@@ -1,12 +1,14 @@
 I="brew install"
 
-$I pkg-config
+$I fish
+$I starship
+$I pkg-config ccache gdb autoconf@2.69 automake
 $I pcre
-$I xz
-$I cscope
-$I python
+$I xz p7zip zstd unrar gnu-tar
 $I python3
-$I vim --with-python3
+# $I virtualfish isn't in homebrew, do `python3 -m pip install virtualfish`
+$I pyenv
+$I cscope vim
 
 $I fortune
 $I lftp
@@ -17,11 +19,15 @@ $I smartmontools
 $I tree
 $I watch
 $I wget
-$I zsh
-
-$I bzr
-$I git --with-pcre --with-gettext --with-brewed-curl --with-brewed-openssl
-$I mercurial
+$I sloccount
 
 # servers
 # mysql postgresql redis
+
+$I netlify-cli
+$I certbot
+$I datasette
+$I webp mpg123 opusfile wavpack jpegtran libjpeg ffmpeg
+$I gh
+$I ripgrep
+
