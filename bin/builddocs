@@ -1,0 +1,3 @@
+#!/usr/bin/env fish
+
+make -C Doc/ PYTHON=../python.exe SPHINXOPTS="--keep-going -j10" $argv
