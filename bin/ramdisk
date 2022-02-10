@@ -1,0 +1,46 @@
+#!/usr/bin/env fish
+
+set CPYTHON ~/Dropbox/Python/cpython.git
+set RAMDISK /Volumes/RAMDisk
+set WORKTREE $RAMDISK/cpython
+set BRANCH "main"
+set ALTBRANCH "3.10"
+
+if test -d $RAMDISK 
+    echo "RAM disk already exists at $RAMDISK. Unmount by running:"
+    echo
+    echo "    hdiutil eject $RAMDISK"
+    echo
+    exit 1
+end
+
+cd $CPYTHON
+if git worktree list | grep -q $WORKTREE
+    echo "Stale cpython worktree found, deleting."
+    git worktree remove $WORKTREE
+end
+
+set DISK_ID (hdiutil attach -nobrowse -nomount ram://16777216 | string trim)
+echo "Creating a RAM disk at $DISK_ID..."
+echo -n "Waiting for it to initialize..."
+
+while not diskutil list $DISK_ID >/dev/null 2>/dev/null
+    echo -n . 
+    sleep 1
+end
+
+echo " done!"
+
+echo "Formatting the RAM disk..."
+diskutil erasevolume HFS+ 'RAMDisk' $DISK_ID 
+
+# if string match -qr "^$BRANCH\$" (git branch --show-current)
+#    echo "$BRANCH checked out in $CPYTHON, using $ALTBRANCH instead."
+#    set BRANCH $ALTBRANCH
+# end
+
+git worktree add $WORKTREE $BRANCH
+echo "All done. Switch to the RAM disk checkout by running:"
+echo
+echo "    cd $WORKTREE"
+echo
