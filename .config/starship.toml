@@ -1,3 +1,5 @@
+right_format = "$time"
+
 [custom.sudo]
 description = 'valid sudo timestamp marker'
 command = "echo -n '⚡️'"
@@ -16,3 +18,9 @@ format = 'via [${symbol}${pyenv_prefix}(${version} )(\($virtualenv\))]($style) '
 
 [battery]
 format = '[⚡️ $percentage]($style) '
+
+[time]
+disabled = false
+format = "[$time]($style) "
+style = "#008000"
+time_format = "%H:%M"
