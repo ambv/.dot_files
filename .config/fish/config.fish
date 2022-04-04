@@ -3,9 +3,16 @@
 
 starship init fish | source
 
-set -x PATH $HOME/.dot_files/bin $HOME/.poetry/bin $HOME/.cargo/bin $PATH # /usr/local/opt/python@3.8/bin
+set -x PATH $HOME/.dot_files/bin $HOME/.poetry/bin $HOME/.cargo/bin /Library/TeX/texbin $PATH
+set -x PATH "/Library/Frameworks/Python.framework/Versions/3.10/bin" "$PATH" # 3.10 installer
+set -x PATH "/Users/ambv/Library/Application Support/edgedb/bin" "$PATH" # EdgeDB
 # set -x LDFLAGS -L/usr/local/opt/python@3.8/lib
 # set -x PKG_CONFIG_PATH /usr/local/opt/python@3.8/lib/pkgconfig
+set -x DOCKER_DEFAULT_PLATFORM linux/amd64
+
+#
+# NOTE: Don't put *private* tokens here, use ~/.fish_local.
+#
 
 # SAFE COMMANDS WHEN INTERACTIVE
 if test -t 0
@@ -15,7 +22,6 @@ if test -t 0
     alias dk="docker"
     alias dkl="docker container ls -a && docker image ls -a"
     alias dke="docker exec -it"
-    alias dkr="docker run -it --rm"
     # dkclr is a function
     alias grep="/usr/bin/grep --color=auto"
     alias oni="/Applications/Onivim2.app/Contents/MacOS/Oni2"
@@ -40,6 +46,10 @@ if test -t 0
     function poetry
         set cmd (which poetry)
         PYTHONWARNINGS=i $cmd $argv
+    end
+    function dkr
+        set name (echo $argv[1] | cut -f2 -d/)
+        docker run -it --rm --name $name $argv[2..] $argv[1]
     end
 end
 
@@ -69,3 +79,5 @@ set -x PYENV_ROOT $HOME/.pyenv
 fish_add_path /usr/local/opt/autoconf@2.69/bin
 status is-login; and pyenv init --path | source
 status is-interactive; and pyenv init - | source
+
+source ~/.fish_local
