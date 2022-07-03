@@ -1,14 +1,14 @@
 # Shell variables live in ~/.config/fish/fish_variables.
 # List with `set -U`.
 
-set -x PATH $HOME/.dot_files/bin $HOME/.poetry/bin $HOME/.cargo/bin $HOME/.local/bin /Library/TeX/texbin /opt/homebrew/bin $PATH
+starship init fish | source
+
+set -x PATH $HOME/.dot_files/bin $HOME/.poetry/bin $HOME/.cargo/bin /Library/TeX/texbin $PATH
+set -x PATH "/Library/Frameworks/Python.framework/Versions/3.10/bin" "$PATH" # 3.10 installer
 set -x PATH "/Users/ambv/Library/Application Support/edgedb/bin" "$PATH" # EdgeDB
-set -x PATH $PATH /Users/ambv/opt/anaconda3/condabin
 # set -x LDFLAGS -L/usr/local/opt/python@3.8/lib
 # set -x PKG_CONFIG_PATH /usr/local/opt/python@3.8/lib/pkgconfig
 set -x DOCKER_DEFAULT_PLATFORM linux/amd64
-
-starship init fish | source
 
 #
 # NOTE: Don't put *private* tokens here, use ~/.fish_local.
