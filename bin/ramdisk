@@ -15,9 +15,9 @@ if test -d $RAMDISK
 end
 
 cd $CPYTHON
-if git worktree list | grep -q $WORKTREE
-    echo "Stale cpython worktree found, deleting."
-    git worktree remove $WORKTREE
+git worktree list --porcelain | grep "^worktree $RAMDISK" | gsed -e "s/worktree //" | while read stale_worktree
+    echo "Stale cpython worktree found in $stale_worktree, deleting."
+    git worktree remove $stale_worktree
 end
 
 set DISK_ID (hdiutil attach -nobrowse -nomount ram://16777216 | string trim)
