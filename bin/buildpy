@@ -1,7 +1,7 @@
 #!/bin/bash -e
 export TMP_ROOT=/Volumes/RAMDisk
 export BRANCH="$TMP_ROOT/configurecache-$(git branch --show-current)"
-export CC=/usr/local/opt/ccache/libexec/clang
+export CC=/opt/homebrew/opt/ccache/libexec/clang
 export CFLAGS="-g3 -O0 -ggdb -I$(brew --prefix readline)/include"
 export LDFLAGS="-L$(brew --prefix readline)/lib"
 export PKG_CONFIG_PATH="$(brew --prefix openssl@1.1)/lib/pkgconfig:$(brew --prefix tcl-tk)/lib/pkgconfig"
