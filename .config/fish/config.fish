@@ -26,10 +26,10 @@ if test -t 0
     alias grep="/usr/bin/grep --color=auto"
     alias oni="/Applications/Onivim2.app/Contents/MacOS/Oni2"
     alias ll="/bin/ls -lah"
-    alias lt="/usr/local/bin/tree -AphL"
+    alias lt="/opt/homebrew/bin/tree -AphL"
     alias mv="/bin/mv -i"
     alias rm="/bin/rm -i"
-    alias tree="/usr/local/bin/tree -A"
+    alias tree="/opt/homebrew/bin/tree -A"
     alias vi="vim"
     function hg
         set cmd (which hg)
@@ -50,6 +50,9 @@ if test -t 0
     function dkr
         set name (echo $argv[1] | cut -f2 -d/)
         docker run -it --rm --name $name $argv[2..] $argv[1]
+    end
+    function sitediff
+        git diff -U0 --color | grep -av "<lastmod>" | grep -av "<updated>" | grep -av "?v=202" | less -r
     end
 end
 
