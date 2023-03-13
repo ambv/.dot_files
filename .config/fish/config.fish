@@ -49,7 +49,7 @@ if test -t 0
     end
     function dkr
         set name (echo $argv[1] | cut -f2 -d/)
-        docker run -it --rm --name $name $argv[2..] $argv[1]
+        docker run -it --rm --name $name $argv[2..]
     end
     function sitediff
         git diff -U0 --color | grep -av "<lastmod>" | grep -av "<updated>" | grep -av "?v=202" | less -r
