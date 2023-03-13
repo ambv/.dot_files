@@ -1,4 +1,5 @@
 right_format = "$time"
+command_timeout = 1500
 
 [custom.sudo]
 description = 'valid sudo timestamp marker'
