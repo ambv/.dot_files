@@ -7,8 +7,8 @@ __pycache__
 *.class
 
 # Compiled C files
-*.a
-*.o
+# *.a
+# *.o
 
 # SQLite databases
 *.db
@@ -36,6 +36,7 @@ __pycache__
 /.tox
 /.venv*
 /.eggs
+/.coverage
 *.egg-info
 .python3
 .python-version
