@@ -1,6 +1,6 @@
 #!/usr/bin/env fish
 
-set CPYTHON ~/Dropbox/Python/cpython.git
+set CPYTHON ~/Documents/Python/cpython.git
 set RAMDISK /Volumes/RAMDisk
 set WORKTREE $RAMDISK/cpython
 set BRANCH "main"
