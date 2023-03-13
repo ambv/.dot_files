@@ -1,7 +1,12 @@
 #!/usr/bin/env fish
 date
 if ! set -q PYTHONBINARY
-    export PYTHONBINARY=./python.exe
+    for candidate in ./python.exe ./python3 ./bin/python3
+        if test -x $candidate
+            export PYTHONBINARY=$candidate
+            break
+        end
+    end 
 end
 export PYTHONWARNINGS=
 export PYTHONSTARTUP=
