@@ -36,7 +36,6 @@
     "editor.minimap.enabled": false,
     "editor.tabCompletion": "onlySnippets",
     "editor.autoClosingBrackets": "never",
-    "editor.scrollBeyondLastLine": false,
     "git.confirmSync": false,
     "python.venvFolders": [
         "~/.venvs"
@@ -499,24 +498,33 @@
                     "args": "{ keys: parseInt(__cmd) + 'VJ' }"
                 },
                 "modaledit.cancelSelection"
-            ],
-            "G": [
+           ],
+           // ambv: "G" will open the standard gotoLine workflow which requires
+           //       Enter to confirm. "gg" only works properly when "Scroll
+           //       beyond last line" is enabled.
+           "G": [
                 {
-                    "command": "revealLine",
-                    "args": "{ lineNumber: parseInt(__cmd) - 1, at: 'top' }"
-                },
-                {
-                    "command": "cursorMove",
-                    "args": {
-                        "to": "viewPortTop"
-                    }
+                    "command": "workbench.action.quickOpen",
+                    "args": "':' + parseInt(__cmd)"
                 }
             ],
             "g": {
-                "g": {
-                    "command": "modaledit.typeNormalKeys",
-                    "args": "{ keys: parseInt(__cmd) + 'G' }"
-                },
+                "g": [
+                    {
+                        "command": "revealLine",
+                        "args": "{ lineNumber: parseInt(__cmd) - 1, at: 'top' }"
+                    },
+                    {
+                        "command": "cursorMove",
+                        "args": {
+                            "to": "viewPortTop"
+                        }
+                    },
+                    {
+                        "command": "modaledit.typeNormalKeys",
+                        "args": "{ keys: 'zz' }"
+                    }
+                ],
                 "J": {
                     "command": "modaledit.typeNormalKeys",
                     "args": "{ keys: __cmd.slice(-2) }",
