@@ -229,7 +229,9 @@
                 }
             },
             "t": "workbench.action.nextEditor",
-            "T": "workbench.action.previousEditor"
+            "T": "workbench.action.previousEditor",
+            "o": "editor.action.insertLineAfter",
+            "O": "editor.action.insertLineBefore"
         },
         "G": {
             "condition": "__selecting",
