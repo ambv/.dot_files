@@ -711,5 +711,8 @@
             "editor.action.transformToUppercase",
             "modaledit.cancelSelection"
         ]
+    },
+    "[html]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
     }
 }
