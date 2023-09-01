@@ -1,21 +1,23 @@
 {
     "python.pythonPath": "/Users/ambv/.virtualenvs/notes/bin/python",
     "python.linting.pylintEnabled": false,
-    "python.linting.flake8Enabled": true,
+    "python.linting.flake8Enabled": false,
     "python.linting.enabled": true,
     "python.formatting.provider": "black",
-    "editor.fontFamily": "TerminusTTF,Inconsolata,Menlo, Monaco",
-    "workbench.iconTheme": "file-icons",
+    "editor.fontFamily": "TerminusTTF",
+    "workbench.iconTheme": "file-icons-colourless",
     "editor.quickSuggestions": {
         "other": false,
         "comments": false,
         "strings": false
     },
+    "editor.find.autoFindInSelection": "multiline",
     "[python]": {
         "editor.rulers": [
             88
         ],
-        "editor.formatOnType": true
+        "editor.formatOnType": true,
+        "editor.defaultFormatter": "ms-python.black-formatter"
     },
     "[restructuredtext]": {
         "editor.rulers": [72]
@@ -27,6 +29,7 @@
         "editor.tabSize": 2
     },
     "git.autofetch": true,
+    "mypy.runUsingActiveInterpreter": true,
     "python.linting.flake8CategorySeverity.E": "Warning",
     "python.linting.flake8CategorySeverity.W": "Hint",
     "python.testing.unittestEnabled": true,
@@ -81,24 +84,33 @@
         "dtype",
         "edgedb",
         "edgeql",
+        "ENOENT",
+        "errorcode",
         "favicon",
+        "getfilesystemencoding",
         "grafana",
         "iter",
         "itertools",
+        "keepends",
         "langa",
         "llanga",
         "lukasz",
         "Łukasz",
         "macos",
+        "matplotlib",
+        "modalcommands",
+        "modaledit",
         "mypy",
         "ndarray",
         "po",
         "polyend",
         "pycache",
+        "pydantic",
         "pygame",
         "pyscript",
         "pytest",
         "rpartition",
+        "scandir",
         "scipy",
         "starlette",
         "ukasz",
@@ -123,7 +135,7 @@
         "*.ipynb": "jupyter-notebook"
     },
     "editor.inlineHints.fontFamily": "TerminusTTF, Inconsolata, Menlo, Monaco, 'Courier New', monospace",
-    "python.defaultInterpreterPath": "/Users/ambv/.virtualenvs/html5lib-pypy38",
+    "python.defaultInterpreterPath": "/Users/ambv/.virtualenvs/vscode-default",
     "notebook.cellToolbarLocation": {
         "default": "right",
         "jupyter-notebook": "left"
@@ -135,8 +147,6 @@
     "security.workspace.trust.untrustedFiles": "open",
     "editor.tabSize": 4,
     "workbench.colorTheme": "Chromodynamics Delek",
-    "window.commandCenter": false,
-    "workbench.layoutControl.enabled": false,
     "[json]": {
         "editor.defaultFormatter": "esbenp.prettier-vscode"
     },
@@ -410,15 +420,18 @@
             "editor.action.clipboardCopyAction",
             "modaledit.cancelSelection"
         ],
-        "p": [
-            "cursorRight",
-            "editor.action.clipboardPasteAction",
-            "modaledit.cancelSelection"
-        ],
-        "P": [
-            "editor.action.clipboardPasteAction",
-            "modaledit.cancelSelection"
-        ],
+        "p": {
+            "command": "modalcommands.vimPaste",
+            "args": {
+                "before": false
+            }
+        },
+        "P": {
+            "command": "modalcommands.vimPaste",
+            "args": {
+                "before": true
+            }
+        },
         "J": "editor.action.joinLines",
         "u": [
             "undo",
@@ -714,5 +727,14 @@
     },
     "[html]": {
         "editor.defaultFormatter": "esbenp.prettier-vscode"
-    }
+    },
+    "ruff.logLevel": "warn",
+    "cSpell.ignoreWords": [
+        "LANCZOS"
+    ],
+    "workbench.editor.untitled.hint": "hidden",
+    "[typescript]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "go.toolsManagement.autoUpdate": true
 }
