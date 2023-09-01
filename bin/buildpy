@@ -6,6 +6,7 @@ if [[ -z "$GITBRANCH" ]]; then
 fi
 export BRANCH="$TMP_ROOT/configurecache-$GITBRANCH"
 export CC=/opt/homebrew/opt/ccache/libexec/clang
+# note: CFLAGS redefined separately below for optimized builds
 export CFLAGS="-g3 -O0 -ggdb -I$(brew --prefix readline)/include -I$(brew --prefix xz)/include"
 export LDFLAGS="-L$(brew --prefix readline)/lib"
 export PKG_CONFIG_PATH="$(brew --prefix openssl@1.1)/lib/pkgconfig:$(brew --prefix tcl-tk)/lib/pkgconfig"
@@ -18,6 +19,7 @@ if [[ "$1" == "opt" ]]; then
     echo
     echo "########    Optimized production build of $GITBRANCH    ########"
     echo
+    export CFLAGS="-g0 -O3 -I$(brew --prefix readline)/include -I$(brew --prefix xz)/include"
     FRAMEWORK_INSTALL_DIR="$TMP_ROOT/installed-opt-$GITBRANCH"
     if [[ -d $FRAMEWORK_INSTALL_DIR ]]; then
         echo "Removing stale framework directory: $FRAMEWORK_INSTALL_DIR"
