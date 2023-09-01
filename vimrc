@@ -125,7 +125,7 @@ autocmd BufNewFile,BufRead *.thrift-cvalidator setlocal filetype=python
 autocmd BufNewFile,BufRead *.tw setlocal filetype=python
 autocmd BufNewFile,BufRead *.txt setlocal filetype=human
 autocmd BufNewFile,BufRead README setlocal filetype=human
-autocmd FileType gitcommit,human,mail setlocal formatoptions=1aconrtq textwidth=79
+autocmd FileType gitcommit,human,mail setlocal formatoptions=1conrtq textwidth=79
 autocmd FileType rst call REST_init()
 autocmd FileType c setlocal formatoptions+=ro
 autocmd FileType perl setlocal smartindent
