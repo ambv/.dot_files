@@ -17,7 +17,7 @@ starship init fish | source
 # SAFE COMMANDS WHEN INTERACTIVE
 if test -t 0
     alias ci="echo \"You probably meant vi. Or are you still using RCS?\"; false"
-    alias cp="/bin/cp -ir"
+    alias cp="/bin/cp -iR"
     alias dc="echo \"You don't really use 'dc', do you?\"; false"
     alias dk="docker"
     alias dkl="docker container ls -a && docker image ls -a"

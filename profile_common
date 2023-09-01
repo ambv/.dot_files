@@ -32,7 +32,7 @@ export PIP_REQUIRE_VIRTUALENV=true
 # SAFE COMMANDS WHEN INTERACTIVE
 if [ -t 0 ]; then
   alias ci="echo \"You probably meant vi. Or are you still using RCS?\"; false"
-  alias cp="cp -ir"
+  alias cp="cp -iR"
   alias dc="echo \"You don't really use 'dc', do you?\"; false"
   alias dk="docker"
   alias dkl="docker container ls -a && docker image ls -a"
