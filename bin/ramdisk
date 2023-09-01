@@ -14,6 +14,15 @@ if test -d $RAMDISK
     exit 1
 end
 
+set SUDO_PROMPT 1
+if sudo -nv 2>/dev/null
+    # sudo timestamp is fresh before this script ran
+    set SUDO_PROMPT 0
+else
+    echo "This script requires admin privileges to set ownership properly."
+    sudo -v
+end
+
 cd $CPYTHON
 git worktree list --porcelain | grep "^worktree $RAMDISK" | gsed -e "s/worktree //" | while read stale_worktree
     echo "Stale cpython worktree found in $stale_worktree, deleting."
@@ -40,6 +49,13 @@ diskutil erasevolume HFS+ 'RAMDisk' $DISK_ID
 # end
 
 git worktree add $WORKTREE $BRANCH
+
+sudo diskutil enableOwnership $DISK_ID
+sudo chown ambv:staff $RAMDISK
+if test $SUDO_PROMPT -eq 1
+    sudo -k
+end
+
 echo "All done. Switch to the RAM disk checkout by running:"
 echo
 echo "    cd $WORKTREE"
