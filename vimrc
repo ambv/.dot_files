@@ -104,7 +104,7 @@ func! PHP_init()
 endfunc
 
 func! REST_init()
-  setlocal formatoptions=1aconrtq textwidth=72
+  setlocal formatoptions=1conrtq textwidth=79
   setlocal wrap
   match ExtraWhitespace /\s\+\%#\@<!$/
 endfunc
