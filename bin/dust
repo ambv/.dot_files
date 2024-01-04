@@ -1,0 +1,27 @@
+#!/usr/bin/env fish
+
+set VOLUME /Volumes/dust
+
+if test -d $VOLUME
+    echo "dust already mounted. Unmount by running:"
+    echo
+    echo "    sudo umount /Volumes/dust"
+    echo
+    exit 1
+end
+
+set SUDO_PROMPT 1
+if sudo -nv 2>/dev/null
+    # sudo timestamp is fresh before this script ran
+    set SUDO_PROMPT 0
+else
+    echo "This script requires admin privileges to set ownership properly."
+    sudo -v
+end
+
+sudo showmount -e shield.local || exit 2
+sudo mkdir -p /Volumes/dust
+sudo chown ambv:everyone /Volumes/dust
+sudo mount -t nfs -o resvport,rw,nolock,noowners shield.local:/srv/dust /Volumes/dust
+
+ls -lah /Volumes/dust
