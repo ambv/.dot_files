@@ -36,6 +36,11 @@ elif [[ "$1" == "framework" ]]; then
         rm -rf $FRAMEWORK_INSTALL_DIR
     fi
     CONFIGURE_FLAGS+=(--enable-framework=$FRAMEWORK_INSTALL_DIR/Library/Frameworks  --with-pydebug)
+elif [[ "$1" == "pystats" ]]; then
+    echo
+    echo "########    Non-GUI PYSTATS build of $GITBRANCH   ########"
+    echo
+    CONFIGURE_FLAGS+=(--cache-file=$BRANCH --with-pydebug --enable-pystats)
 else
     echo
     echo "########    Non-GUI PYDEBUG build of $GITBRANCH   ########"
