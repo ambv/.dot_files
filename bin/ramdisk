@@ -1,10 +1,10 @@
 #!/usr/bin/env fish
 
 set CPYTHON ~/Documents/Python/cpython.git
+set VSCODE ~/Documents/Python/cpython-vscode-workspace
 set RAMDISK /Volumes/RAMDisk
 set WORKTREE $RAMDISK/cpython
 set BRANCH "main"
-set ALTBRANCH "3.10"
 
 if test -d $RAMDISK 
     echo "RAM disk already exists at $RAMDISK. Unmount by running:"
@@ -29,7 +29,10 @@ git worktree list --porcelain | grep "^worktree $RAMDISK" | gsed -e "s/worktree 
     git worktree remove $stale_worktree
 end
 
+# 8 GB should be enough.
 set DISK_ID (hdiutil attach -nobrowse -nomount ram://16777216 | string trim)
+# or you can do 32 GB if you need it...
+# set DISK_ID (hdiutil attach -nobrowse -nomount ram://67108864 | string trim)
 echo "Creating a RAM disk at $DISK_ID..."
 echo -n "Waiting for it to initialize..."
 
@@ -43,11 +46,6 @@ echo " done!"
 echo "Formatting the RAM disk..."
 diskutil erasevolume HFS+ 'RAMDisk' $DISK_ID 
 
-# if string match -qr "^$BRANCH\$" (git branch --show-current)
-#    echo "$BRANCH checked out in $CPYTHON, using $ALTBRANCH instead."
-#    set BRANCH $ALTBRANCH
-# end
-
 git worktree add $WORKTREE $BRANCH
 
 sudo diskutil enableOwnership $DISK_ID
@@ -55,6 +53,7 @@ sudo chown ambv:staff $RAMDISK
 if test $SUDO_PROMPT -eq 1
     sudo -k
 end
+ln -s $VSCODE $WORKTREE/.vscode
 
 echo "All done. Switch to the RAM disk checkout by running:"
 echo
