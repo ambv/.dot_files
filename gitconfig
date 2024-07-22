@@ -3,7 +3,7 @@
 	name = Łukasz Langa
 	signingkey = lukasz@langa.pl
 [push]
-	default = current
+	default = upstream
 [color]
 	branch = auto
 	diff = auto
