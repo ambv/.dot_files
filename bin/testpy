@@ -12,6 +12,33 @@ export PYTHONWARNINGS=
 export PYTHONSTARTUP=
 export DISPLAY=
 export IN_REGRTEST=1
-set -l fish_trace on
+set fish_trace on
+
+set GITBRANCH (git branch --show-current)
+if test -z $GITBRANCH
+    set GITBRANCH (git rev-parse --short HEAD)
+end
+
+# set COVERAGE_VENV_DIR /Volumes/RAMDisk/venv-coverage-$GITBRANCH
+
+# if test -z $COVERAGE_VENV_DIR
+#     echo "Invalid empty coverage venv directory."
+#     exit 1
+# end
+
 $PYTHONBINARY -V; or exit
+
+# if ! test -d $COVERAGE_VENV_DIR
+#     $PYTHONBINARY -m venv $COVERAGE_VENV_DIR
+#     $COVERAGE_VENV_DIR/bin/python3 -m pip install coverage
+# end
+
+# source $COVERAGE_VENV_DIR/bin/activate.fish
+
+# if set -q COVER
+#     time $COVERAGE_VENV_DIR/bin/python3 -E -Wd -m coverage run --pylib --source=$COVER -m test --slowest --fail-env-changed $argv
+# else
+#     time $COVERAGE_VENV_DIR/bin/python3 -E -Wd -m test --slowest --fail-env-changed $argv
+# end
+
 time $PYTHONBINARY -E -Wd -m test --slowest --fail-env-changed $argv
