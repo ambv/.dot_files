@@ -7,25 +7,52 @@ fi
 export BRANCH="$TMP_ROOT/configurecache-$GITBRANCH"
 export CC=/opt/homebrew/opt/ccache/libexec/clang
 # note: CFLAGS redefined separately below for optimized builds
-export CFLAGS="-g3 -O0 -ggdb -I$(brew --prefix readline)/include -I$(brew --prefix xz)/include"
-export LDFLAGS="-L$(brew --prefix readline)/lib"
-export PKG_CONFIG_PATH="$(brew --prefix openssl@1.1)/lib/pkgconfig:$(brew --prefix tcl-tk)/lib/pkgconfig"
+export CFLAGS="-g3 -O0 -ggdb" # -I$(brew --prefix readline)/include -I$(brew --prefix xz)/include"
+
+export LDFLAGS="-L/opt/homebrew/lib"
+export CPPFLAGS="-I/opt/homebrew/include"
+
+# export PKG_CONFIG_PATH="$(brew --prefix openssl@3)/lib/pkgconfig:$(brew --prefix tcl-tk)/lib/pkgconfig"
+export PKG_CONFIG_PATH="$(brew --prefix tcl-tk)/lib/pkgconfig"
+
 # export CC=/usr/bin/clang
 # export CFLAGS="-fsanitize=undefined -fno-omit-frame-pointer"
 # export LDFLAGS="-fsanitize=undefined -fno-omit-frame-pointer"
-export CONFIGURE_FLAGS=("--with-tcltk-libs=$(pkg-config tk --libs)" "--with-tcltk-includes=$(pkg-config tk --cflags)")
+export CONFIGURE_FLAGS=("--with-tcltk-libs=$(pkg-config tk --libs)" "--with-tcltk-includes=$(pkg-config tk --cflags)" "--with-openssl=$(brew --prefix openssl@3)")
 
 if [[ "$1" == "opt" ]]; then
     echo
     echo "########    Optimized production build of $GITBRANCH    ########"
     echo
-    export CFLAGS="-g0 -O3 -I$(brew --prefix readline)/include -I$(brew --prefix xz)/include"
+    export CFLAGS="-g0 -O3"
     FRAMEWORK_INSTALL_DIR="$TMP_ROOT/installed-opt-$GITBRANCH"
     if [[ -d $FRAMEWORK_INSTALL_DIR ]]; then
         echo "Removing stale framework directory: $FRAMEWORK_INSTALL_DIR"
         rm -rf $FRAMEWORK_INSTALL_DIR
     fi
-    CONFIGURE_FLAGS+=(--enable-framework=$FRAMEWORK_INSTALL_DIR/Library/Frameworks --enable-optimizations --with-lto)
+    CONFIGURE_FLAGS+=(--enable-framework=$FRAMEWORK_INSTALL_DIR/Library/Frameworks --enable-optimizations --with-lto --enable-bolt)
+elif [[ "$1" == "nogil-debug" ]]; then
+    echo
+    echo "########    Optimized free-threaded build of $GITBRANCH    ########"
+    echo
+    FRAMEWORK_INSTALL_DIR="$TMP_ROOT/installed-nogil-debug-$GITBRANCH"
+    if [[ -d $FRAMEWORK_INSTALL_DIR ]]; then
+        echo "Removing stale framework directory: $FRAMEWORK_INSTALL_DIR"
+        rm -rf $FRAMEWORK_INSTALL_DIR
+    fi
+    CONFIGURE_FLAGS+=(--enable-framework=$FRAMEWORK_INSTALL_DIR/Library/Frameworks --with-pydebug --disable-gil)
+elif [[ "$1" == "nogil-opt" ]]; then
+    echo
+    echo "########    Optimized free-threaded build of $GITBRANCH    ########"
+    echo
+    export CFLAGS="-g0 -O3"
+    # FRAMEWORK_INSTALL_DIR="$TMP_ROOT/installed-nogil-opt-$GITBRANCH"
+    FRAMEWORK_INSTALL_DIR="/Users/ambv/opt/installed-nogil-opt-$GITBRANCH"
+    if [[ -d $FRAMEWORK_INSTALL_DIR ]]; then
+        echo "Removing stale framework directory: $FRAMEWORK_INSTALL_DIR"
+        rm -rf $FRAMEWORK_INSTALL_DIR
+    fi
+    CONFIGURE_FLAGS+=(--enable-framework=$FRAMEWORK_INSTALL_DIR/Library/Frameworks --enable-optimizations --with-lto --disable-gil)
 elif [[ "$1" == "framework" ]]; then
     FRAMEWORK_INSTALL_DIR="$TMP_ROOT/installed-$GITBRANCH"
     echo
@@ -51,8 +78,8 @@ fi
 make distclean || (./configure "${CONFIGURE_FLAGS[@]}" && make distclean)
 time ./configure "${CONFIGURE_FLAGS[@]}"
 # time make regen-all
-time make --quiet -j10
-if [[ "$1" == "framework" ]] || [[ "$1" == "opt" ]]; then
+time make -j10
+if [[ "$1" == "framework" ]] || [[ "$1" == "opt" ]] || [[ "$1" == "nogil-debug" ]] || [[ "$1" == "nogil-opt" ]]; then
     if [[ -d $FRAMEWORK_INSTALL_DIR ]]; then
         echo "Removing stale framework directory: $FRAMEWORK_INSTALL_DIR"
         rm -rf $FRAMEWORK_INSTALL_DIR
