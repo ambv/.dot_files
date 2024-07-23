@@ -4,6 +4,7 @@
     "python.linting.flake8Enabled": false,
     "python.linting.enabled": true,
     "python.formatting.provider": "black",
+    "python.analysis.typeCheckingMode": "basic",
     "editor.fontFamily": "TerminusTTF",
     "workbench.iconTheme": "file-icons-colourless",
     "editor.quickSuggestions": {
@@ -34,7 +35,7 @@
     "python.linting.flake8CategorySeverity.W": "Hint",
     "python.testing.unittestEnabled": true,
     "explorer.confirmDragAndDrop": false,
-    "workbench.editor.showTabs": true,
+    "workbench.editor.showTabs": "multiple",
     "editor.minimap.renderCharacters": false,
     "editor.minimap.enabled": false,
     "editor.tabCompletion": "onlySnippets",
@@ -125,7 +126,6 @@
     "terminal.integrated.fontSize": 14,
     "python.languageServer": "Pylance",
     "workbench.startupEditor": "newUntitledFile",
-    "python.showStartPage": false,
     "vscode-neovim.logLevel": "warn",
     "vscode-neovim.logOutputToConsole": true,
     "vscode-neovim.neovimWidth": 300,
@@ -134,8 +134,7 @@
     "workbench.editorAssociations": {
         "*.ipynb": "jupyter-notebook"
     },
-    "editor.inlineHints.fontFamily": "TerminusTTF, Inconsolata, Menlo, Monaco, 'Courier New', monospace",
-    "python.defaultInterpreterPath": "/Users/ambv/.virtualenvs/vscode-default",
+    "python.defaultInterpreterPath": "/Volumes/RAMDisk/nogil-ep-temp",
     "notebook.cellToolbarLocation": {
         "default": "right",
         "jupyter-notebook": "left"
@@ -385,7 +384,7 @@
         // ambv: I don't want those useless commands
         // "x": "deleteRight",  <-- this one will be a chord
         // "X": "deleteLeft",   <-- this one I will replace with a D equivalent below
-        "X": [
+        "D": [
             "modaledit.cancelSelection",
             "cursorEndSelect",
             "deleteRight",
@@ -401,7 +400,7 @@
                 "keys": "cc"
             }
         },
-        "D": [
+        "X": [
             "modaledit.cancelSelection",
             "cursorEndSelect",
             "editor.action.clipboardCopyAction",
@@ -526,8 +525,11 @@
             "g": {
                 "g": [
                     {
+                        // Not sure why this needs +4 but it started going out of sync
+                        // a while back. This workaround is easier than figuring out what
+                        // changed in the VScode extension API.
                         "command": "revealLine",
-                        "args": "{ lineNumber: parseInt(__cmd) - 1, at: 'top' }"
+                        "args": "{ lineNumber: parseInt(__cmd) + 4, at: 'top' }"
                     },
                     {
                         "command": "cursorMove",
@@ -568,7 +570,18 @@
         },
         "n": "modaledit.nextMatch",
         "N": "modaledit.previousMatch",
-        ":": "workbench.action.showCommands",
+        ":": {
+            "help": "digits: go to line, other: command",
+            "\n": "workbench.action.showCommands",
+            "1-9": {
+                "command": "workbench.action.quickOpen",
+                "args": "__cmd"
+            },
+            "a-z": {
+                "command": "workbench.action.quickOpen",
+                "args": "'>' + __cmd[1]"
+            }
+        },
         "z": {
             "z": {
                 "command": "revealLine",
@@ -697,13 +710,13 @@
             "editor.action.formatSelection",
             "modaledit.cancelSelection"
         ],
-        "d": [
+        // ambv: x cuts, d deletes without copying
+        "x": [
             "editor.action.clipboardCopyAction",
             "deleteRight",
             "modaledit.cancelSelection"
         ],
-        // ambv: x deletes without copying, like in normal mode
-        "x": [
+        "d": [
             "deleteRight",
             "modaledit.cancelSelection"
         ],
@@ -732,10 +745,23 @@
     "cSpell.ignoreWords": [
         "LANCZOS"
     ],
-    "workbench.editor.untitled.hint": "hidden",
     "[typescript]": {
         "editor.defaultFormatter": "esbenp.prettier-vscode"
     },
     "go.toolsManagement.autoUpdate": true,
-    "luahelper.base.formatErrShow": true
+    "luahelper.base.formatErrShow": true,
+    "workbench.editor.empty.hint": "hidden",
+    "redhat.telemetry.enabled": true,
+    "xml.server.vmargs": "-Xmx512M",
+    "xml.symbols.maxItemsComputed": 1000000,
+    "workbench.layoutControl.enabled": false,
+    "powershell.powerShellAdditionalExePaths": {
+        "HomeBrew": "/opt/homebrew/bin/pwsh"
+    },
+    "powershell.powerShellDefaultVersion": "HomeBrew",
+    "cmake.showOptionsMovedNotification": false,
+    "githubPullRequests.pullBranch": "never",
+    "gitlens.advanced.messages": {
+        "suppressIntegrationRequestTimedOutWarning": true
+    }
 }
