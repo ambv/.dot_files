@@ -2,7 +2,7 @@
 local wezterm = require 'wezterm'
 local default_prog = {"/opt/homebrew/bin/xonsh", "-l"}
 
-return {
+config = {
   default_prog= default_prog,
   font = wezterm.font("Terminus (TTF)"),
   font_size = 14.0,
@@ -14,22 +14,24 @@ return {
   initial_rows = 30,
   initial_cols = 100,
   use_fancy_tab_bar = false,
-  tab_max_width = 80,
+  tab_max_width = 40,
   colors = {
     foreground = '#e0e0e0',
+    background = 'hsl(280, 100%, 3%)',
     tab_bar = {
       background = 'hsl(280, 100%, 11%)',
       active_tab = {
-        bg_color = 'hsl(240, 100%, 66%)',
+        bg_color = 'hsl(280, 100%, 3% / 0%)',
         fg_color = 'hsl(240, 100%, 100%)',
+        bold = 'true',
       },
       inactive_tab = {
-        bg_color = 'hsl(260, 100%, 30%)',
-        fg_color = 'hsl(260, 100%, 80%)',
+        bg_color = 'hsl(280, 100%, 20%)',
+        fg_color = 'hsl(280, 67%, 67%)',
       },
       inactive_tab_hover = {
-        bg_color = 'hsl(220, 100%, 66.66%)',
-        fg_color = 'hsl(220, 100%, 100%)',
+        bg_color = 'hsl(280, 100%, 30%)',
+        fg_color = 'hsl(280, 100%, 80%)',
       },
       new_tab = {
         bg_color = 'hsl(280, 100%, 11%)',
@@ -42,6 +44,16 @@ return {
     },
     scrollbar_thumb = 'hsl(280, 25%, 11%)',
     split = 'hsl(280, 25%, 11%)',
+  },
+  background = {
+    -- This is the deepest/back-most layer. It will be rendered first
+    {
+      source = {File=wezterm.config_dir .. "/wezterm-background.png"},
+      vertical_align = "Bottom",
+      horizontal_align = "Left",
+      height = "1964px",
+      width = "3024px",
+    },
   },
   enable_scroll_bar = true,
   scrollback_lines = 10000,
@@ -60,7 +72,6 @@ return {
     {key="-", mods="CTRL", action="DisableDefaultAssignment"},
     {key="_", mods="CTRL|SHIFT", action="DisableDefaultAssignment"},
     {key="+", mods="CTRL", action="DisableDefaultAssignment"},
-    {key="Enter", mods="META", action="DisableDefaultAssignment"},
   },
   mouse_bindings = {
     -- only select text by default
@@ -75,5 +86,60 @@ return {
         mods="CMD",
         action=wezterm.action.OpenLinkAtMouseCursor,
     },
-},
+  },
+  hyperlink_rules = {
+    -- the default regex doesn't support port numbers
+    {
+        regex = "\\b\\w+://(?:[\\w.-]+)\\S*\\b",
+        format = "$0",
+    },
+  },
 }
+
+function get_max_cols(window)
+  local tab = window:active_tab()
+  local cols = tab:get_size().cols
+  return cols
+end
+
+wezterm.on(
+  'window-config-reloaded',
+  function(window)
+    wezterm.GLOBAL.cols = get_max_cols(window)
+  end
+)
+
+wezterm.on(
+  'window-resized',
+  function(window, pane)
+    wezterm.GLOBAL.cols = get_max_cols(window)
+  end
+)
+
+wezterm.on(
+  'format-tab-title',
+  function(tab, tabs, panes, config, hover, max_width)
+    local actual_max_w = math.min(wezterm.GLOBAL.cols // #tabs, config.tab_max_width)
+    local title = tab.active_pane.title
+    local full_title = (tab.tab_index + 1) .. '. ' .. title
+
+    if #full_title > actual_max_w then
+      return wezterm.truncate_right(full_title, actual_max_w-2) .. "…"
+    elseif #full_title == actual_max_w then
+      return full_title
+    end
+
+    local lpad = actual_max_w - #full_title
+    local rpad = 0
+    if math.fmod(lpad, 2) == 1 then
+      lpad = lpad // 2
+      rpad = lpad + 1
+    else
+      lpad = lpad // 2
+      rpad = lpad
+    end
+    return string.rep(' ', lpad) .. full_title .. string.rep(' ', rpad)
+  end
+)
+
+return config
