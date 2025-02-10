@@ -3,10 +3,10 @@ command_timeout = 1500
 
 [custom.sudo]
 description = 'valid sudo timestamp marker'
-command = "echo -n '⚡️'"
+command = "sudo -vn && echo -n '⚡️'"
 format = '[$symbol$output]($style) '
 style = 'bold fg:bright-red'
-when = 'sudo -vn &>/dev/null'
+when = 'true'
 
 [git_status]
 style = 'yellow'
@@ -18,7 +18,7 @@ disabled = true
 format = 'via [${symbol}${pyenv_prefix}(${version} )(\($virtualenv\))]($style) '
 
 [battery]
-format = '[⚡️ $percentage]($style) '
+format = '[🔋 $percentage]($style) '
 
 [time]
 disabled = false
