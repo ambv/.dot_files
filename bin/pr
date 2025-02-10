@@ -1,0 +1,63 @@
+#!/usr/bin/env python3
+
+import subprocess
+import sys
+import json
+
+
+def run(*cmdline) -> str:
+    print(" ".join(cmdline))
+    proc = subprocess.run(cmdline, capture_output=True)
+    if err := proc.stderr.strip():
+        print(err.decode(), file=sys.stderr)
+    out = proc.stdout.strip()
+    if proc.returncode == 0:
+        return out.decode()
+    
+    print(out.decode())
+    raise subprocess.CalledProcessError(proc.returncode, cmdline)
+
+
+def show(*cmdline) -> None:
+    out = run(*cmdline)
+    if out:
+        print(out)
+
+
+def get(*cmdline) -> str:
+    out = run(*cmdline)
+    if not out:
+        raise ValueError(f"no output when running {cmdline}")
+    return out
+
+
+def main(args) -> None:
+    show("gh", "pr", "checkout", args[0], "-b", f"pr-{args[0]}")
+    current_branch = get("git", "branch", "--show-current")
+    pr_details = get("gh", "pr", "view", args[0], "--json", "url,headRepositoryOwner")
+    pr_details_j = json.loads(pr_details)
+    if not (remote_name := pr_details_j["headRepositoryOwner"]["login"]):
+        raise ValueError(f"Remote name empty for {args[0]} in {pr_details_j}")
+    remote_url = get("git", "config", f"branch.{current_branch}.remote")
+    if remote_name == remote_url:
+        print(f"remote {remote_name} already known")
+    elif remote_url.startswith("git@github.com:"):
+        show("git", "config", f"remote.{remote_name}.url", remote_url)
+        show("git", "config", f"remote.{remote_name}.fetch", f"+refs/heads/*:refs/remotes/{remote_name}/*")
+        show("git", "config", f"remote.{remote_name}.github-pr-remote", "true")
+        show("git", "config", f"branch.{current_branch}.remote", remote_name)
+    else:
+        raise ValueError(f"Weird remote URL: {remote_url}")
+    
+    try:
+         show("git", "config", f"branch.{current_branch}.pushRemote")
+    except subprocess.CalledProcessError as cpe:
+        if cpe.returncode != 1:
+            raise
+    else:
+        show("git", "config", "--unset", f"branch.{current_branch}.pushRemote")
+    show("git", "fetch", "-a", remote_name)
+
+
+if __name__ == "__main__":
+    main(sys.argv[1:])

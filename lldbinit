@@ -1,1 +1,1 @@
-command script import cpython_lldb
+command script import ~/.lldb/cpython_lldb/cpython_lldb.py

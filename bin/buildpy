@@ -30,10 +30,10 @@ if [[ "$1" == "opt" ]]; then
         echo "Removing stale framework directory: $FRAMEWORK_INSTALL_DIR"
         rm -rf $FRAMEWORK_INSTALL_DIR
     fi
-    CONFIGURE_FLAGS+=(--enable-framework=$FRAMEWORK_INSTALL_DIR/Library/Frameworks --enable-optimizations --with-lto --enable-bolt)
-elif [[ "$1" == "nogil-debug" ]]; then
+    CONFIGURE_FLAGS+=(--enable-framework=$FRAMEWORK_INSTALL_DIR/Library/Frameworks --enable-optimizations --with-lto)
+elif [[ "$1" == "nogil" ]]; then
     echo
-    echo "########    Optimized free-threaded build of $GITBRANCH    ########"
+    echo "########    Debug free-threaded build of $GITBRANCH    ########"
     echo
     FRAMEWORK_INSTALL_DIR="$TMP_ROOT/installed-nogil-debug-$GITBRANCH"
     if [[ -d $FRAMEWORK_INSTALL_DIR ]]; then
@@ -79,7 +79,7 @@ make distclean || (./configure "${CONFIGURE_FLAGS[@]}" && make distclean)
 time ./configure "${CONFIGURE_FLAGS[@]}"
 # time make regen-all
 time make -j10
-if [[ "$1" == "framework" ]] || [[ "$1" == "opt" ]] || [[ "$1" == "nogil-debug" ]] || [[ "$1" == "nogil-opt" ]]; then
+if [[ "$1" == "framework" ]] || [[ "$1" == "opt" ]] || [[ "$1" == "nogil" ]] || [[ "$1" == "nogil-opt" ]]; then
     if [[ -d $FRAMEWORK_INSTALL_DIR ]]; then
         echo "Removing stale framework directory: $FRAMEWORK_INSTALL_DIR"
         rm -rf $FRAMEWORK_INSTALL_DIR

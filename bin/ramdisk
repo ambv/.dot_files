@@ -1,7 +1,7 @@
 #!/usr/bin/env fish
 
-set CPYTHON ~/Documents/Python/cpython.git
-set VSCODE ~/Documents/Python/cpython-vscode-workspace
+set CPYTHON ~/Python/cpython.git
+set VSCODE ~/Python/cpython-vscode-workspace
 set RAMDISK /Volumes/RAMDisk
 set WORKTREE $RAMDISK/cpython
 set BRANCH "main"
