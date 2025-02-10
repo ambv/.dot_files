@@ -22,5 +22,13 @@
     {
         "key": "ctrl+w", 
         "command": "workbench.action.navigateEditorGroups" 
+    },
+    {
+        "key": "shift+f1",
+        "command": "workbench.action.showCommands"
+    },
+    {
+        "key": "f1",
+        "command": "-workbench.action.showCommands"
     }
 ]

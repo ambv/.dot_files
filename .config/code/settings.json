@@ -18,7 +18,9 @@
             88
         ],
         "editor.formatOnType": true,
-        "editor.defaultFormatter": "ms-python.black-formatter"
+        "editor.defaultFormatter": "ms-python.black-formatter",
+        "editor.tabSize": 4,
+        "editor.insertSpaces": true
     },
     "[restructuredtext]": {
         "editor.rulers": [72]
@@ -68,7 +70,7 @@
         "*.json": "jinja-json"
     },
     "editor.autoClosingQuotes": "never",
-    "editor.renderWhitespace": "none",
+    "editor.renderWhitespace": "all",
     "cSpell.userWords": [
         "Ableton",
         "aiter",
@@ -134,7 +136,7 @@
     "workbench.editorAssociations": {
         "*.ipynb": "jupyter-notebook"
     },
-    "python.defaultInterpreterPath": "/Volumes/RAMDisk/nogil-ep-temp",
+    "python.defaultInterpreterPath": "/Users/ambv/.virtualenvs/vscode-default",
     "notebook.cellToolbarLocation": {
         "default": "right",
         "jupyter-notebook": "left"
@@ -762,6 +764,16 @@
     "cmake.showOptionsMovedNotification": false,
     "githubPullRequests.pullBranch": "never",
     "gitlens.advanced.messages": {
+        "suppressIntegrationDisconnectedTooManyFailedRequestsWarning": true,
         "suppressIntegrationRequestTimedOutWarning": true
-    }
+    },
+    "github.copilot.enable": {
+        "*": true,
+        "plaintext": false,
+        "markdown": false,
+        "scminput": false,
+        "ini": false,
+        "python": false
+    },
+    "terminal.integrated.scrollback": 10000
 }
