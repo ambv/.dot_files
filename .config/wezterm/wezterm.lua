@@ -14,7 +14,7 @@ local config = {
   initial_rows = 30,
   initial_cols = 100,
   use_fancy_tab_bar = false,
-  tab_max_width = 40,
+  tab_max_width = 45,
   colors = {
     foreground = '#e0e0e0',
     background = 'hsl(280, 100%, 3%)',
@@ -118,17 +118,17 @@ wezterm.on(
 wezterm.on(
   'format-tab-title',
   function(tab, tabs, panes, config, hover, max_width)
-    local actual_max_w = math.min(wezterm.GLOBAL.cols // #tabs, config.tab_max_width)
+    local actual_max_w = math.min((wezterm.GLOBAL.cols // #tabs) - 3, config.tab_max_width - 2)
     local title = tab.active_pane.title
     local full_title = (tab.tab_index + 1) .. '. ' .. title
 
     if #full_title > actual_max_w then
-      return wezterm.truncate_right(full_title, actual_max_w-2) .. "…"
+      return " " .. wezterm.truncate_right(full_title, actual_max_w) .. "…"
     elseif #full_title == actual_max_w then
-      return full_title
+      return " " .. full_title .. " "
     end
 
-    local lpad = actual_max_w - #full_title
+    local lpad = 2 + actual_max_w - #full_title
     local rpad = 0
     if math.fmod(lpad, 2) == 1 then
       lpad = lpad // 2
@@ -185,7 +185,7 @@ wezterm.on("update-status", function(window, pane)
 end)
 
 wezterm.on("gui-startup", function(cmd)
-  local tab, pane, window = wezterm.mux.spawn_window({args = {"/opt/homebrew/bin/btop"}})
+  local tab, pane, window = wezterm.mux.spawn_window({args = {"/opt/homebrew/bin/bpytop"}})
   window:gui_window():maximize()
   wezterm.GLOBAL.cols = get_max_cols(window)
   window:spawn_tab {}
