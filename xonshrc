@@ -47,6 +47,9 @@ $XONTRIB_HIST_NAVIGATOR_TRUNCATE="true"
 
 xontrib load vox  # like virtualfish
 
+def wintitle(args):
+    $TITLE=" ".join(args) + " | " + PID
+
 aliases["ci"] = "echo", "You probably meant vi. Or are you still using RCS?"
 aliases["cp"] = "/bin/cp", "-iR"
 aliases["dc"] = "echo", "You don't really use 'dc', do you?"
@@ -60,6 +63,7 @@ aliases["rm"] = "/bin/rm", "-i"
 aliases["tree"] = "/opt/homebrew/bin/tree", "-A"
 aliases["vi"] = "vim"
 aliases["vf"] = "vox"
+aliases["wintitle"] = wintitle
 
 xontrib load autovox
 # xontrib load coreutils  -- faster, but change uptime into a float
