@@ -68,7 +68,7 @@ aliases["wintitle"] = wintitle
 xontrib load autovox
 # xontrib load coreutils  -- faster, but change uptime into a float
 xontrib load hist_navigator
-# xontrib load fish_completer
+xontrib load fish_completer
 xontrib load term_integration
 
 @events.autovox_policy
