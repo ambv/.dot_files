@@ -1,8 +1,8 @@
 
 local wezterm = require 'wezterm'
 local default_prog = {"/opt/homebrew/bin/xonsh", "-l"}
-
-config = {
+local color_cache = {}
+local config = {
   default_prog= default_prog,
   font = wezterm.font("Terminus (TTF)"),
   font_size = 14.0,
@@ -23,7 +23,6 @@ config = {
       active_tab = {
         bg_color = 'hsl(280, 100%, 3% / 0%)',
         fg_color = 'hsl(240, 100%, 100%)',
-        bold = 'true',
       },
       inactive_tab = {
         bg_color = 'hsl(280, 100%, 20%)',
@@ -42,11 +41,10 @@ config = {
         fg_color = 'hsl(260, 100%, 100%)',
       },
     },
-    scrollbar_thumb = 'hsl(280, 25%, 11%)',
+    scrollbar_thumb = 'hsl(220, 25%, 33%)',
     split = 'hsl(280, 25%, 11%)',
   },
   background = {
-    -- This is the deepest/back-most layer. It will be rendered first
     {
       source = {File=wezterm.config_dir .. "/wezterm-background.png"},
       vertical_align = "Bottom",
@@ -116,6 +114,7 @@ wezterm.on(
   end
 )
 
+-- make the tab titles pretty wide
 wezterm.on(
   'format-tab-title',
   function(tab, tabs, panes, config, hover, max_width)
@@ -141,5 +140,44 @@ wezterm.on(
     return string.rep(' ', lpad) .. full_title .. string.rep(' ', rpad)
   end
 )
+
+function copy(obj, seen)
+  if type(obj) ~= 'table' then return obj end
+  if seen and seen[obj] then return seen[obj] end
+  local s = seen or {}
+  local res = setmetatable({}, getmetatable(obj))
+  s[obj] = res
+  for k, v in pairs(obj) do res[copy(k, s)] = copy(v, s) end
+  return res
+end
+
+-- make the scrollbar transparent when not needed
+wezterm.on("update-status", function(window, pane)
+  local overrides = window:get_config_overrides() or {}
+
+  if color_cache[window] then
+    if color_cache[window][pane] then
+      overrides.colors = color_cache[window][pane]
+    else
+      overrides.colors = copy(config.colors)
+      color_cache[window][pane] = overrides.colors
+    end
+  else
+    overrides.colors = copy(config.colors)
+    color_cache[window] = {
+      [pane] = overrides.colors
+    }
+  end
+
+  local dim = pane:get_dimensions()
+  if pane:is_alt_screen_active() then
+    overrides.colors.scrollbar_thumb = "transparent"
+  else
+    local rate = 2 * dim.scrollback_rows / dim.viewport_rows
+    rate = math.floor(math.min(100, rate))
+    overrides.colors.scrollbar_thumb = 'hsl(220, 25%, 33% / ' .. rate .. '%)'
+  end
+  window:set_config_overrides(overrides)
+end)
 
 return config
