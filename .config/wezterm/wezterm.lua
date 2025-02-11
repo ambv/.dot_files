@@ -155,6 +155,10 @@ end
 wezterm.on("update-status", function(window, pane)
   local overrides = window:get_config_overrides() or {}
 
+  -- the caching dance is necessary because overrides are per window,
+  -- not per pane, and more importantly, there seems to be some bug
+  -- that makes all colors revert to default until the color override
+  -- table is complete.
   if color_cache[window] then
     if color_cache[window][pane] then
       overrides.colors = color_cache[window][pane]
@@ -178,6 +182,13 @@ wezterm.on("update-status", function(window, pane)
     overrides.colors.scrollbar_thumb = 'hsl(220, 25%, 33% / ' .. rate .. '%)'
   end
   window:set_config_overrides(overrides)
+end)
+
+wezterm.on("gui-startup", function(cmd)
+  local tab, pane, window = wezterm.mux.spawn_window({args = {"/opt/homebrew/bin/btop"}})
+  window:gui_window():maximize()
+  wezterm.GLOBAL.cols = get_max_cols(window)
+  window:spawn_tab {}
 end)
 
 return config
