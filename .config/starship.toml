@@ -15,6 +15,7 @@ style = 'yellow'
 disabled = true
 
 [python]
+python_binary = 'python3'
 format = 'via [${symbol}${pyenv_prefix}(${version} )(\($virtualenv\))]($style) '
 
 [battery]
