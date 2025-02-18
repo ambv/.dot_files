@@ -28,8 +28,6 @@
     },
     "git.autofetch": true,
     "mypy.runUsingActiveInterpreter": true,
-    "python.linting.flake8CategorySeverity.E": "Warning",
-    "python.linting.flake8CategorySeverity.W": "Hint",
     "python.testing.unittestEnabled": true,
     "explorer.confirmDragAndDrop": false,
     "workbench.editor.showTabs": "multiple",
@@ -104,11 +102,6 @@
     "terminal.integrated.fontSize": 14,
     "python.languageServer": "Jedi",
     "workbench.startupEditor": "newUntitledFile",
-    "vscode-neovim.logLevel": "warn",
-    "vscode-neovim.logOutputToConsole": true,
-    "vscode-neovim.neovimWidth": 300,
-    "vscode-neovim.neovimExecutablePaths.darwin": "/usr/local/bin/nvim",
-    "vscode-neovim.neovimExecutablePaths.linux": "/usr/local/bin/nvim",
     "workbench.editorAssociations": {
         "*.ipynb": "jupyter-notebook"
     },
@@ -117,9 +110,6 @@
         "default": "right",
         "jupyter-notebook": "left"
     },
-    "gitlens.codeLens.scopes": [
-        "document"
-    ],
     "editor.accessibilitySupport": "off",
     "security.workspace.trust.untrustedFiles": "open",
     "editor.tabSize": 4,
@@ -791,5 +781,5 @@
     "update.mode": "manual",
     "git.blame.statusBarItem.enabled": false,
     "git-blame.config.showBlameInline": false,
-    "git.blame.editorDecoration.enabled": false
+    "git.blame.editorDecoration.enabled": true
 }
