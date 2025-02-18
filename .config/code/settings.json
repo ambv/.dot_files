@@ -1,12 +1,7 @@
 {
-    "python.pythonPath": "/Users/ambv/.virtualenvs/notes/bin/python",
-    "python.linting.pylintEnabled": false,
-    "python.linting.flake8Enabled": false,
-    "python.linting.enabled": true,
-    "python.formatting.provider": "black",
+    "ruff.nativeServer": "on",
     "python.analysis.typeCheckingMode": "basic",
     "editor.fontFamily": "TerminusTTF",
-    "workbench.iconTheme": "file-icons-colourless",
     "editor.quickSuggestions": {
         "other": false,
         "comments": false,
@@ -45,25 +40,6 @@
     "git.confirmSync": false,
     "python.venvFolders": [
         "~/.venvs"
-    ],
-    "vim.cursorStylePerMode.normal": "block",
-    "vim.cursorStylePerMode.insert": "line",
-    "vim.cursorStylePerMode.replace": "block-outline",
-    "vim.cursorStylePerMode.visual": "block-outline",
-    "vim.cursorStylePerMode.visualblock": "block",
-    "vim.cursorStylePerMode.visualline": "underline",
-    "vim.enableNeovim": true,
-    "vim.gdefault": true,
-    "vim.ignorecase": false,
-    "vim.hlsearch": true,
-    "vim.useSystemClipboard": true,
-    "vim.highlightedyank.enable": true,
-    "vim.sneak": true,
-    "vim.normalModeKeyBindings": [
-        {
-            "before": ["Y"],
-            "after": ["y$"]
-        }
     ],
     "workbench.preferredDarkColorTheme": "Chromodynamics Delek",
     "files.associations": {
@@ -126,7 +102,7 @@
     "editor.fontSize": 14,
     "debug.console.fontSize": 14,
     "terminal.integrated.fontSize": 14,
-    "python.languageServer": "Pylance",
+    "python.languageServer": "Jedi",
     "workbench.startupEditor": "newUntitledFile",
     "vscode-neovim.logLevel": "warn",
     "vscode-neovim.logOutputToConsole": true,
@@ -147,7 +123,6 @@
     "editor.accessibilitySupport": "off",
     "security.workspace.trust.untrustedFiles": "open",
     "editor.tabSize": 4,
-    "workbench.colorTheme": "Chromodynamics Delek",
     "[json]": {
         "editor.defaultFormatter": "esbenp.prettier-vscode"
     },
@@ -155,6 +130,32 @@
     "git.openRepositoryInParentFolders": "always",
     "C_Cpp.experimentalFeatures": "enabled",
     "C_Cpp.loggingLevel": "Information",
+    "settings.cycle": [
+        {
+            "id": "gitblameOff",
+            "overrideWorkspaceSettings": false,
+            "values": [
+                {
+                    "git.blame.editorDecoration.enabled": false
+                }
+            ]
+        },
+        {
+            "id": "gitblameOn",
+            "overrideWorkspaceSettings": false,
+            "values": [
+                {
+                    "git.blame.editorDecoration.enabled": true
+                }
+            ]
+        }
+    ],
+    "macros": {
+        "normal": [
+            "settings.cycle.gitblameOn",
+            "modaledit.enterNormal"
+        ]
+    },
     "modaledit.keybindings": {
         "0": {
             "command": "cursorMove",
@@ -348,29 +349,37 @@
                 }
             ]
         },
-        "i": "modaledit.enterInsert",
+        "i": [
+            "modaledit.enterInsert",
+            "settings.cycle.gitblameOff"
+        ],
         "I": [
             "cursorHome",
-            "modaledit.enterInsert"
+            "modaledit.enterInsert",
+            "settings.cycle.gitblameOff"
         ],
         "a": [
             {
                 "condition": "__char == ''",
                 "false": "cursorRight"
             },
-            "modaledit.enterInsert"
+            "modaledit.enterInsert",
+            "settings.cycle.gitblameOff"
         ],
         "A": [
             "cursorEnd",
-            "modaledit.enterInsert"
+            "modaledit.enterInsert",
+            "settings.cycle.gitblameOff"
         ],
         "o": [
             "editor.action.insertLineAfter",
-            "modaledit.enterInsert"
+            "modaledit.enterInsert",
+            "settings.cycle.gitblameOff"
         ],
         "O": [
             "editor.action.insertLineBefore",
-            "modaledit.enterInsert"
+            "modaledit.enterInsert",
+            "settings.cycle.gitblameOff"
         ],
         "v": "modaledit.toggleSelection",
         "V": [
@@ -394,7 +403,8 @@
         ],
         "r,s": [
             "deleteRight",
-            "modaledit.enterInsert"
+            "modaledit.enterInsert",
+            "settings.cycle.gitblameOff"
         ],
         "S": {
             "command": "modaledit.typeNormalKeys",
@@ -775,5 +785,11 @@
         "ini": false,
         "python": false
     },
-    "terminal.integrated.scrollback": 10000
+    "terminal.integrated.scrollback": 10000,
+    "workbench.colorTheme": "Chromodynamics Delek",
+    "extensions.autoUpdate": false,
+    "update.mode": "manual",
+    "git.blame.statusBarItem.enabled": false,
+    "git-blame.config.showBlameInline": false,
+    "git.blame.editorDecoration.enabled": false
 }
