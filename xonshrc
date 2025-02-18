@@ -30,6 +30,7 @@ $PATH = [
         "/usr/local/opt/autoconf@2.69/bin",
 ] + $PATH
 
+$PYENV_ROOT=HOME / ".pyenv"
 $XONSH_HISTORY_BACKEND='sqlite'
 $CLICOLOR="1"
 $DEBEMAIL="lukasz@langa.pl"
@@ -37,7 +38,10 @@ $DEBFULLNAME="Łukasz Langa (GPG langa.pl)"
 $DOCKER_DEFAULT_PLATFORM="linux/amd64"
 $EDITOR="vim"
 $LSCOLORS="ExFxCxDxBxegedabagacad"
-$LS_COLORS="no\x3d00\x3afi\x3d00\x3adi\x3d01\x3b34\x3aln\x3d01\x3b36\x3api\x3d40\x3b33\x3aso\x3d01\x3b35\x3abd\x3d40\x3b33\x3b01\x3acd\x3d40\x3b33\x3b01\x3aor\x3d01\x3b05\x3b37\x3b41\x3ami\x3d01\x3b05\x3b37\x3b41\x3aex\x3d01\x3b32\x3a\x2a\x2ecmd\x3d01\x3b32\x3a\x2a\x2eexe\x3d01\x3b32\x3a\x2a\x2ecom\x3d01\x3b32\x3a\x2a\x2ebtm\x3d01\x3b32\x3a\x2a\x2ebat\x3d01\x3b32\x3a\x2a\x2esh\x3d01\x3b32\x3a\x2a\x2ecsh\x3d01\x3b32\x3a\x2a\x2etar\x3d01\x3b31\x3a\x2a\x2etgz\x3d01\x3b31\x3a\x2a\x2earj\x3d01\x3b31\x3a\x2a\x2etaz\x3d01\x3b31\x3a\x2a\x2elzh\x3d01\x3b31\x3a\x2a\x2ezip\x3d01\x3b31\x3a\x2a\x2ez\x3d01\x3b31\x3a\x2a\x2eZ\x3d01\x3b31\x3a\x2a\x2egz\x3d01\x3b31\x3a\x2a\x2ebz2\x3d01\x3b31\x3a\x2a\x2ebz\x3d01\x3b31\x3a\x2a\x2etz\x3d01\x3b31\x3a\x2a\x2erpm\x3d01\x3b31\x3a\x2a\x2ecpio\x3d01\x3b31\x3a\x2a\x2ejpg\x3d01\x3b35\x3a\x2a\x2egif\x3d01\x3b35\x3a\x2a\x2ebmp\x3d01\x3b35\x3a\x2a\x2exbm\x3d01\x3b35\x3a\x2a\x2expm\x3d01\x3b35\x3a\x2a\x2epng\x3d01\x3b35\x3a\x2a\x2etif\x3d01\x3b35\x3a"
+# LS_COLORS is only used by GNU ls and Eza. Eza's got its own colors.
+# $LS_COLORS="no\x3d00\x3afi\x3d00\x3adi\x3d01\x3b34\x3aln\x3d01\x3b35\x3api\x3d40\x3b33\x3aso\x3d01\x3b35\x3abd\x3d40\x3b33\x3b01\x3acd\x3d40\x3b33\x3b01\x3aor\x3d01\x3b05\x3b37\x3b41\x3ami\x3d01\x3b05\x3b37\x3b41\x3aex\x3d01\x3b32\x3a\x2a\x2ecmd\x3d01\x3b32\x3a\x2a\x2eexe\x3d01\x3b32\x3a\x2a\x2ecom\x3d01\x3b32\x3a\x2a\x2ebtm\x3d01\x3b32\x3a\x2a\x2ebat\x3d01\x3b32\x3a\x2a\x2esh\x3d01\x3b32\x3a\x2a\x2ecsh\x3d01\x3b32\x3a\x2a\x2etar\x3d01\x3b31\x3a\x2a\x2etgz\x3d01\x3b31\x3a\x2a\x2earj\x3d01\x3b31\x3a\x2a\x2etaz\x3d01\x3b31\x3a\x2a\x2elzh\x3d01\x3b31\x3a\x2a\x2ezip\x3d01\x3b31\x3a\x2a\x2ez\x3d01\x3b31\x3a\x2a\x2eZ\x3d01\x3b31\x3a\x2a\x2egz\x3d01\x3b31\x3a\x2a\x2ebz2\x3d01\x3b31\x3a\x2a\x2ebz\x3d01\x3b31\x3a\x2a\x2etz\x3d01\x3b31\x3a\x2a\x2erpm\x3d01\x3b31\x3a\x2a\x2ecpio\x3d01\x3b31\x3a\x2a\x2ejpg\x3d01\x3b35\x3a\x2a\x2egif\x3d01\x3b35\x3a\x2a\x2ebmp\x3d01\x3b35\x3a\x2a\x2exbm\x3d01\x3b35\x3a\x2a\x2expm\x3d01\x3b35\x3a\x2a\x2epng\x3d01\x3b35\x3a\x2a\x2etif\x3d01\x3b35\x3a"
+$LS_COLORS=""
+$EZA_CONFIG_DIR="/Users/ambv/.config/eza"
 $PIP_REQUIRE_VIRTUALENV="true"
 $PYTHONSTARTUP=HOME / ".pythonstartup"
 $PYTHONWARNINGS="i"
@@ -50,13 +54,48 @@ xontrib load vox  # like virtualfish
 def wintitle(args):
     $TITLE=" ".join(args) + " | " + PID
 
+import subprocess as subprocess_raw
+from xonsh.api import subprocess as subprocess_xsh
+eza_cmdline_default = [
+    "/opt/homebrew/bin/eza",
+    "-l",
+    "--smart-group",
+    "--git",
+    "--git-ignore",
+    "--grid",
+    "--color-scale-mode=gradient",
+    "--color-scale=all",
+    "--color=always",
+]
+eza_cmdline_all = [
+    "/opt/homebrew/bin/eza",
+    "-l",
+    "--smart-group",
+    "--git",
+    "--color-scale-mode=gradient",
+    "--color-scale=all",
+    "-a",
+    "-@",
+]
+def eza_ll_with_fallback(args):
+    env = os.environ.copy()
+    env["EZA_CONFIG_DIR"] = $EZA_CONFIG_DIR
+    out = subprocess_raw.run(eza_cmdline_default + args, capture_output=True, env=env, encoding="UTF-8").stdout
+    if out.strip():
+        print(out)
+        return
+    
+    print("No output. Retrying with -a and without pruning .gitignore...")
+    subprocess_xsh.run(eza_cmdline_all + args)
+
 aliases["ci"] = "echo", "You probably meant vi. Or are you still using RCS?"
 aliases["cp"] = "/bin/cp", "-iR"
 aliases["dc"] = "echo", "You don't really use 'dc', do you?"
 aliases["dk"] = "docker"
 aliases["dkl"] = "docker container ls -a && docker image ls -a"
 aliases["dke"] = "docker exec -it"
-aliases["ll"] = "/bin/ls", "-lah"
+aliases["ll"] = eza_ll_with_fallback
+aliases["lla"] = eza_cmdline_all
 aliases["lt"] = "/opt/homebrew/bin/tree",  "-AphL"
 aliases["mv"] = "/bin/mv", "-i"
 aliases["rm"] = "/bin/rm", "-i"
@@ -70,6 +109,7 @@ xontrib load autovox
 xontrib load hist_navigator
 xontrib load fish_completer
 xontrib load term_integration
+# xontrib load pyenv
 
 @events.autovox_policy
 def dotvenv_policy(path, **_):
@@ -79,6 +119,14 @@ def dotvenv_policy(path, **_):
         return venv
     elif venv.is_file():
         return VIRTUALENVS / venv.read_text().strip()
+
+# from pathlib import Path
+@events.on_chdir
+def maybe_autorun(olddir, newdir, **kwargs):
+    auto_file = Path(newdir) / '.local' / 'auto.xsh'
+    if auto_file.is_file():
+        print("Running auto.xsh")
+        source @(auto_file)
 
 xonsh_local = HOME / ".xonshrc.local"
 if xonsh_local.exists():
