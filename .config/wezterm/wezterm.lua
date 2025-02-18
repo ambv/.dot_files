@@ -46,11 +46,18 @@ local config = {
   },
   background = {
     {
+      source = {Color="#010003"},
+      height = "100%",
+      width = "100%",
+    },
+    {
       source = {File=wezterm.config_dir .. "/wezterm-background.png"},
       vertical_align = "Bottom",
       horizontal_align = "Left",
-      height = "1964px",
-      width = "3024px",
+      height = "2160px",
+      width = "3840px",
+      repeat_x = "Mirror",
+      repeat_y = "Mirror",
     },
   },
   enable_scroll_bar = true,
