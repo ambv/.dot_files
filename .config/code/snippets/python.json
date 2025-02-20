@@ -1,0 +1,24 @@
+{
+	"If main": {
+		"prefix": "ifmain",
+		"body": [
+			"if __name__ == \"__main__\":",
+			"    main()"
+		],
+		"description": "Old-style ifmain invocation"
+	},
+	"Pdb": {
+		"prefix": "pdb",
+		"body": [
+			"breakpoint()"
+		],
+		"description": "New-style pdb.set_trace()"
+	}
+	"Interact": {
+		"prefix": ">>>",
+		"body": [
+			"from code import interact; interact(local=locals())  # fmt: skip"
+		],
+		"description": "A non-debugging interactive session"
+	}
+}
