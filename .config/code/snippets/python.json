@@ -1,24 +1,31 @@
 {
 	"If main": {
-		"prefix": "ifmain",
+		"prefix": "ifmain"
 		"body": [
-			"if __name__ == \"__main__\":",
+			"if __name__ == \"__main__\":"
 			"    main()"
-		],
+		]
 		"description": "Old-style ifmain invocation"
-	},
+	}
 	"Pdb": {
-		"prefix": "pdb",
+		"prefix": "pdb"
 		"body": [
 			"breakpoint()"
-		],
+		]
 		"description": "New-style pdb.set_trace()"
 	}
 	"Interact": {
-		"prefix": ">>>",
+		"prefix": ">>>"
 		"body": [
 			"from code import interact; interact(local=locals())  # fmt: skip"
-		],
+		]
 		"description": "A non-debugging interactive session"
+	}
+	"Click flag": {
+		"prefix": "@click.flag"
+		"body": [
+			"@click.option(\"--flag\", is_flag=True, show_default=True, default=False, help=\"\")"
+		]
+		"description": "A Click option that's a flag"
 	}
 }
