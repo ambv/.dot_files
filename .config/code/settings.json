@@ -700,6 +700,11 @@
                 }
             ]
         },
+        "g": {
+            "q": {
+                "command": "rewrap.rewrapComment",
+            }
+        },
         ">": [
             "editor.action.indentLines",
             "modaledit.cancelSelection"
