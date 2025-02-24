@@ -41,7 +41,8 @@
     ],
     "workbench.preferredDarkColorTheme": "Chromodynamics Delek",
     "files.associations": {
-        "*.json": "jinja-json"
+        "*.json": "jinja-json",
+        "*.spy": "python"
     },
     "editor.autoClosingQuotes": "never",
     "editor.renderWhitespace": "all",
