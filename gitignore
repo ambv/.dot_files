@@ -53,3 +53,6 @@ __pycache__
 
 # Secrets
 .env
+
+# Hi, Hood!
+.pyodide-xbuildenv-*
