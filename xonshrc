@@ -31,6 +31,7 @@ $PATH = [
 ] + $PATH
 
 $PYENV_ROOT=HOME / ".pyenv"
+$POETRY_VIRTUALENVS_PATH=HOME / ".virtualenvs"
 $XONSH_HISTORY_BACKEND='sqlite'
 $CLICOLOR="1"
 $DEBEMAIL="lukasz@langa.pl"
@@ -74,8 +75,9 @@ eza_cmdline_all = [
     "--git",
     "--color-scale-mode=gradient",
     "--color-scale=all",
+    "--color=always",
     "-a",
-    "-@",
+    # "-@",
 ]
 def eza_ll_with_fallback(args):
     env = os.environ.copy()
@@ -85,7 +87,7 @@ def eza_ll_with_fallback(args):
         print(out)
         return
     
-    print("No output. Retrying with -a and without pruning .gitignore...")
+    # print("No output. Retrying with -a and without pruning .gitignore...")
     subprocess_xsh.run(eza_cmdline_all + args)
 
 aliases["ci"] = "echo", "You probably meant vi. Or are you still using RCS?"
@@ -133,6 +135,8 @@ if xonsh_local.exists():
     execx(xonsh_local.read_text())
 del xonsh_local
 
-fortune
+import oblique
+strategies = oblique.get_strategies({1,2,3,4}, python=True, extra=True)
+print(oblique.koan_of_the_day(strategies))
 
 execx($(starship init xonsh))
