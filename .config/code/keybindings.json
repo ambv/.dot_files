@@ -35,5 +35,10 @@
         "key": "escape",
         "command": "macros.normal",
         "when": "editorTextFocus && !suggestWidgetMultipleSuggestions && !suggestWidgetVisible"
+    },
+    {
+      "key": "escape",
+      "command": "closeParameterHints",
+      "when": "editorHasSignatureHelpProvider && editorTextFocus && parameterHintsVisible"
     }
 ]
