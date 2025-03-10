@@ -113,6 +113,20 @@
     },
     "editor.accessibilitySupport": "off",
     "security.workspace.trust.untrustedFiles": "open",
+    "extensions.supportUntrustedWorkspaces": {
+        "johtela.vscode-modaledit": {
+            "supported": true
+        },
+        "ambv.modalcommands": {
+            "supported": true
+        },
+        "jeff-hykin.macro-commander": {
+            "supported": true
+        },
+        "jellydn.vscode-settings-cycler": {
+            "supported": true
+        },
+    },
     "editor.tabSize": 4,
     "[json]": {
         "editor.defaultFormatter": "esbenp.prettier-vscode"
