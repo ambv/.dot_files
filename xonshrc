@@ -136,7 +136,7 @@ if xonsh_local.exists():
 del xonsh_local
 
 import oblique
-strategies = oblique.get_strategies({1,2,3,4}, python=True, extra=True)
+strategies = oblique.get_strategies({1,2,3,4}, python=True, five_rings=True, extra=True)
 print(oblique.koan_of_the_day(strategies))
 
 execx($(starship init xonsh))
