@@ -55,10 +55,6 @@
 	ui = auto
 [branch]
 	sort = -committerdate
-[fetch]
-	prune = true
-	pruneTags = true
-	all = true
 [rerere]
 	enabled = true
 	autoupdate = true
