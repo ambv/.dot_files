@@ -52,3 +52,15 @@ if not os.environ.get("IN_REGRTEST"):
         "pathlib.Path",
         "dataclasses.dataclass",
     )
+    try:
+        from _colorize import set_theme, default_theme, Syntax, ANSIColors
+    except ImportError:
+        pass
+    else:
+        theme_with_dim_operators = default_theme.copy_with(
+            syntax=Syntax(op=ANSIColors.INTENSE_BLACK),
+        )
+        set_theme(theme_with_dim_operators)
+        del set_theme, default_theme, Syntax, ANSIColors, theme_with_dim_operators
+
+del autoimport
