@@ -29,8 +29,8 @@ git worktree list --porcelain | grep "^worktree $RAMDISK" | gsed -e "s/worktree 
     git worktree remove $stale_worktree
 end
 
-# 8 GB should be enough.
-set DISK_ID (hdiutil attach -nobrowse -nomount ram://16777216 | string trim)
+# 10 GB should be enough.
+set DISK_ID (hdiutil attach -nobrowse -nomount ram://18874368 | string trim)
 # or you can do 32 GB if you need it...
 # set DISK_ID (hdiutil attach -nobrowse -nomount ram://67108864 | string trim)
 echo "Creating a RAM disk at $DISK_ID..."
