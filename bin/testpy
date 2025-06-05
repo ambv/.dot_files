@@ -10,6 +10,7 @@ if ! set -q PYTHONBINARY
 end
 export PYTHONWARNINGS=
 export PYTHONSTARTUP=
+export PYTHON_HISTORY=
 export DISPLAY=
 export IN_REGRTEST=1
 set fish_trace on

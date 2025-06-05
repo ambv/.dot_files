@@ -13,12 +13,12 @@ export LDFLAGS="-L/opt/homebrew/lib"
 export CPPFLAGS="-I/opt/homebrew/include"
 
 # export PKG_CONFIG_PATH="$(brew --prefix openssl@3)/lib/pkgconfig:$(brew --prefix tcl-tk)/lib/pkgconfig"
-export PKG_CONFIG_PATH="$(brew --prefix tcl-tk)/lib/pkgconfig"
+export PKG_CONFIG_PATH="$(brew --prefix tcl-tk@8)/lib/pkgconfig"
 
 # export CC=/usr/bin/clang
 # export CFLAGS="-fsanitize=undefined -fno-omit-frame-pointer"
 # export LDFLAGS="-fsanitize=undefined -fno-omit-frame-pointer"
-export CONFIGURE_FLAGS=("--with-tcltk-libs=$(pkg-config tk --libs)" "--with-tcltk-includes=$(pkg-config tk --cflags)" "--with-openssl=$(brew --prefix openssl@3)")
+export CONFIGURE_FLAGS=("--with-openssl=$(brew --prefix openssl@3)")
 
 if [[ "$1" == "opt" ]]; then
     echo
@@ -33,7 +33,12 @@ if [[ "$1" == "opt" ]]; then
     CONFIGURE_FLAGS+=(--enable-framework=$FRAMEWORK_INSTALL_DIR/Library/Frameworks --enable-optimizations --with-lto)
 elif [[ "$1" == "nogil" ]]; then
     echo
-    echo "########    Debug free-threaded build of $GITBRANCH    ########"
+    echo "########    Debug free-threaded build of $GITBRANCH   ########"
+    echo
+    CONFIGURE_FLAGS+=(--cache-file=nogil.$BRANCH --with-pydebug --disable-gil)
+elif [[ "$1" == "nogil-framework" ]]; then
+    echo
+    echo "########    Debug installed free-threaded build of $GITBRANCH    ########"
     echo
     FRAMEWORK_INSTALL_DIR="$TMP_ROOT/installed-nogil-debug-$GITBRANCH"
     if [[ -d $FRAMEWORK_INSTALL_DIR ]]; then
@@ -67,7 +72,7 @@ elif [[ "$1" == "pystats" ]]; then
     echo
     echo "########    Non-GUI PYSTATS build of $GITBRANCH   ########"
     echo
-    CONFIGURE_FLAGS+=(--cache-file=$BRANCH --with-pydebug --enable-pystats)
+    CONFIGURE_FLAGS+=(--cache-file=pystats.$BRANCH --with-pydebug --enable-pystats)
 else
     echo
     echo "########    Non-GUI PYDEBUG build of $GITBRANCH   ########"
@@ -79,7 +84,7 @@ make distclean || (./configure "${CONFIGURE_FLAGS[@]}" && make distclean)
 time ./configure "${CONFIGURE_FLAGS[@]}"
 # time make regen-all
 time make -j10
-if [[ "$1" == "framework" ]] || [[ "$1" == "opt" ]] || [[ "$1" == "nogil" ]] || [[ "$1" == "nogil-opt" ]]; then
+if [[ "$1" == "framework" ]] || [[ "$1" == "opt" ]] || [[ "$1" == "nogil-framework" ]] || [[ "$1" == "nogil-opt" ]]; then
     if [[ -d $FRAMEWORK_INSTALL_DIR ]]; then
         echo "Removing stale framework directory: $FRAMEWORK_INSTALL_DIR"
         rm -rf $FRAMEWORK_INSTALL_DIR
