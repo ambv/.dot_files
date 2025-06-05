@@ -1,0 +1,25 @@
+[[language]]
+name = "python"  
+language-servers = ["ty"]
+roots = ["pyproject.toml"]
+# In case you'd like to use ruff alongside black for code formatting:
+# formatter = { command = "black", args = ["--quiet", "-"] }
+# auto-format = true
+
+[language-server.ty]
+command = "ty"
+args = ["server"]
+config = { "ty.experimental.completions.enable" = true, "ty.logFile" = "~/.cache/helix/ty.log", "ty.logLevel" = "debug", "ty.trace.server" = "messages" }
+
+# [language-server.pylsp.config.pylsp]
+# plugins.pylsp_mypy.enabled = true
+# plugins.pylsp_mypy.live_mode = true
+# plugins.ruff.enabled = true
+# plugins.black.enabled = true
+
+[[language]]
+name = "tmtheme"
+scope = "source.xml"
+file-types = ["tmTheme"]
+grammar = "xml"
+roots = []

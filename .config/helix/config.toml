@@ -1,0 +1,31 @@
+theme = "chromodynamics-delek"
+
+[editor]
+color-modes = true
+
+[editor.file-picker]
+hidden = false
+
+[editor.search]
+smart-case = false
+
+[keys.normal]
+C-s = ":w"  # Ctrl+s to save
+"^" = "goto_line_start"
+"$" = "goto_line_end"
+"ret" = "extend_line_below"
+"d" = "delete_selection_noyank"  # d = delete
+"x" = "delete_selection"  # x = cut
+"-" = "flip_selections"
+
+[keys.insert]
+C-s = ":w"  # Ctrl+s to save
+
+[keys.select]
+"^" = "goto_line_start"
+"$" = "goto_line_end"
+"ret" = "extend_line_below"
+"d" = "delete_selection_noyank"  # d = delete
+"x" = "delete_selection"  # x = cut
+"-" = "flip_selections"
+

@@ -1,0 +1,147 @@
+# Chromodynamics Delek theme for Helix Editor
+# Based on the VSCode theme with the same name
+
+"ui.background" = { bg = "blackish" }
+"ui.text" = { fg = "contrast_bright" }
+"ui.text.focus" = { fg = "contrast_bright" }
+"ui.selection" = { bg = "accent_mid" }
+"ui.selection.primary" = { fg = "contrast_bright", bg = "accent_bright" }
+"ui.cursor" = { fg = "contrast_bright", bg = "accent_brighter"}
+"ui.cursor.primary" = { fg = "cursor_fg", bg = "cursor_bg" }
+"ui.linenr" = { fg = "accent_mid" }
+"ui.linenr.selected" = { fg = "contrast_bright" }
+"ui.statusline" = { fg = "contrast_bright", bg = "accent_bright" }
+"ui.statusline.normal" = { fg = "contrast_bright", bg = "accent_brighter" }
+"ui.statusline.insert" = { fg = "contrast_bright", bg = "accent_insert" }
+"ui.statusline.select" = { fg = "contrast_bright", bg = "accent_select" }
+"ui.statusline.inactive" = { fg = "accent_brightest", bg = "accent_dim" }
+"ui.help" = { fg = "contrast_bright", bg = "blackish" }
+"ui.popup" = { fg = "contrast_bright", bg = "popup" }
+"ui.menu" = { fg = "contrast_bright", bg = "popup" }
+"ui.menu.selected" = { fg = "contrast_bright", bg = "accent_bright" }
+"ui.window" = { fg = "contrast_bright" }
+"ui.virtual.whitespace" = { fg = "whitespace" }
+"ui.gutter" = { bg = "blackish" }
+
+"comment" = { fg = "comment" }
+"comment.block.documentation" = { fg = "comment" }
+
+"constant" = { fg = "constant" }
+"constant.numeric" = { fg = "number" }
+"constant.character.escape" = { fg = "escape" }
+"constant.builtin" = { fg = "keyword" }
+"constant.builtin.boolean" = { fg = "keyword" }
+
+"string" = { fg = "string" }
+"string.regexp" = { fg = "string" }
+"string.special" = { fg = "attribute" }
+
+"type" = { fg = "type" }
+"type.builtin" = { fg = "builtin_function" }
+
+"constructor" = { fg = "function_name", modifiers = ["bold"] }
+
+"function" = { fg = "function_name", modifiers = ["bold"] }
+"function.builtin" = { fg = "builtin_function" }
+"function.macro" = { fg = "builtin_function" }
+
+"tag" = { fg = "tag" }
+"attribute" = { fg = "attribute" }
+
+"namespace" = { fg = "contrast_bright" }
+
+"keyword" = { fg = "keyword" }
+"keyword.storage" = { fg = "storage" }
+"keyword.storage.type" = { fg = "keyword" }
+"keyword.storage.modifier" = { fg = "keyword" }
+"keyword.operator" = { fg = "keyword" }
+"keyword.function" = { fg = "keyword" }
+"keyword.control" = { fg = "keyword" }
+"keyword.control.import" = { fg = "keyword" }
+
+"operator" = { fg = "operator" }
+
+"punctuation" = { fg = "operator" }
+"punctuation.bracket" = { fg = "operator" }
+"punctuation.delimiter" = { fg = "operator" }
+
+"variable" = { fg = "contrast_bright" }
+"variable.parameter" = { fg = "parameter" }
+"variable.builtin" = { fg = "self_constant" }
+
+"label" = { fg = "keyword" }
+
+"module" = { fg = "builtin_function" }
+
+"special" = { fg = "builtin_function" }
+
+"markup.heading" = { fg = "class_name" }
+"markup.list" = { fg = "string" }
+"markup.bold" = { fg = "keyword", modifiers = ["bold"] }
+"markup.italic" = { fg = "builtin_function", modifiers = ["italic"] }
+"markup.raw" = { fg = "attribute" }
+"markup.link.url" = { fg = "builtin_function", modifiers = ["underlined"] }
+"markup.link.text" = { fg = "string" }
+"markup.quote" = { fg = "storage" }
+
+"diff.plus" = { fg = "diff_added" }
+"diff.minus" = { fg = "diff_deleted" }
+"diff.delta" = { fg = "diff_changed" }
+
+"diagnostic.error" = { fg = "error" }
+"diagnostic.warning" = { fg = "warning" }
+"diagnostic.info" = { fg = "info" }
+"diagnostic.hint" = { fg = "hint" }
+
+"error" = { fg = "error" }
+"warning" = { fg = "warning" }
+"info" = { fg = "info" }
+"hint" = { fg = "hint" }
+
+[palette]
+# blackish = "#07050f"            # editor.background
+contrast_bright = "#ffffff"            # editor.foreground
+selection = "#252525"       # editor.selectionBackground
+cursor_fg = "#000000"          # editorCursor.foreground
+cursor_bg = "#ffffff"          # editorCursor.background
+whitespace = "#101010"      # editorWhitespace.foreground
+line_number = "#858585"     # Line number gray
+line_number_selected = "#c6c6c6"  # Active line number
+popup = "#2d2d30"           # Popup background
+accent_select = "#78692b"
+accent_insert = "#4a792a"
+accent_bright = "#392b79"       # statusBar.background
+accent_brighter = "#5540b5"       # statusBar.background
+accent_brightest = "#8778cf"       # statusBar.background
+accent_mid = "#2b205a"  # statusBar.noFolderBackground
+accent_dim = "#1c153c"  # statusBar.noFolderBackground
+
+comment = "#ff0000"         # Comment red
+number = "#a6e22e"          # constant.numeric green
+constant = "#9a79d7"  # constant.language purple
+self_constant = "#c4b0e8"  # constant.language purple
+escape = "#d3c970"          # String yellow
+string = "#7c9f57"          # Docstring green
+keyword = "#775aff"         # Keyword purple
+storage = "#e8364f"         # Storage red
+operator = "#625b88"        # Operator purple-gray
+function_name = "#ffffff"   # Function/Class name white (bold)
+class_name = "#A6E22E"      # Class name green
+parameter = "#c5c8f6"       # Function parameter light purple
+builtin_function = "#66D9EF"  # Library function cyan
+tag = "#775aff"             # Tag localname purple
+tag_namespace = "#00cbcb"   # Tag namespace cyan
+attribute = "#D77C23"       # Tag attribute orange
+type = "#9a79d7"  # constant.language purple
+decorator = "#8abeb7"       # Decorator cyan-green
+
+# Git diff colors
+diff_added = "#1f9a12"      # Git added line
+diff_deleted = "#A72822"    # Git removed line
+diff_changed = "#A29F46"    # Git changed line
+
+# Diagnostic colors
+error = "#ea4646"           # Error red
+warning = "#4d9e4d"         # Warning green
+info = "#008000"            # Info green
+hint = "#eeeeeeb3"          # Hint light gray
