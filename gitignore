@@ -56,3 +56,5 @@ __pycache__
 
 # Hi, Hood!
 .pyodide-xbuildenv-*
+
+.claude/
