@@ -96,6 +96,11 @@ def eza_ll_with_fallback(args):
     # print("No output. Retrying with -a and without pruning .gitignore...")
     subprocess_xsh.run(eza_cmdline_all + args)
 
+def crontab_editor(args):
+    env = os.environ.copy()
+    env["EDITOR"] = "vim"
+    subprocess_raw.run(["crontab"] + args, env=env)
+
 aliases["ci"] = "echo", "You probably meant vi. Or are you still using RCS?"
 aliases["cp"] = "/bin/cp", "-iR"
 aliases["dc"] = "echo", "You don't really use 'dc', do you?"
@@ -112,6 +117,7 @@ aliases["vi"] = "vim"
 aliases["vf"] = "vox"
 aliases["wintitle"] = wintitle
 aliases["zed"]="/Applications/Zed.app/Contents/MacOS/cli"
+aliases["crontab"] = crontab_editor
 
 xontrib load autovox
 # xontrib load coreutils  -- faster, but change uptime into a float
