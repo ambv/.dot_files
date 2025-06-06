@@ -77,6 +77,7 @@ local config = {
     {key="-", mods="CTRL", action="DisableDefaultAssignment"},
     {key="_", mods="CTRL|SHIFT", action="DisableDefaultAssignment"},
     {key="+", mods="CTRL", action="DisableDefaultAssignment"},
+    {key="s", mods="CMD", action=wezterm.action.SendKey{key="s", mods="CTRL"}},
   },
   mouse_bindings = {
     -- only select text by default
