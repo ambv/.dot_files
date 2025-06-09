@@ -32,7 +32,6 @@
     "explorer.confirmDragAndDrop": false,
     "workbench.editor.showTabs": "multiple",
     "editor.minimap.renderCharacters": false,
-    "editor.minimap.enabled": false,
     "editor.tabCompletion": "onlySnippets",
     "editor.autoClosingBrackets": "never",
     "git.confirmSync": false,
@@ -78,6 +77,7 @@
         "matplotlib",
         "modalcommands",
         "modaledit",
+        "monome",
         "mypy",
         "ndarray",
         "po",
@@ -95,6 +95,7 @@
         "unparse",
         "uvlo",
         "uvloop",
+        "varibright",
         "virtualenv",
         "xenial"
     ],

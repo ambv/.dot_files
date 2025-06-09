@@ -55,7 +55,7 @@ module.exports = {
 	"": {
 		u: repeatable("undo"),
 		U: repeatable("redo"),
-		/* Mutli-cursor
+		/* Multi-cursor
 		 * (for insert cursor above, use keybindings.json for Alt-Shift-C)
 		 */
 		C: repeatable("editor.action.insertCursorBelow"),
@@ -210,7 +210,7 @@ module.exports = {
 				"modalEditor.setNormalMode",
 				"settings.cycle.gitblameOn"
 			],
-			// paste from clipbard
+			// paste from clipboard
 			p: {
 				command: "modalEditor.paste",
 				args: {
@@ -356,8 +356,26 @@ module.exports = {
 			],
 		},
 	
+		// select from cursor to beginning of line
+		"0": "cursorLineStartSelect",
+		// select from cursor to first non-whitespace character
+		"^": "cursorHomeSelect",
+		// select from cursor to end of line
+		"$": [
+			"cursorLineEndSelect",
+			{
+				command: "cursorLeftSelect",
+				when: "_ctx.lastPos.character !== _ctx.lineAt(_ctx.lastPos.line).text.length - 1"
+			}
+		],
+		// select from cursor to end of file
+		"%": "cursorBottomSelect",
+	
 		// set to select mode
-		v: "modalEditor.setSelectMode"
+		v: "modalEditor.setSelectMode",
+
+		// enter selection search mode
+		s: "modalEditor.setSelectionSearchMode"
 	},
 
 	select: {
@@ -434,9 +452,27 @@ module.exports = {
 				}
 			]
 		},
+
+		// select from cursor to beginning of line
+		"0": "cursorLineStartSelect",
+		// select from cursor to first non-whitespace character
+		"^": "cursorHomeSelect",
+		// select from cursor to end of line
+		"$": [
+			"cursorLineEndSelect",
+			{
+				command: "cursorLeftSelect",
+				when: "_ctx.lastPos.character !== _ctx.lineAt(_ctx.lastPos.line).text.length - 1"
+			}
+		],
+		// select from cursor to end of file
+		"%": "cursorBottomSelect",
 	
 		// set back to normal mode
-		v: ["modalEditor.setNormalMode", "settings.cycle.gitblameOn"]
+		v: ["modalEditor.setNormalMode", "settings.cycle.gitblameOn"],
+
+		// enter selection search mode
+		s: "modalEditor.setSelectionSearchMode"
 	},
 
 	// Command mode
