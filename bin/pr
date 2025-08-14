@@ -13,7 +13,7 @@ def run(*cmdline) -> str:
     out = proc.stdout.strip()
     if proc.returncode == 0:
         return out.decode()
-    
+
     print(out.decode())
     raise subprocess.CalledProcessError(proc.returncode, cmdline)
 
@@ -39,24 +39,34 @@ def main(args) -> None:
     if not (remote_name := pr_details_j["headRepositoryOwner"]["login"]):
         raise ValueError(f"Remote name empty for {args[0]} in {pr_details_j}")
     remote_url = get("git", "config", f"branch.{current_branch}.remote")
-    if remote_name == remote_url:
+    pr_merge = get("git", "config", f"branch.{current_branch}.merge")
+    if remote_url == "upstream" and pr_merge.startswith("refs/pull/"):
+        print(f"PR merges directly to {remote_url} via {pr_merge}")
+    elif remote_name == remote_url:
         print(f"remote {remote_name} already known")
     elif remote_url.startswith("git@github.com:"):
         show("git", "config", f"remote.{remote_name}.url", remote_url)
-        show("git", "config", f"remote.{remote_name}.fetch", f"+refs/heads/*:refs/remotes/{remote_name}/*")
+        show(
+            "git",
+            "config",
+            f"remote.{remote_name}.fetch",
+            f"+refs/heads/*:refs/remotes/{remote_name}/*",
+        )
         show("git", "config", f"remote.{remote_name}.github-pr-remote", "true")
         show("git", "config", f"branch.{current_branch}.remote", remote_name)
     else:
-        raise ValueError(f"Weird remote URL: {remote_url}")
-    
+        raise ValueError(f"Weird remote URL: {remote_url} (merge={pr_merge})")
+
     try:
-         show("git", "config", f"branch.{current_branch}.pushRemote")
+        show("git", "config", f"branch.{current_branch}.pushRemote")
     except subprocess.CalledProcessError as cpe:
         if cpe.returncode != 1:
             raise
     else:
         show("git", "config", "--unset", f"branch.{current_branch}.pushRemote")
-    show("git", "fetch", "-a", remote_name)
+
+    if remote_url != "upstream":
+        show("git", "fetch", "-a", remote_name)
 
 
 if __name__ == "__main__":
