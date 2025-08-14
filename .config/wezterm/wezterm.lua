@@ -68,6 +68,24 @@ local config = {
     {key="w", mods="CMD", action=wezterm.action.CloseCurrentPane{confirm=false}},
     {key="c", mods="CMD", action=wezterm.action{CopyTo="Clipboard"}},
     {key="v", mods="CMD", action=wezterm.action{PasteFrom="Clipboard"}},
+    {key="Enter", mods="SHIFT", action=wezterm.action.SendString("\n")},
+    -- copy all text from scrollback
+    {key="a", mods="CMD", action=wezterm.action_callback(function(window, pane)
+        local dims = pane:get_dimensions()
+        local txt = pane:get_text_from_region(0, dims.scrollback_top, 0, dims.scrollback_top + dims.scrollback_rows)
+        window:copy_to_clipboard(txt:match('^%s*(.-)%s*$')) -- trim leading and trailing whitespace
+      end)
+    },
+    -- make search start empty
+    {key='f', mods='CMD', action=wezterm.action_callback(function (window, pane)
+        window:perform_action(wezterm.action.Search 'CurrentSelectionOrEmptyString', pane)
+        window:perform_action(wezterm.action.Multiple {
+          wezterm.action.CopyMode 'ClearPattern',
+          wezterm.action.CopyMode 'ClearSelectionMode',
+          wezterm.action.CopyMode 'MoveToScrollbackBottom'
+        }, pane)
+      end),
+    },
     -- splits
     {key="d", mods="CMD", action=wezterm.action.SplitHorizontal{domain="CurrentPaneDomain"}},
     {key="D", mods="CMD", action=wezterm.action.SplitVertical{domain="CurrentPaneDomain"}},
