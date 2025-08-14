@@ -40,13 +40,14 @@
     ],
     "workbench.preferredDarkColorTheme": "Chromodynamics Delek",
     "files.associations": {
-        "*.json": "jinja-json",
+        "*.json": "jsonc",
         "*.spy": "python"
     },
     "editor.autoClosingQuotes": "never",
     "editor.renderWhitespace": "all",
     "cSpell.userWords": [
         "Ableton",
+        "Adafruit",
         "aiter",
         "ambv",
         "anext",
@@ -66,6 +67,7 @@
         "favicon",
         "getfilesystemencoding",
         "grafana",
+        "interruptible",
         "iter",
         "itertools",
         "keepends",
@@ -100,7 +102,9 @@
         "xenial"
     ],
     "editor.fontSize": 14,
-    "debug.console.fontSize": 14,
+    "debug.console.fontSize": 16,
+    "debug.saveBeforeStart": "none",
+    "files.autoSave": "off",
     "terminal.integrated.fontSize": 14,
     "python.languageServer": "Jedi",
     "workbench.startupEditor": "newUntitledFile",
@@ -203,11 +207,13 @@
     },
     "terminal.integrated.scrollback": 10000,
     "workbench.colorTheme": "Chromodynamics Delek",
-    "workbench.colorCustomizations": {},
+    "workbench.colorCustomizations": {
+        "statusBar.background": "#1A7A1A"
+    },
     "extensions.autoUpdate": false,
     "update.mode": "manual",
     "git.blame.statusBarItem.enabled": false,
-    "git.blame.editorDecoration.enabled": true,
+    "git.blame.editorDecoration.enabled": false,
     "remote.defaultExtensionsIfInstalledLocally": [
         "GitHub.copilot",
         "GitHub.copilot-chat",
@@ -229,5 +235,6 @@
             "cursorStyle": "block-outline",
             "statusText": "-- SELECT --"
         }
-    }
+    },
+    "debug.console.fontFamily": "TerminusTTF"
 }

@@ -63,16 +63,7 @@ module.exports = {
 		";": "modalEditor.clearSelections",
 
 		J: repeatable("editor.action.joinLines"),
-		"\n": repeatable([
-			{
-				command: "cursorRightSelect",
-				// move right when this line is already selected (because of inclusive range)
-				when: "_ctx.selection.contains(_ctx.lineAt(_ctx.pos.line).range)"
-			},
-			"expandLineSelection",
-			// move left because it expands to a new line (because of inclusive range)
-			"cursorLeftSelect",
-		]),
+		"\n": repeatable("modalEditor.selectLine"),
 		"<": repeatable("editor.action.outdentLines"),
 		">": repeatable("editor.action.indentLines"),
 		y: [
@@ -179,7 +170,7 @@ module.exports = {
 		
 		// match mode
 		m: {
-			m: "editor.action.jumpToBracket"
+			m: "modalEditor.jumpToBracket"
 		},
 
 		// goto mode
@@ -361,13 +352,7 @@ module.exports = {
 		// select from cursor to first non-whitespace character
 		"^": "cursorHomeSelect",
 		// select from cursor to end of line
-		"$": [
-			"cursorLineEndSelect",
-			{
-				command: "cursorLeftSelect",
-				when: "_ctx.lastPos.character !== _ctx.lineAt(_ctx.lastPos.line).text.length - 1"
-			}
-		],
+		"$": "modalEditor.selectToEndOfLine",
 		// select from cursor to end of file
 		"%": "cursorBottomSelect",
 	
@@ -375,7 +360,14 @@ module.exports = {
 		v: "modalEditor.setSelectMode",
 
 		// enter selection search mode
-		s: "modalEditor.setSelectionSearchMode"
+		s: "modalEditor.setSelectionSearchMode",
+
+		// navigate between selections
+		"(": "modalEditor.navigateToPreviousSelection",
+		")": "modalEditor.navigateToNextSelection",
+
+		// unselect primary selection (Alt+, produces ≤ on macOS)
+		"≤": "modalEditor.unselectPrimarySelection"
 	},
 
 	select: {
@@ -458,13 +450,7 @@ module.exports = {
 		// select from cursor to first non-whitespace character
 		"^": "cursorHomeSelect",
 		// select from cursor to end of line
-		"$": [
-			"cursorLineEndSelect",
-			{
-				command: "cursorLeftSelect",
-				when: "_ctx.lastPos.character !== _ctx.lineAt(_ctx.lastPos.line).text.length - 1"
-			}
-		],
+		"$": "modalEditor.selectToEndOfLine",
 		// select from cursor to end of file
 		"%": "cursorBottomSelect",
 	
@@ -472,7 +458,14 @@ module.exports = {
 		v: ["modalEditor.setNormalMode", "settings.cycle.gitblameOn"],
 
 		// enter selection search mode
-		s: "modalEditor.setSelectionSearchMode"
+		s: "modalEditor.setSelectionSearchMode",
+
+		// navigate between selections
+		"(": "modalEditor.navigateToPreviousSelection",
+		")": "modalEditor.navigateToNextSelection",
+
+		// unselect primary selection (Alt+, produces ≤ on macOS)
+		"≤": "modalEditor.unselectPrimarySelection"
 	},
 
 	// Command mode
