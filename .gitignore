@@ -1,3 +1,4 @@
+/.config/helix/runtime
 /pip/cache
 /vim/.netrwhist
 /vim/black
