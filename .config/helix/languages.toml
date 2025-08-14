@@ -1,3 +1,5 @@
+# use-grammars = { only = [ "python"] }
+
 [[language]]
 name = "python"  
 language-servers = ["ty"]
@@ -23,3 +25,13 @@ scope = "source.xml"
 file-types = ["tmTheme"]
 grammar = "xml"
 roots = []
+
+
+[[language]]
+name = "xonsh"
+scope = "source.python"
+file-types = ["xsh", "xonshrc", ".xonshrc"]
+shebangs = ["xonsh"]
+grammar = "python"
+roots = []
+
