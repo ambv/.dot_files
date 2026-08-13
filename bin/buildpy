@@ -1,5 +1,35 @@
 #!/bin/bash -e
-export TMP_ROOT=/Volumes/RAMDisk
+#
+# Homebrew prerequisites for the compiler cache and CPython's optional modules:
+#
+#   brew install ccache pkg-config openssl@3 tcl-tk@8 gdbm xz mpdecimal zstd
+#
+# The repository at ~/Python/cpython.git is bare.  Do not build in it; create a
+# linked worktree and run buildpy from that worktree.  The ramdisk script creates
+# the normal development worktree at /Volumes/RAMDisk/cpython, so the usual flow
+# is:
+#
+#   ramdisk
+#   cd /Volumes/RAMDisk/cpython
+#   buildpy
+#
+# WORKTREE_HOME controls where buildpy puts configure caches and installed
+# framework trees.  It defaults to /Volumes/RAMDisk.  An agent that cannot write
+# there can create a temporary on-disk worktree and redirect those files:
+#
+#   git -C ~/Python/cpython.git worktree add --detach ~/Python/cpython-temp main
+#   cd ~/Python/cpython-temp
+#   WORKTREE_HOME=~/Python buildpy
+#
+# The companion testpy script runs the resulting test interpreter.  It honors
+# PYTHONBINARY when set; otherwise it finds ./python.exe, ./python3, or
+# ./bin/python3 automatically.  It also unsets PYTHONWARNINGS, PYTHONSTARTUP,
+# PYTHON_HISTORY, and DISPLAY so ambient settings do not interfere with tests.
+# Set COVER to a source path or package (for example, COVER=Lib) to collect
+# coverage using a branch-specific virtualenv under WORKTREE_HOME.
+
+export WORKTREE_HOME="${WORKTREE_HOME:-/Volumes/RAMDisk}"
+export TMP_ROOT="$WORKTREE_HOME"
 export GITBRANCH=$(git branch --show-current)
 if [[ -z "$GITBRANCH" ]]; then
     export GITBRANCH=$(git rev-parse --short HEAD)
