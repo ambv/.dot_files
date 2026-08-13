@@ -1,45 +1,118 @@
-#!/usr/bin/env fish
-date
-if ! set -q PYTHONBINARY
-    for candidate in ./python.exe ./python3 ./bin/python3
-        if test -x $candidate
-            export PYTHONBINARY=$candidate
-            break
-        end
-    end 
-end
-export PYTHONWARNINGS=
-export PYTHONSTARTUP=
-export PYTHON_HISTORY=
-export DISPLAY=
-export IN_REGRTEST=1
-set fish_trace on
+#!/usr/bin/env python3
+#
+# Set COVER to a source path or package to collect coverage, for example:
+#
+#   COVER=Lib testpy test_json
+#
+# The branch-specific coverage virtualenv lives under WORKTREE_HOME, which
+# defaults to /Volumes/RAMDisk.  coverage is installed automatically as needed.
 
-set GITBRANCH (git branch --show-current)
-if test -z $GITBRANCH
-    set GITBRANCH (git rev-parse --short HEAD)
-end
+import os
+from pathlib import Path
+import shlex
+import subprocess
+import sys
 
-# set COVERAGE_VENV_DIR /Volumes/RAMDisk/venv-coverage-$GITBRANCH
 
-# if test -z $COVERAGE_VENV_DIR
-#     echo "Invalid empty coverage venv directory."
-#     exit 1
-# end
+def find_python():
+    configured = os.environ.get("PYTHONBINARY")
+    if configured is not None:
+        return configured
 
-$PYTHONBINARY -V; or exit
+    for candidate in ("./python.exe", "./python3", "./bin/python3"):
+        if os.access(candidate, os.X_OK):
+            return candidate
+    return None
 
-# if ! test -d $COVERAGE_VENV_DIR
-#     $PYTHONBINARY -m venv $COVERAGE_VENV_DIR
-#     $COVERAGE_VENV_DIR/bin/python3 -m pip install coverage
-# end
 
-# source $COVERAGE_VENV_DIR/bin/activate.fish
+def run(command):
+    print(f"+ {shlex.join(command)}", flush=True)
+    return subprocess.run(command).returncode
 
-# if set -q COVER
-#     time $COVERAGE_VENV_DIR/bin/python3 -E -Wd -m coverage run --pylib --source=$COVER -m test --slowest --fail-env-changed $argv
-# else
-#     time $COVERAGE_VENV_DIR/bin/python3 -E -Wd -m test --slowest --fail-env-changed $argv
-# end
 
-time $PYTHONBINARY -E -Wd -m test --slowest --fail-env-changed $argv
+def git_branch():
+    for command in (
+        ["git", "branch", "--show-current"],
+        ["git", "rev-parse", "--short", "HEAD"],
+    ):
+        result = subprocess.run(command, capture_output=True, text=True)
+        if result.returncode == 0 and result.stdout.strip():
+            return result.stdout.strip().replace("/", "-")
+    return "unknown"
+
+
+def coverage_python(python_binary):
+    worktree_home = Path(
+        os.environ.get("WORKTREE_HOME", "/Volumes/RAMDisk")
+    ).expanduser()
+    worktree_home.mkdir(parents=True, exist_ok=True)
+    venv_dir = worktree_home / f"venv-coverage-{git_branch()}"
+    venv_python = venv_dir / "bin" / "python3"
+
+    if not venv_python.is_file():
+        if run([python_binary, "-m", "venv", str(venv_dir)]) != 0:
+            return None
+
+    has_coverage = subprocess.run(
+        [venv_python, "-c", "import coverage"],
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL,
+    ).returncode == 0
+    if not has_coverage:
+        if run([str(venv_python), "-m", "pip", "install", "coverage"]) != 0:
+            return None
+
+    return str(venv_python)
+
+
+def main():
+    subprocess.run(["date"], check=False)
+
+    python_binary = find_python()
+    if not python_binary:
+        print(
+            "No Python executable found. Set PYTHONBINARY or run testpy from "
+            "a Python build or installation directory.",
+            file=sys.stderr,
+        )
+        return 1
+
+    for variable in ("PYTHONWARNINGS", "PYTHONSTARTUP", "PYTHON_HISTORY", "DISPLAY"):
+        os.environ.pop(variable, None)
+    os.environ["IN_REGRTEST"] = "1"
+
+    if run([python_binary, "-V"]) != 0:
+        return 1
+
+    coverage_source = os.environ.get("COVER")
+    if coverage_source:
+        runner = coverage_python(python_binary)
+        if runner is None:
+            return 1
+        command = [
+            runner,
+            "-E",
+            "-Wd",
+            "-m",
+            "coverage",
+            "run",
+            "--pylib",
+            f"--source={coverage_source}",
+            "-m",
+            "test",
+        ]
+    else:
+        command = [python_binary, "-E", "-Wd", "-m", "test"]
+
+    command = [
+        "/usr/bin/time",
+        *command,
+        "--slowest",
+        "--fail-env-changed",
+        *sys.argv[1:],
+    ]
+    return run(command)
+
+
+if __name__ == "__main__":
+    sys.exit(main())
