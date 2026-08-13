@@ -1,61 +1,91 @@
-#!/usr/bin/env fish
+#!/usr/bin/env python3
 
-set CPYTHON ~/Python/cpython.git
-set VSCODE ~/Python/cpython-vscode-workspace
-set RAMDISK /Volumes/RAMDisk
-set WORKTREE $RAMDISK/cpython
-set BRANCH "main"
+import getpass
+import os
+from pathlib import Path
+import subprocess
+import sys
+import time
 
-if test -d $RAMDISK 
-    echo "RAM disk already exists at $RAMDISK. Unmount by running:"
-    echo
-    echo "    hdiutil eject $RAMDISK"
-    echo
-    exit 1
-end
 
-set SUDO_PROMPT 1
-if sudo -nv 2>/dev/null
-    # sudo timestamp is fresh before this script ran
-    set SUDO_PROMPT 0
-else
-    echo "This script requires admin privileges to set ownership properly."
-    sudo -v
-end
+CPYTHON = Path.home() / "Python" / "cpython.git"
+VSCODE = Path.home() / "Python" / "cpython-vscode-workspace"
+RAMDISK = Path("/Volumes/RAMDisk")
+WORKTREE = RAMDISK / "cpython"
+BRANCH = "main"
+RAMDISK_SIZE_GIB = 10
 
-cd $CPYTHON
-git worktree list --porcelain | grep "^worktree $RAMDISK" | gsed -e "s/worktree //" | while read stale_worktree
-    echo "Stale cpython worktree found in $stale_worktree, deleting."
-    git worktree remove $stale_worktree
-end
 
-# 10 GB should be enough.
-set DISK_ID (hdiutil attach -nobrowse -nomount ram://18874368 | string trim)
-# or you can do 32 GB if you need it...
-# set DISK_ID (hdiutil attach -nobrowse -nomount ram://67108864 | string trim)
-echo "Creating a RAM disk at $DISK_ID..."
-echo -n "Waiting for it to initialize..."
+def run(command, **kwargs):
+    """Run a command, displaying it and stopping if it fails."""
+    print(f"+ {' '.join(map(str, command))}")
+    return subprocess.run(command, check=True, **kwargs)
 
-while not diskutil list $DISK_ID >/dev/null 2>/dev/null
-    echo -n . 
-    sleep 1
-end
 
-echo " done!"
+if RAMDISK.is_dir():
+    print(f"RAM disk already exists at {RAMDISK}. Unmount by running:")
+    print(f"\n    hdiutil eject {RAMDISK}\n")
+    sys.exit(1)
 
-echo "Formatting the RAM disk..."
-diskutil erasevolume HFS+ 'RAMDisk' $DISK_ID 
+if not CPYTHON.is_dir():
+    print(f"CPython checkout not found at {CPYTHON}.", file=sys.stderr)
+    sys.exit(1)
 
-git worktree add $WORKTREE $BRANCH
+sudo_prompted = subprocess.run(
+    ["sudo", "-nv"],
+    stdout=subprocess.DEVNULL,
+    stderr=subprocess.DEVNULL,
+).returncode != 0
 
-sudo diskutil enableOwnership $DISK_ID
-sudo chown ambv:staff $RAMDISK
-if test $SUDO_PROMPT -eq 1
-    sudo -k
-end
-ln -s $VSCODE $WORKTREE/.vscode
+if sudo_prompted:
+    print("This script requires admin privileges to set ownership properly.")
+    run(["sudo", "-v"])
 
-echo "All done. Switch to the RAM disk checkout by running:"
-echo
-echo "    cd $WORKTREE"
-echo
+try:
+    worktree_output = subprocess.run(
+        ["git", "-C", CPYTHON, "worktree", "list", "--porcelain"],
+        check=True,
+        capture_output=True,
+        text=True,
+    ).stdout
+    for line in worktree_output.splitlines():
+        if not line.startswith("worktree "):
+            continue
+        stale_worktree = Path(line.removeprefix("worktree "))
+        if stale_worktree == RAMDISK or RAMDISK in stale_worktree.parents:
+            print(f"Stale CPython worktree found in {stale_worktree}, deleting.")
+            run(["git", "-C", CPYTHON, "worktree", "remove", stale_worktree])
+
+    # hdiutil RAM-disk sizes are specified in 512-byte sectors.
+    sectors = RAMDISK_SIZE_GIB * 1024**3 // 512
+    disk_id = subprocess.run(
+        ["hdiutil", "attach", "-nobrowse", "-nomount", f"ram://{sectors}"],
+        check=True,
+        capture_output=True,
+        text=True,
+    ).stdout.strip()
+
+    print(f"Creating a {RAMDISK_SIZE_GIB} GiB RAM disk at {disk_id}...")
+    print("Waiting for it to initialize", end="", flush=True)
+    while subprocess.run(
+        ["diskutil", "list", disk_id],
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL,
+    ).returncode != 0:
+        print(".", end="", flush=True)
+        time.sleep(1)
+    print(" done!")
+
+    print("Formatting the RAM disk...")
+    run(["diskutil", "erasevolume", "HFS+", "RAMDisk", disk_id])
+    run(["git", "-C", CPYTHON, "worktree", "add", WORKTREE, BRANCH])
+
+    run(["sudo", "diskutil", "enableOwnership", disk_id])
+    run(["sudo", "chown", f"{getpass.getuser()}:staff", RAMDISK])
+    os.symlink(VSCODE, WORKTREE / ".vscode")
+finally:
+    if sudo_prompted:
+        subprocess.run(["sudo", "-k"], check=False)
+
+print("All done. Switch to the RAM disk checkout by running:")
+print(f"\n    cd {WORKTREE}\n")
