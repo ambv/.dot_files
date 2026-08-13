@@ -110,7 +110,10 @@ else
     CONFIGURE_FLAGS+=(--cache-file=$BRANCH --with-pydebug) # --with-undefined-behavior-sanitizer"
 fi
 
-make distclean || (./configure "${CONFIGURE_FLAGS[@]}" && make distclean)
+if ! make distclean; then
+    ./configure "${CONFIGURE_FLAGS[@]}"
+    make distclean
+fi
 time ./configure "${CONFIGURE_FLAGS[@]}"
 # time make regen-all
 time make -j10
